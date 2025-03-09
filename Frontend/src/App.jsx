@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
+import Header from './components/Header'; // Importa el componente Header
 
 function App() {
   const [usuarios, setUsuarios] = useState([]);
@@ -21,6 +22,7 @@ function App() {
       // Opcional: Limpiar cualquier estado temporal relacionado al error
     }
   };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,6 +36,9 @@ function App() {
 
   return (
     <div className="container">
+      {/* Agrega el componente Header aquí */}
+      <Header />
+
       <h1>Gestión de Usuarios</h1>
       
       <form onSubmit={handleSubmit}>
