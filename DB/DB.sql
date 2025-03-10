@@ -1,11 +1,3 @@
--- Ver usuarios y permisos
-SELECT user, host FROM mysql.user;
-
--- Otorgar permisos (si usas root, no es necesario)
-GRANT ALL PRIVILEGES ON veganByte.* TO 'root'@'localhost';
-FLUSH PRIVILEGES;
-
-
 create database veganByte;
 use veganByte;
 
