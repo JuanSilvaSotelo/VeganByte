@@ -1,51 +1,75 @@
-import cors from 'cors';
 import dotenv from 'dotenv';
-import express from 'express';
-import connection from './config/database.js'; // Ruta corregida y sintaxis ES6
-
 dotenv.config();
+
+import express from 'express';
+import cors from 'cors';
+import clienteRoutes from './routes/cliente.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import { errorHandler, notFoundHandler } from './utils/errors/errorHandler.js';
+import DatabaseService from './services/database.service.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middlewares
-app.use(cors());
+// Configuración CORS mejorada
+const corsOptions = {
+  origin: (origin, callback) => {
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+      process.env.FRONTEND_URL
+    ].filter(Boolean);
+    
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Origen no permitido por CORS'));
+    }
+  },
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  optionsSuccessStatus: 204,
+  preflightContinue: false
+};
+
+// Middlewares críticos primero
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions)); // Debe estar antes de las rutas
 app.use(express.json());
 
-// Ruta GET para obtener usuarios
-app.get('/api/usuarios', (req, res) => {
-  connection.query('SELECT * FROM usuarios', (error, resultados) => {
-    if (error) {
-      return res.status(500).json({ error: error.message });
-    }
-    res.json(resultados);
-  });
+// Middleware de registro para diagnóstico
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+  console.log('Origin:', req.headers.origin);
+  next();
 });
 
-// Ruta POST para crear usuarios
-app.post('/api/usuarios', (req, res) => {
-  const { nombre, email } = req.body;
-  const query = 'INSERT INTO usuarios (nombre, email) VALUES (?, ?)';
-  
-  connection.query(query, [nombre, email], (error, resultado) => {
-    if (error) {
-      return res.status(500).json({ error: error.message });
-    }
-    res.status(201).json({ 
-      message: 'Usuario creado exitosamente', 
-      id: resultado.insertId 
+// Rutas
+app.use('/api/auth', authRoutes);
+app.use('/api/cliente', clienteRoutes);
+
+// Prueba de conexión a DB
+app.get('/test-db', async (req, res) => {
+  try {
+    const dbHealthy = await DatabaseService.healthCheck();
+    res.json({ 
+      database: dbHealthy ? 'OK' : 'Error',
+      timestamp: new Date().toISOString()
     });
-  });
+  } catch (error) {
+    res.status(500).json({ 
+      error: 'Error de conexión a la base de datos',
+      details: process.env.NODE_ENV === 'development' ? error.message : null
+    });
+  }
 });
 
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: "Error interno" });
-});
+// Manejo de errores
+app.use(notFoundHandler);
+app.use(errorHandler);
 
-// Iniciar servidor
 app.listen(PORT, () => {
-  console.log(`Servidor corriendo en puerto ${PORT}`);
+  console.log(`✅ Servidor activo en http://localhost:${PORT}`);
+  console.log(`🛡️  CORS configurado para orígenes:`, corsOptions.origin);
 });
-
-export default app;
