@@ -1,6 +1,8 @@
 create database veganByte;
 use veganByte;
 
+select * from Cliente;
+
 /*CREACIÓN DE TABLAS  PRIMARY/FOREIGN  KEYS*/
 
 create table Cliente (
@@ -8,6 +10,7 @@ create table Cliente (
     Nombre varchar(80) not null,
     Apellido varchar(80) not null,
     tipo_Documento enum("Cedula de ciudadania", "Pasaporte", "Cedula extranjero") not null,
+    Numero_documento int not null,
     Sexo enum("Masculino", "Femenino", "Otro") not null,
     Correo varchar(80) not null,
     Contacto bigint check (Contacto >= 0 AND Contacto <= 99999999999) not null,
@@ -21,6 +24,7 @@ create table Administradores (
     Apellido varchar(80) not null,
     Correo varchar(80) not null,
     tipo_Documento enum("Cedula de ciudadania", "Pasaporte", "Cedula extranjero") not null,
+    Numero_documento int not null,
     Sexo enum("Masculino", "Femenino", "Otro") not null,
     Contacto bigint check (Contacto >= 0 AND Contacto <= 99999999999) not null,
     Direccion varchar(80) not null,
