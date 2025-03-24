@@ -201,6 +201,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import Inicio from './pages/Inicio';
 import './styles/styles.css';
 
 function App() {
@@ -210,7 +211,7 @@ function App() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/" element={<Login />} /> {/* Ruta por defecto */}
+                <Route path="/" element={<Inicio />} /> {/* Ruta por defecto */}
             </Routes>
         </Router>
       </ErrorBoundary>

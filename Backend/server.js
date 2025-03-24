@@ -1,12 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import cors from 'cors';
 import express from 'express';
-import router from './routes/auth.routes.js';
-import clienteRoutes from './routes/cliente.routes.js';
-import DatabaseService from './services/database.service.js';
+import cors from 'cors';
+import authRoutes from './routes/auth.routes.js';
 import { errorHandler, notFoundHandler } from './utils/errors/errorHandler.js';
+import DatabaseService from './services/database.service.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,9 +16,9 @@ const corsOptions = {
     const allowedOrigins = [
       'http://localhost:5173',
       'http://127.0.0.1:5173',
-      process.env.FRONTEND_URL,
+      process.env.FRONTEND_URL
     ].filter(Boolean);
-
+    
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
@@ -30,7 +29,7 @@ const corsOptions = {
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
   optionsSuccessStatus: 204,
-  preflightContinue: false,
+  preflightContinue: false
 };
 
 // Middlewares críticos primero
@@ -46,26 +45,20 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/api/auth', router);
-app.use('/api/cliente', clienteRoutes);
-
-// Ruta de prueba para la raíz
-app.get('/', (req, res) => {
-  res.send('¡Bienvenido a mi servidor backend!');
-});
+app.use('/api/auth', authRoutes);
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {
   try {
     const dbHealthy = await DatabaseService.healthCheck();
-    res.json({
+    res.json({ 
       database: dbHealthy ? 'OK' : 'Error',
-      timestamp: new Date().toISOString(),
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    res.status(500).json({
+    res.status(500).json({ 
       error: 'Error de conexión a la base de datos',
-      details: process.env.NODE_ENV === 'development' ? error.message : null,
+      details: process.env.NODE_ENV === 'development' ? error.message : null
     });
   }
 });
@@ -74,7 +67,6 @@ app.get('/test-db', async (req, res) => {
 app.use(notFoundHandler);
 app.use(errorHandler);
 
-// Iniciar el servidor
 app.listen(PORT, () => {
   console.log(`✅ Servidor activo en http://localhost:${PORT}`);
   console.log(`🛡️  CORS configurado para orígenes:`, corsOptions.origin);
