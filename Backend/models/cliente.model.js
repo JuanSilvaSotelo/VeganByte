@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import {pool} from '../config/database.js';
+import { pool } from '../config/database.js';
 
 const Cliente = {
   create: async (clienteData) => {
@@ -12,7 +12,7 @@ const Cliente = {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
-    const [result] = await connection.query(query, [
+    const [result] = await pool.query(query, [
       clienteData.Nombre,
       clienteData.Apellido,
       clienteData.tipo_Documento,
@@ -29,9 +29,17 @@ const Cliente = {
   },
 
   findByEmail: async (email) => {
-    const [results] = await connection.query(
+    const [results] = await pool.query(
       'SELECT * FROM Cliente WHERE Correo = ?',
       [email]
+    );
+    return results[0];
+  },
+
+  findByDocumentNumber: async (documentNumber) => {
+    const [results] = await pool.query(
+      'SELECT * FROM Cliente WHERE Numero_documento = ?',
+      [documentNumber]
     );
     return results[0];
   }

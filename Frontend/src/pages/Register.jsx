@@ -10,7 +10,7 @@ function Register() {
     Nombre: '',
     Apellido: '',
     tipo_Documento: 'Cedula de ciudadania',
-    Numero_documento: null,
+    Numero_documento: '',
     Sexo: 'Masculino',
     Correo: '',
     ConfirmarCorreo: '',
@@ -142,7 +142,7 @@ function Register() {
               </div>
               <Input
                     label="Numero de documento"
-                    name="Documento"
+                    name="Numero_documento"
                     type="number"
                     value={formData.Numero_documento}
                     onChange={handleChange}
