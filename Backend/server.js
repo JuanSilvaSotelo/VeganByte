@@ -3,7 +3,6 @@ dotenv.config();
 
 import express from 'express';
 import cors from 'cors';
-import clienteRoutes from './routes/cliente.routes.js';
 import authRoutes from './routes/auth.routes.js';
 import { errorHandler, notFoundHandler } from './utils/errors/errorHandler.js';
 import DatabaseService from './services/database.service.js';
@@ -47,7 +46,6 @@ app.use((req, res, next) => {
 
 // Rutas
 app.use('/api/auth', authRoutes);
-app.use('/api/cliente', clienteRoutes);
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {

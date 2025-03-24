@@ -128,3 +128,194 @@ footer img {
   color: #28a745;
   margin-bottom: 1rem;
 }
+
+/* Estilos para el componente MadreRaiz (añadir a tu archivo CSS) */
+
+.madre-raiz-container {
+  font-family: sans-serif;
+}
+
+.header-madre-raiz { /* Renombrado para evitar conflictos */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+
+/*.logo-madre-raiz { /* Renombrado */
+  /* Estilos para el logo 
+}*/
+
+.navigation-madre-raiz ul { /* Renombrado */
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+}
+
+.navigation-madre-raiz li { /* Renombrado */
+  margin-left: 20px;
+}
+
+.navigation-madre-raiz a { /* Renombrado */
+  text-decoration: none;
+  color: black; /* Ajusta el color según necesites */
+}
+
+.hero-madre-raiz { /* Renombrado */
+  position: relative;
+  width: 100%;
+  height: 400px; /* Ajusta la altura según sea necesario */
+  overflow: hidden;
+}
+
+.hero-image-madre-raiz img { /* Renombrado */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-overlay-madre-raiz { /* Renombrado */
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.3); /* O el color de superposición que necesites */
+}
+
+.logo-large-madre-raiz img { /* Renombrado */
+  max-width: 300px; /* Ajusta el tamaño del logo grande */
+}
+
+.section-one-madre-raiz { /* Renombrado */
+  padding: 40px;
+  text-align: center;
+}
+
+.image-grid-madre-raiz { /* Renombrado */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Dos columnas */
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.image-item-madre-raiz { /* Renombrado */
+  position: relative;
+}
+
+.image-item-madre-raiz img { /* Renombrado */
+  width: 100%;
+  display: block;
+}
+
+.logo-overlay-madre-raiz { /* Renombrado */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* Estilos para el logo pequeño */
+}
+
+.section-two-madre-raiz { /* Renombrado */
+  padding: 40px;
+  text-align: center;
+}
+
+.circular-images-madre-raiz { /* Renombrado */
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.circular-image-madre-raiz { /* Renombrado */
+  width: 150px; /* Ajusta el tamaño */
+  height: 150px; /* Ajusta el tamaño */
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid #ccc; /* Opcional: borde */
+}
+
+.circular-image-madre-raiz img { /* Renombrado */
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.circular-image-madre-raiz p { /* Renombrado */
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.section-three-madre-raiz { /* Renombrado */
+  padding: 40px;
+  text-align: center;
+}
+
+.full-width-image-madre-raiz { /* Renombrado */
+  margin-top: 20px;
+}
+
+.full-width-image-madre-raiz img { /* Renombrado */
+  width: 100%;
+  display: block;
+}
+
+.footer-madre-raiz { /* Renombrado */
+  background-color: #f8f8f8; /* Un color de fondo claro para el footer */
+  padding: 20px;
+  text-align: center;
+}
+
+.footer-content-madre-raiz { /* Renombrado */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.footer-logo-madre-raiz img { /* Renombrado */
+  height: 30px; /* Ajusta el tamaño del logo del footer */
+  margin-bottom: 10px;
+}
+
+.footer-info-madre-raiz { /* Renombrado */
+  display: flex;
+  gap: 30px;
+  margin-top: 15px;
+}
+
+.years-madre-raiz img { /* Renombrado */
+  height: 20px; /* Ajusta el tamaño de las imágenes de años */
+  margin: 0 5px;
+}
+
+.contact-madre-raiz p { /* Renombrado */
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.social-madre-raiz a { /* Renombrado */
+  margin: 0 10px;
+}
+
+.social-madre-raiz img { /* Renombrado */
+  height: 25px; /* Ajusta el tamaño de los iconos sociales */
+}
+
+.help-madre-raiz { /* Renombrado */
+  display: flex;
+  align-items: center;
+}
+
+.help-madre-raiz img { /* Renombrado */
+  height: 20px; /* Ajusta el tamaño del icono de ayuda */
+  margin-right: 5px;
+}
+
+.help-madre-raiz p { /* Renombrado */
+  font-size: 0.9rem;
+}
+
