@@ -1,9 +1,9 @@
-import axios from 'axios';
 import React, { useState } from 'react';
-import Button from '../components/Button';
-import Footer from '../components/Footer';
+import axios from 'axios';
 import Header from '../components/Header';
+import Footer from '../components/Footer';
 import Input from '../components/Input';
+import Button from '../components/Button';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -18,7 +18,7 @@ function Register() {
     fecha_Nacimiento: '',
     Direccion: '',
     Contraseña: '',
-    ConfirmarContraseña: '',
+    ConfirmarContraseña: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,6 @@ function Register() {
     setError('');
     setSuccess('');
 
-    // Validaciones del cliente
     if (formData.Correo !== formData.ConfirmarCorreo) {
       return setError('Los correos no coinciden');
     }
@@ -39,29 +38,14 @@ function Register() {
       return setError('Las contraseñas no coinciden');
     }
 
-    if (!/^\d{6,10}$/.test(formData.Numero_documento)) {
-      return setError('El documento debe tener entre 6 y 10 dígitos');
-    }
-
-    if (!/^\d{10}$/.test(formData.Contacto)) {
-      return setError('El teléfono debe tener 10 dígitos');
-    }
-
     try {
       setLoading(true);
       const { ConfirmarCorreo, ConfirmarContraseña, ...userData } = formData;
       
-      // Convertir campos numéricos a números
-      userData.Numero_documento = Number(userData.Numero_documento);
-      userData.Contacto = Number(userData.Contacto);
-
-      console.log('Enviando datos:', userData);
-      
       const response = await axios.post('/api/auth/register', userData);
-
+      
       if (response.status === 201) {
         setSuccess('¡Registro exitoso! Por favor inicia sesión');
-        // Reiniciar formulario
         setFormData({
           Nombre: '',
           Apellido: '',
@@ -74,24 +58,22 @@ function Register() {
           fecha_Nacimiento: '',
           Direccion: '',
           Contraseña: '',
-          ConfirmarContraseña: '',
+          ConfirmarContraseña: ''
         });
       }
     } catch (err) {
-      console.error('Error en registro:', err.response?.data || err.message);
-      const serverError = err.response?.data?.error || err.message;
-      setError(serverError?.message || 'Error al procesar el registro');
-    } finally {
-      setLoading(false);
-    }
+        const errorMessage = err.response?.data?.error?.message || 
+                            err.message || 
+                            "Error en el registro";
+        setError(errorMessage); 
+      }
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   return (
@@ -99,9 +81,9 @@ function Register() {
       <Header />
       <main>
         <div className="register-container">
-          <h2 className="register">REGISTRARSE</h2>
-
-          {error && <div className="error-message">{error}</div>}
+          <h2 className='register'>REGISTRARSE</h2>
+          
+          {error && (<div className="error-message">{error} {}</div>)}
           {success && <div className="success-message">{success}</div>}
 
           <form onSubmit={handleSubmit}>
@@ -109,6 +91,7 @@ function Register() {
               <Input
                 label="Nombres"
                 name="Nombre"
+                type="text"
                 value={formData.Nombre}
                 onChange={handleChange}
                 required
@@ -116,6 +99,7 @@ function Register() {
               <Input
                 label="Apellidos"
                 name="Apellido"
+                type="text"
                 value={formData.Apellido}
                 onChange={handleChange}
                 required
@@ -143,12 +127,13 @@ function Register() {
 
             <div className="row">
               <div className="input-container">
-                <label>Tipo de Documento</label>
+                <label htmlFor="tipo_Documento">Tipo de Documento</label>
                 <select
+                  id="tipo_Documento" // Agregamos un id para el label
                   name="tipo_Documento"
                   value={formData.tipo_Documento}
                   onChange={handleChange}
-                  required
+                  className="form-select"
                 >
                   <option value="Cedula de ciudadania">Cédula</option>
                   <option value="Pasaporte">Pasaporte</option>
@@ -156,25 +141,26 @@ function Register() {
                 </select>
               </div>
               <Input
-                label="Número de documento"
-                name="Numero_documento"
-                type="number"
-                value={formData.Numero_documento}
-                onChange={handleChange}
-                min="100000"
-                max="9999999999"
-                required
-              />
+                    label="Numero de documento"
+                    name="Numero_documento"
+                    type="number"
+                    value={formData.Numero_documento}
+                    onChange={handleChange}
+                    min="100000"
+                    max="9999999999"
+                    required
+                />
             </div>
 
             <div className="row">
-              <div className="input-container">
-                <label>Sexo</label>
+            <div className="input-container">
+                <label htmlFor="Sexo">Sexo</label>
                 <select
+                  id="Sexo" // Agregamos un id para el label
                   name="Sexo"
                   value={formData.Sexo}
                   onChange={handleChange}
-                  required
+                  className="form-select"
                 >
                   <option value="Masculino">Masculino</option>
                   <option value="Femenino">Femenino</option>
@@ -192,18 +178,18 @@ function Register() {
             </div>
 
             <div className="row">
-              <Input
+            <Input
                 label="Teléfono"
                 name="Contacto"
                 type="tel"
                 value={formData.Contacto}
                 onChange={handleChange}
-                pattern="[0-9]{10}"
                 required
               />
               <Input
                 label="Dirección"
                 name="Direccion"
+                type="text"
                 value={formData.Direccion}
                 onChange={handleChange}
                 required
@@ -217,7 +203,6 @@ function Register() {
                 type="password"
                 value={formData.Contraseña}
                 onChange={handleChange}
-                minLength="8"
                 required
               />
               <Input
@@ -226,7 +211,6 @@ function Register() {
                 type="password"
                 value={formData.ConfirmarContraseña}
                 onChange={handleChange}
-                minLength="8"
                 required
               />
             </div>
