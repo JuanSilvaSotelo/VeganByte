@@ -8,31 +8,31 @@ const AuthController = {
       if (existingDoc) {
         return res.status(400).json({ error: 'Número de documento ya registrado' });
       }
-      // Agrega logs para diagnóstico
-      console.log('Datos recibidos:', req.body);
-      
+
+      // Verificar correo único
       const existingUser = await Cliente.findByEmail(req.body.Correo);
       if (existingUser) {
-        console.log('Correo ya registrado:', req.body.Correo);
         return res.status(400).json({ error: 'El correo ya está registrado' });
       }
 
+      // Crear nuevo cliente
       const newUserId = await Cliente.create(req.body);
       console.log('Nuevo usuario creado ID:', newUserId);
-      
+
+      // Respuesta exitosa
       res.status(201).json({
         message: 'Registro exitoso',
-        userId: newUserId
+        userId: newUserId,
       });
     } catch (error) {
       console.error('Error en registro:', error);
       next({
         status: 500,
         message: 'Error en el servidor',
-        details: process.env.NODE_ENV === 'development' ? error.message : null
+        details: process.env.NODE_ENV === 'development' ? error.message : null,
       });
     }
-  }
+  },
 };
 
 export default AuthController;
