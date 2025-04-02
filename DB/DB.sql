@@ -22,13 +22,17 @@ create table Administradores (
     Id_Administradores int not null auto_increment primary key,
     Nombre varchar(80) not null,
     Apellido varchar(80) not null,
+    Usuario varchar(80) unique not null,
+    Contraseña varchar(255) not null,
     Correo varchar(80) not null,
     tipo_Documento enum("Cedula de ciudadania", "Pasaporte", "Cedula extranjero") not null,
     Numero_documento int not null,
     Sexo enum("Masculino", "Femenino", "Otro") not null,
     Contacto bigint check (Contacto >= 0 AND Contacto <= 99999999999) not null,
     Direccion varchar(80) not null,
-    fecha_Nacimiento date not null
+    fecha_Nacimiento date not null,
+    Ultimo_login datetime,
+    Rol enum('Admin', 'SuperAdmin') default 'Admin'
 );
 
 create table Blog (

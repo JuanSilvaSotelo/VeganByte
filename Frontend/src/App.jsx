@@ -19,5 +19,5 @@ function App() {
       </ErrorBoundary>
     );
 }
-<script src="http://localhost:8097"></script>
+<script src="http://localhost:5173"></script>
 export default App;
