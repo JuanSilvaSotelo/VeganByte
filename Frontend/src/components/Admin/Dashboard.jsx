@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Route, Link, Routes } from 'react-router-dom';
+import { Route, Link, Routes } from 'react-router-dom';
 import axios from 'axios';
+import { getAuthHeaders, getAdminName, logoutAdmin } from '../../services/authService';
 import './Admin.css';
 
 const AdminDashboard = () => {
   const [activeUsers, setActiveUsers] = useState([]);
   const [events, setEvents] = useState([]);
+  const [adminName, setAdminName] = useState('');
 
   useEffect(() => {
     fetchActiveUsers();
     fetchEvents();
+    setAdminName(getAdminName() || 'Administrador');
   }, []);
 
   const fetchActiveUsers = async () => {
     try {
-      const response = await axios.get('/api/admin/usuarios-activos');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${API_URL}/api/admin/usuarios-activos`, getAuthHeaders());
       setActiveUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -23,21 +27,31 @@ const AdminDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('/api/admin/eventos');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const response = await axios.get(`${API_URL}/api/admin/eventos`, getAuthHeaders());
       setEvents(response.data);
     } catch (error) {
       console.error('Error fetching events:', error);
     }
   };
 
+  const handleLogout = () => {
+    logoutAdmin();
+    window.location.href = '/admin/login';
+  };
+
   return (
     <div className="admin-container">
       <nav className="admin-sidebar">
         <h2>Panel Admin</h2>
+        <div className="admin-user-info">
+          <p>Bienvenido, {adminName}</p>
+        </div>
         <ul>
           <li><Link to="/admin/usuarios">Usuarios Activos</Link></li>
           <li><Link to="/admin/eventos">Gestión de Eventos</Link></li>
           <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
+          <li><button onClick={handleLogout} className="logout-button">Cerrar Sesión</button></li>
         </ul>
       </nav>
       
@@ -87,7 +101,8 @@ const EventManagement = ({ events }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('/api/admin/eventos', newEvent);
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      await axios.post(`${API_URL}/api/admin/eventos`, newEvent, getAuthHeaders());
       setNewEvent({ titulo: '', descripcion: '', fecha: '', tipo: 'taller' });
     } catch (error) {
       console.error('Error creating event:', error);

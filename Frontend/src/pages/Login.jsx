@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import { loginUser } from '../services/authService';
 import '../styles/Login.css';
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     Usuario: '',
     Contraseña: ''
@@ -23,12 +25,14 @@ function Login() {
 
     try {
       setLoading(true);
-      const response = await axios.post('/api/auth/login', formData);
+      const response = await loginUser(formData);
 
-      if (response.status === 200) {
-        const { token } = response.data;
-        sessionStorage.setItem('token', token); 
-        history.push('/'); 
+      if (response.token) {
+        setSuccess('Inicio de sesión exitoso');
+        // Redirigir automáticamente a la página de inicio
+        setTimeout(() => {
+          navigate('/');
+        }, 1000);
       }
     } catch (err) {
       const errorMessage = err.response?.data?.error || 
@@ -74,9 +78,14 @@ function Login() {
               onChange={handleChange}
               required
             />
-            <Button type="submit" disabled={loading}>
-              {loading ? 'Ingresando...' : 'Ingresar'}
-            </Button>
+            <div className="form-actions">
+              <Button type="submit" disabled={loading}>
+                {loading ? 'Ingresando...' : 'Ingresar'}
+              </Button>
+              <a href="/request-reset" className="forgot-password-link">
+                ¿Olvidaste tu contraseña?
+              </a>
+            </div>
           </form>
         </div>
       </main>

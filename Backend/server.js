@@ -4,6 +4,8 @@ dotenv.config();
 import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import passwordRoutes from './routes/password.routes.js';
 import { errorHandler, notFoundHandler } from './utils/errors/errorHandler.js';
 import DatabaseService from './services/database.service.js';
 
@@ -46,6 +48,8 @@ app.use((req, res, next) => {
 
 // Rutas
 app.use('/api/auth', authRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/password', passwordRoutes);
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {
