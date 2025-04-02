@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
 import Button from '../components/Button';
+import '../styles/Login.css';
 
 function Login() {
   const [formData, setFormData] = useState({
