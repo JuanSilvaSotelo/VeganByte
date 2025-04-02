@@ -1,0 +1,17 @@
+.inicio-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 2rem;
+}
+
+.welcome-section {
+  text-align: center;
+  padding: 3rem 0;
+}
+
+.featured-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}

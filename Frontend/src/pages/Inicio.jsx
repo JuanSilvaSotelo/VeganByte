@@ -1,6 +1,7 @@
 import React from "react";
 import { BottomNavigation } from "../components/BottomNavigation";
 import Header from "../components/Header";
+import '../styles/Inicio.css';
 
 import ellipse3 from "../assets/images/ellipse-3.png";
 import ellipse4 from "../assets/images/ellipse-4.png";
@@ -21,6 +22,7 @@ import rectangle242 from "../assets/images/rectangle-242.png";
 import rectangle243 from "../assets/images/rectangle-243.png";
 import rectangle244 from "../assets/images/rectangle-244.png";
 import rectangle245 from "../assets/images/rectangle-245.png";
+
 
 export const Inicio = () => {
   return (
