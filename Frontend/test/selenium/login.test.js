@@ -1,0 +1,136 @@
+// Pruebas de Selenium para la funcionalidad de inicio de sesión
+const { By, until } = require('selenium-webdriver');
+const { initDriver, navigateTo, waitAndClick, waitAndSendKeys, isElementPresent, takeScreenshot } = require('./utils');
+const config = require('./config');
+const assert = require('assert');
+
+describe('Pruebas de inicio de sesión', function() {
+    // Aumentar el tiempo de espera para las pruebas
+    this.timeout(180000); // Aumentado a 3 minutos para evitar timeouts
+    let driver;
+
+    // Antes de cada prueba, inicializar el navegador
+    beforeEach(async function() {
+        driver = await initDriver();
+    });
+
+    // Después de cada prueba, cerrar el navegador
+    afterEach(async function() {
+        if (driver) {
+            await driver.quit();
+        }
+    });
+
+    /**
+     * Prueba de inicio de sesión exitoso
+     */
+    it('debería iniciar sesión correctamente con credenciales válidas', async function() {
+        // Navegar a la página de inicio de sesión
+        await navigateTo(driver, '/login');
+        
+        // Verificar que estamos en la página de inicio de sesión
+        const loginTitle = await driver.findElement(By.css('.login-container h2'));
+        const titleText = await loginTitle.getText();
+        assert.strictEqual(titleText, 'INICIAR SESIÓN');
+        
+        // Ingresar credenciales
+        await waitAndSendKeys(driver, By.name('Usuario'), config.testUser.username);
+        await waitAndSendKeys(driver, By.name('Contraseña'), config.testUser.password);
+        
+        // Tomar captura de pantalla antes de enviar el formulario
+        await takeScreenshot(driver, 'login-before-submit');
+        
+        // Hacer clic en el botón de inicio de sesión usando el componente Button
+        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        
+        // Esperar a que aparezca el mensaje de éxito o a ser redirigido
+        try {
+            // Verificar si hay mensaje de éxito
+            const successMessage = await driver.wait(
+                until.elementLocated(By.css('.success-message')),
+                5000
+            );
+            const messageText = await successMessage.getText();
+            assert.strictEqual(messageText, 'Inicio de sesión exitoso');
+            
+            // Esperar redirección a la página principal
+            await driver.wait(
+                until.urlIs(config.baseUrl + '/'),
+                5000
+            );
+        } catch (error) {
+            // Si no hay mensaje de éxito, verificar que estamos en la página principal
+            const currentUrl = await driver.getCurrentUrl();
+            assert.strictEqual(currentUrl, config.baseUrl + '/');
+        }
+        
+        // Tomar captura de pantalla después del inicio de sesión
+        await takeScreenshot(driver, 'login-success');
+    });
+
+    /**
+     * Prueba de inicio de sesión fallido
+     */
+    it('debería mostrar un mensaje de error con credenciales inválidas', async function() {
+        // Navegar a la página de inicio de sesión
+        await navigateTo(driver, '/login');
+        
+        // Ingresar credenciales inválidas
+        await waitAndSendKeys(driver, By.name('Usuario'), 'usuario.invalido@example.com');
+        await waitAndSendKeys(driver, By.name('Contraseña'), 'contraseñaIncorrecta');
+        
+        // Hacer clic en el botón de inicio de sesión usando el componente Button
+        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        
+        // Esperar a que aparezca el mensaje de error
+        const errorMessage = await driver.wait(
+            until.elementLocated(By.css('.error-message')),
+            5000
+        );
+        
+        // Verificar que el mensaje de error está presente
+        const isErrorDisplayed = await errorMessage.isDisplayed();
+        assert.strictEqual(isErrorDisplayed, true);
+        
+        // Tomar captura de pantalla del error
+        await takeScreenshot(driver, 'login-error');
+    });
+
+    /**
+     * Prueba de navegación a la página de recuperación de contraseña
+     */
+    it('debería navegar a la página de recuperación de contraseña', async function() {
+        // Navegar a la página de inicio de sesión
+        await navigateTo(driver, '/login');
+        
+        // Hacer clic en el enlace de recuperación de contraseña
+        await waitAndClick(driver, By.css('a.forgot-password-link'));
+        
+        // Verificar que estamos en la página de recuperación de contraseña
+        await driver.wait(until.urlContains('/request-reset'), 5000);
+        
+        // Verificar que el formulario de recuperación está presente
+        const resetForm = await driver.findElement(By.css('form'));
+        assert.strictEqual(await resetForm.isDisplayed(), true);
+        
+        // Tomar captura de pantalla
+        await takeScreenshot(driver, 'password-reset-page');
+    });
+
+    /**
+     * Prueba de navegación a la página de inicio de sesión de administrador
+     */
+    it('debería navegar a la página de inicio de sesión de administrador', async function() {
+        // Navegar a la página de inicio de sesión
+        await navigateTo(driver, '/login');
+        
+        // Hacer clic en el enlace de inicio de sesión de administrador
+        await waitAndClick(driver, By.css('a.admin-login-link'));
+        
+        // Verificar que estamos en la página de inicio de sesión de administrador
+        await driver.wait(until.urlContains('/admin/login'), 5000);
+        
+        // Tomar captura de pantalla
+        await takeScreenshot(driver, 'admin-login-page');
+    });
+});

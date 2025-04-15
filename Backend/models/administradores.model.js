@@ -1,0 +1,82 @@
+import bcrypt from 'bcrypt';
+import { pool } from '../config/database.js';
+
+const Administradores = {
+  create: async (adminData) => {
+    const hashedPassword = await bcrypt.hash(adminData.Contraseña, 10);
+    
+    const query = `
+      INSERT INTO Administradores 
+      (Nombre, Apellido, Usuario, Contraseña, Correo, tipo_Documento, 
+      Numero_documento, Sexo, Contacto, Direccion, fecha_Nacimiento, Rol)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    
+    const [result] = await pool.query(query, [
+      adminData.Nombre,
+      adminData.Apellido,
+      adminData.Usuario,
+      hashedPassword,
+      adminData.Correo,
+      adminData.tipo_Documento,
+      adminData.Numero_documento,
+      adminData.Sexo,
+      adminData.Contacto,
+      adminData.Direccion,
+      adminData.fecha_Nacimiento,
+      adminData.Rol || 'Admin'
+    ]);
+    
+    return result.insertId;
+  },
+
+  findByUsername: async (username) => {
+    const [results] = await pool.query(
+      'SELECT * FROM Administradores WHERE Usuario = ?',
+      [username]
+    );
+    return results[0];
+  },
+
+  findByPk: async (id) => {
+    const [results] = await pool.query(
+      'SELECT * FROM Administradores WHERE Id_Administradores = ?',
+      [id]
+    );
+    return results[0];
+  },
+
+  findAll: async () => {
+    const [results] = await pool.query(
+      'SELECT Id_Administradores, Nombre, Apellido, Usuario, Correo, Rol, Ultimo_login FROM Administradores'
+    );
+    return results;
+  },
+
+  update: async (id, data) => {
+    // Construir dinámicamente la consulta de actualización
+    const fields = Object.keys(data).filter(key => key !== 'Contraseña');
+    
+    if (fields.length === 0 && !data.Contraseña) {
+      return false; // No hay nada que actualizar
+    }
+    
+    // Manejar la contraseña por separado si está presente
+    if (data.Contraseña) {
+      const hashedPassword = await bcrypt.hash(data.Contraseña, 10);
+      fields.push('Contraseña');
+      data.Contraseña = hashedPassword;
+    }
+    
+    const setClause = fields.map(field => `${field} = ?`).join(', ');
+    const values = fields.map(field => data[field]);
+    values.push(id); // Para la cláusula WHERE
+    
+    const query = `UPDATE Administradores SET ${setClause} WHERE Id_Administradores = ?`;
+    
+    const [result] = await pool.query(query, values);
+    return result.affectedRows > 0;
+  }
+};
+
+export default Administradores;

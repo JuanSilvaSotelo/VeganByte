@@ -1,0 +1,26 @@
+{
+  "name": "veganbyte-selenium-tests",
+  "version": "1.0.0",
+  "description": "Pruebas de Selenium para la aplicación VeganByte",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "test:login": "mocha login.test.js",
+    "test:register": "mocha register.test.js",
+    "test:calendar": "mocha calendar.test.js"
+  },
+  "keywords": [
+    "selenium",
+    "testing",
+    "automation",
+    "veganbyte"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "chromedriver": "^114.0.0",
+    "mocha": "^10.2.0",
+    "selenium-webdriver": "^4.10.0"
+  }
+}
