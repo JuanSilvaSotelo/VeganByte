@@ -8,9 +8,11 @@ import AdminLogin from './pages/AdminLogin';
 import Dashboard from './components/Admin/Dashboard';
 import ProtectedAdminRoute from './components/Admin/ProtectedRoute';
 import ProtectedRoute from './components/ProtectedRoute';
-import Calendar from './pages/Calendar';
-import CreateEvent from './pages/Calendar/CreateEvent';
-import EventBooking from './pages/Calendar/EventBooking';
+import Calendar from './pages/Calendar.jsx';
+import CreateEvent from './components/Calendar/CreateEvent';
+import EventBooking from './components/Calendar/EventBooking';
+import RequestReset from './pages/RequestReset';
+import ResetPassword from './pages/ResetPassword';
 import './styles/styles.css';
 
 function App() {
@@ -40,6 +42,10 @@ function App() {
                     <Dashboard />
                   </ProtectedAdminRoute>
                 } />
+                
+                {/* Rutas de restablecimiento de contraseña */}
+                <Route path="/request-reset" element={<RequestReset />} />
+                <Route path="/reset-password/:token" element={<ResetPassword />} />
             </Routes>
         </Router>
       </ErrorBoundary>

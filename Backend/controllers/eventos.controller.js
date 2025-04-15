@@ -5,9 +5,7 @@ export const eventosController = {
   // Obtener todos los eventos
   getAllEventos: async (req, res) => {
     try {
-      const eventos = await Evento.find()
-        .populate('creador', 'nombre email')
-        .populate('participantes', 'nombre email');
+      const eventos = await Evento.find();
       res.json(eventos);
     } catch (error) {
       res.status(500).json({ message: 'Error al obtener eventos', error: error.message });
@@ -17,18 +15,30 @@ export const eventosController = {
   // Crear un nuevo evento (solo administradores)
   createEvento: async (req, res) => {
     try {
-      if (!req.user || req.user.role !== 'admin') {
+      if (!req.admin) {
         return res.status(403).json({ message: 'No autorizado' });
       }
 
-      const nuevoEvento = new Evento({
-        ...req.body,
-        creador: req.user._id
-      });
+      const eventoData = {
+        titulo: req.body.titulo,
+        descripcion: req.body.descripcion,
+        fecha: req.body.fecha,
+        hora: req.body.hora || '12:00',
+        capacidad: req.body.capacidad,
+        disponible: true,
+        creador: req.admin.Id_Administradores,
+        estado: 'disponible',
+        tipo: req.body.tipo || 'experiencia' // Capturar el tipo de evento
+      }
 
-      await nuevoEvento.save();
-      res.status(201).json(nuevoEvento);
+      const nuevoEventoId = await Evento.create(eventoData);
+      res.status(201).json({ 
+        message: `${eventoData.tipo === 'taller' ? 'Taller' : 'Experiencia'} creado exitosamente`, 
+        id: nuevoEventoId,
+        tipo: eventoData.tipo
+      });
     } catch (error) {
+      console.error('Error al crear evento:', error);
       res.status(400).json({ message: 'Error al crear evento', error: error.message });
     }
   },

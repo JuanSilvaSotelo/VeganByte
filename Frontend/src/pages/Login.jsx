@@ -82,9 +82,14 @@ function Login() {
               <Button type="submit" disabled={loading}>
                 {loading ? 'Ingresando...' : 'Ingresar'}
               </Button>
-              <a href="/request-reset" className="forgot-password-link">
-                ¿Olvidaste tu contraseña?
-              </a>
+              <div className="login-links">
+                <a href="/request-reset" className="forgot-password-link">
+                  ¿Olvidaste tu contraseña?
+                </a>
+                <a href="/admin/login" className="admin-login-link">
+                  Acceso Administrador
+                </a>
+              </div>
             </div>
           </form>
         </div>

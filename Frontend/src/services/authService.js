@@ -121,3 +121,17 @@ export const getUserToken = () => {
 export const getUserEmail = () => {
   return localStorage.getItem('userEmail');
 };
+
+/**
+ * Solicita un restablecimiento de contraseña
+ * @param {String} email - Correo electrónico del usuario
+ * @returns {Promise} - Promesa con los datos de la respuesta
+ */
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}/api/password/request-reset`, { email });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};

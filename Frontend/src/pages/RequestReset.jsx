@@ -3,10 +3,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import axios from 'axios';
+import { requestPasswordReset } from '../services/authService';
 import '../styles/Login.css';
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
 
 function RequestReset() {
   const [email, setEmail] = useState('');
@@ -21,11 +19,9 @@ function RequestReset() {
 
     try {
       setLoading(true);
-      const response = await axios.post(`${API_URL}/api/password/request-reset`, {
-        email
-      });
+      const response = await requestPasswordReset(email);
 
-      setSuccess(response.data.message);
+      setSuccess(response.message);
       setEmail('');
     } catch (err) {
       setError(err.response?.data?.error || 'Error al procesar la solicitud');
