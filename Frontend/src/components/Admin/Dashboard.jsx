@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Route, Link, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { getAuthHeaders, getAdminName, logoutAdmin } from '../../services/authService';
-import './Admin.css';
+import '../../styles/Admin.css';
 
 const AdminDashboard = () => {
   const [activeUsers, setActiveUsers] = useState([]);
@@ -51,6 +51,7 @@ const AdminDashboard = () => {
           <li><Link to="/admin/usuarios">Usuarios Activos</Link></li>
           <li><Link to="/admin/eventos">Gestión de Eventos</Link></li>
           <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
+          <li><Link to="/calendar">Calendario de Eventos</Link></li>
           <li><button onClick={handleLogout} className="logout-button">Cerrar Sesión</button></li>
         </ul>
       </nav>

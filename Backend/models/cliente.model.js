@@ -2,6 +2,13 @@ import bcrypt from 'bcrypt';
 import { pool } from '../config/database.js';
 
 const Cliente = {
+  findAll: async () => {
+    const [results] = await pool.query(
+      'SELECT Nombre, Apellido, Correo, fecha_Nacimiento, Direccion FROM Cliente ORDER BY fecha_Nacimiento DESC'
+    );
+    return results;
+  },
+
   findById: async (id) => {
     const [results] = await pool.query(
       'SELECT * FROM Cliente WHERE Id_Cliente = ?',
