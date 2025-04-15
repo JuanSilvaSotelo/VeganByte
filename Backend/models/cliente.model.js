@@ -2,6 +2,29 @@ import bcrypt from 'bcrypt';
 import { pool } from '../config/database.js';
 
 const Cliente = {
+  findAll: async () => {
+    const [results] = await pool.query(
+      'SELECT Nombre, Apellido, Correo, fecha_Nacimiento, Direccion FROM Cliente ORDER BY fecha_Nacimiento DESC'
+    );
+    return results;
+  },
+
+  findById: async (id) => {
+    const [results] = await pool.query(
+      'SELECT * FROM Cliente WHERE Id_Cliente = ?',
+      [id]
+    );
+    return results[0];
+  },
+
+  updatePassword: async (id, hashedPassword) => {
+    const [result] = await pool.query(
+      'UPDATE Cliente SET Contraseña = ? WHERE Id_Cliente = ?',
+      [hashedPassword, id]
+    );
+    return result.affectedRows > 0;
+  },
+
   create: async (clienteData) => {
     const hashedPassword = await bcrypt.hash(clienteData.Contraseña, 10);
     
