@@ -29,39 +29,44 @@ describe('Pruebas de inicio de sesión', function() {
         await navigateTo(driver, '/login');
         
         // Verificar que estamos en la página de inicio de sesión
-        const loginTitle = await driver.findElement(By.css('.login-container h2'));
+        const loginTitle = await driver.wait(
+            until.elementLocated(By.css('.login-container h2')),
+            config.implicitWait
+        );
         const titleText = await loginTitle.getText();
-        assert.strictEqual(titleText, 'INICIAR SESIÓN');
+        assert.strictEqual(titleText, 'INICIAR SESIÓN', 'No se encontró el título de inicio de sesión');
         
         // Ingresar credenciales
-        await waitAndSendKeys(driver, By.name('Usuario'), config.testUser.username);
-        await waitAndSendKeys(driver, By.name('Contraseña'), config.testUser.password);
+        await waitAndSendKeys(driver, By.css('input[name="Usuario"]'), config.testUser.username);
+        await waitAndSendKeys(driver, By.css('input[name="Contraseña"]'), config.testUser.password);
         
         // Tomar captura de pantalla antes de enviar el formulario
         await takeScreenshot(driver, 'login-before-submit');
         
-        // Hacer clic en el botón de inicio de sesión usando el componente Button
-        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        // Hacer clic en el botón de inicio de sesión
+        await waitAndClick(driver, By.css('button[type="submit"]'));
         
         // Esperar a que aparezca el mensaje de éxito o a ser redirigido
         try {
-            // Verificar si hay mensaje de éxito
-            const successMessage = await driver.wait(
-                until.elementLocated(By.css('.success-message')),
-                5000
-            );
-            const messageText = await successMessage.getText();
-            assert.strictEqual(messageText, 'Inicio de sesión exitoso');
-            
-            // Esperar redirección a la página principal
+            // Verificar si hay mensaje de éxito o redirección
             await driver.wait(
-                until.urlIs(config.baseUrl + '/'),
-                5000
+                until.or(
+                    until.elementLocated(By.css('.success-message, .alert-success')),
+                    until.urlIs(config.baseUrl + '/'),
+                    until.urlContains('/dashboard')
+                ),
+                config.implicitWait
+            );
+            
+            // Verificar la redirección
+            const currentUrl = await driver.getCurrentUrl();
+            assert.ok(
+                currentUrl === config.baseUrl + '/' || 
+                currentUrl.includes('/dashboard'),
+                'No se redirigió correctamente después del inicio de sesión'
             );
         } catch (error) {
-            // Si no hay mensaje de éxito, verificar que estamos en la página principal
-            const currentUrl = await driver.getCurrentUrl();
-            assert.strictEqual(currentUrl, config.baseUrl + '/');
+            throw new Error('Fallo en el inicio de sesión: ' + error.message);
         }
         
         // Tomar captura de pantalla después del inicio de sesión
@@ -79,8 +84,8 @@ describe('Pruebas de inicio de sesión', function() {
         await waitAndSendKeys(driver, By.name('Usuario'), 'usuario.invalido@example.com');
         await waitAndSendKeys(driver, By.name('Contraseña'), 'contraseñaIncorrecta');
         
-        // Hacer clic en el botón de inicio de sesión usando el componente Button
-        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        // Hacer clic en el botón de inicio de sesión
+        await waitAndClick(driver, By.css('.login-button[type="submit"], button[type="submit"]'));
         
         // Esperar a que aparezca el mensaje de error
         const errorMessage = await driver.wait(

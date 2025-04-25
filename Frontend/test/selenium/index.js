@@ -19,8 +19,8 @@ const mocha = new Mocha({
 
 // Añadir archivos de prueba
 const testFiles = [
-    './login.test.js',
     './register.test.js',
+    './login.test.js',
     './calendar.test.js'
 ];
 

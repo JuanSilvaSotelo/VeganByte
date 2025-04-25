@@ -1,8 +1,14 @@
 import dotenv from 'dotenv';
 import { createPool } from 'mysql2/promise';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-// Cargar variables de entorno desde el archivo .env
-dotenv.config({ path: '.env' });
+// Obtener la ruta del directorio actual del módulo
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Cargar variables de entorno desde el archivo .env en el directorio padre (Backend)
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
 // Debug: Mostrar credenciales (opcional)
 console.log("[DEBUG DB] Credenciales:", {

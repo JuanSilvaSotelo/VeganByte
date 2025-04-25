@@ -7,6 +7,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import CreateEventForm from '../components/CreateEventForm'; // Importar el componente CreateEventForm
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -49,17 +50,39 @@ const Calendar = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await fetch('/api/eventos');
-      const data = await response.json();
-      const formattedEvents = data.map(event => ({
-        id: event._id,
-        title: event.titulo,
-        start: new Date(event.fecha),
-        end: new Date(event.fecha),
-        desc: event.descripcion,
-        disponible: event.disponible,
-        capacidad: event.capacidad
-      }));
+      const response = await axios.get(`${API_URL}/api/eventos`); // Usar axios y la URL base
+      const data = response.data; // Acceder a los datos desde axios
+      console.log('Datos crudos de eventos recibidos:', data); // Log para inspeccionar datos crudos
+      const formattedEvents = data.map(event => {
+        console.log('Procesando evento individual:', event); // Log para cada evento
+        // Determinar el título y otros campos basados en el tipo
+        const title = event.tipo === 'taller' ? event.nombre_Taller : event.Tipo || event.titulo; // Usar nombre_Taller para talleres, Tipo o titulo para experiencias
+        const id = event.tipo === 'taller' ? event.Id_Taller : event.Id_Experiencias; // Usar la ID correcta
+        if (id === undefined || id === null) {
+          console.warn('ID de evento indefinido o nulo para el evento:', event);
+        }
+        const start = event.fecha ? new Date(event.fecha) : new Date(); // Usar fecha si existe
+        const end = event.fecha ? new Date(event.fecha) : new Date(); // Usar fecha si existe
+
+        // Asegurarse de que start y end sean válidos
+        if (isNaN(start.getTime())) {
+          console.warn('Fecha inválida para el evento:', event);
+          // Podrías retornar null o un objeto vacío para filtrar este evento
+          // o usar una fecha por defecto, pero es mejor investigar por qué la fecha es inválida
+        }
+
+        return {
+          id: id,
+          title: title,
+          start: start,
+          end: end,
+          desc: event.Descripcion, // Usar Descripcion (puede ser undefined para talleres)
+          // Los siguientes campos pueden no existir en todos los tipos, manejar con cuidado
+          disponible: event.Disponible, // Asumiendo que existe en ambos o se maneja en el backend
+          capacidad: event.cant_Personas, // Usar cant_Personas para experiencias (puede ser undefined para talleres)
+          tipo: event.tipo // Mantener el tipo para posible lógica futura
+        };
+      }).filter(event => event && !isNaN(event.start.getTime())); // Filtrar eventos nulos o con fecha inválida
       setEvents(formattedEvents);
     } catch (error) {
       console.error('Error al cargar eventos:', error);
@@ -100,6 +123,10 @@ const Calendar = () => {
     }
 
     // Mostrar detalles del evento o formulario de inscripción
+    if (!event || event.id === undefined || event.id === null) {
+      console.error('Intento de navegar a un evento con ID inválido:', event);
+      return; // Evitar la navegación si el ID no es válido
+    }
     navigate(`/evento/${event.id}`);
   };
 
@@ -192,88 +219,8 @@ const Calendar = () => {
       {showEventModal && (
         <div className="event-modal-overlay">
           <div className="event-modal">
-            <h2>Crear Nuevo Evento</h2>
-            <form onSubmit={handleCreateEvent}>
-              <div className="form-group">
-                <label htmlFor="titulo">Título del Evento</label>
-                <input
-                  type="text"
-                  id="titulo"
-                  name="titulo"
-                  value={newEvent.titulo}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="descripcion">Descripción</label>
-                <textarea
-                  id="descripcion"
-                  name="descripcion"
-                  value={newEvent.descripcion}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="fecha">Fecha</label>
-                <input
-                  type="date"
-                  id="fecha"
-                  name="fecha"
-                  value={newEvent.fecha}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="hora">Hora</label>
-                <input
-                  type="time"
-                  id="hora"
-                  name="hora"
-                  value={newEvent.hora}
-                  onChange={handleEventChange}
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="capacidad">Capacidad</label>
-                <input
-                  type="number"
-                  id="capacidad"
-                  name="capacidad"
-                  value={newEvent.capacidad}
-                  onChange={handleEventChange}
-                  min="1"
-                  required
-                />
-              </div>
-              
-              <div className="form-group">
-                <label htmlFor="estado">Estado</label>
-                <select
-                  id="estado"
-                  name="estado"
-                  value={newEvent.estado}
-                  onChange={handleEventChange}
-                  required
-                >
-                  <option value="disponible">Disponible</option>
-                  <option value="completo">Completo</option>
-                  <option value="cancelado">Cancelado</option>
-                </select>
-              </div>
-              
-              <div className="modal-buttons">
-                <button type="button" onClick={closeModal} className="cancel-button">Cancelar</button>
-                <button type="submit" className="submit-button">Crear Evento</button>
-              </div>
-            </form>
+            {/* Renderizar el componente CreateEventForm y pasarle la función closeModal */}
+            <CreateEventForm closeModal={closeModal} selectedDate={selectedDate} fetchEvents={fetchEvents} />
           </div>
         </div>
       )}
