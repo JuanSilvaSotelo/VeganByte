@@ -5,6 +5,7 @@ import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.routes.js';
 import adminRoutes from './routes/admin.routes.js';
+import eventosRoutes from './routes/eventos.routes.js'; // Importar rutas de eventos
 import passwordRoutes from './routes/password.routes.js';
 import { errorHandler, notFoundHandler } from './utils/errors/errorHandler.js';
 import DatabaseService from './services/database.service.js';
@@ -50,6 +51,7 @@ app.use((req, res, next) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/password', passwordRoutes);
+app.use('/api', eventosRoutes); // Montar rutas de eventos bajo /api
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {
