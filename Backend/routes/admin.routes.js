@@ -15,8 +15,5 @@ router.post('/crear', verifyAdmin, adminManagementController.createAdmin);
 router.get('/listar', verifyAdmin, adminManagementController.getAdmins);
 router.put('/:id', verifyAdmin, adminManagementController.updateAdmin);
 
-// Rutas para eventos
-router.get('/eventos', verifyAdmin, adminController.getEventos);
-router.post('/eventos', verifyAdmin, adminController.createEvento);
 
 export default router;

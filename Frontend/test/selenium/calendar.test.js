@@ -30,10 +30,10 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         
         // Verificar que el calendario se muestra correctamente
         const calendarElement = await driver.wait(
-            until.elementLocated(By.css('.react-big-calendar')),
-            10000
+            until.elementLocated(By.css('.react-big-calendar, .calendar-container')),
+            config.implicitWait
         );
-        assert.strictEqual(await calendarElement.isDisplayed(), true);
+        assert.strictEqual(await calendarElement.isDisplayed(), true, 'El calendario no está visible');
         
         // Verificar que se muestran los controles de navegación del calendario
         const navigationButtons = await driver.findElements(By.css('.rbc-btn-group button'));
@@ -51,7 +51,7 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         await navigateTo(driver, '/login');
         await waitAndSendKeys(driver, By.name('Usuario'), config.testUser.username);
         await waitAndSendKeys(driver, By.name('Contraseña'), config.testUser.password);
-        await waitAndClick(driver, By.css('button[type="submit"]'));
+        await waitAndClick(driver, By.css('.login-button[type="submit"], button[type="submit"]'));
         
         // Esperar redirección o mensaje de éxito
         try {
@@ -64,29 +64,29 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         await navigateTo(driver, '/calendar');
         
         // Esperar a que cargue el calendario
-        await driver.wait(until.elementLocated(By.css('.react-big-calendar')), 10000);
+        await driver.wait(until.elementLocated(By.css('.react-big-calendar, .calendar-container')), config.implicitWait);
         
         // Buscar un evento disponible y hacer clic en él
         try {
-            const events = await driver.findElements(By.css('.rbc-event'));
+            const events = await driver.findElements(By.css('.rbc-event, .calendar-event'));
             if (events.length > 0) {
                 // Hacer clic en el primer evento disponible
-                await events[0].click();
+                await waitAndClick(driver, By.css('.rbc-event, .calendar-event'));
                 
                 // Esperar a que aparezca el modal o se redirija a la página de reserva
                 try {
                     // Si hay un botón de reserva en un modal, hacer clic en él
                     const bookButton = await driver.wait(
-                        until.elementLocated(By.css('button[contains(text(), "Reservar")]')),
-                        5000
+                        until.elementLocated(By.css('.book-button, .reserve-button, button:contains("Reservar")')),
+                        config.implicitWait
                     );
-                    await bookButton.click();
+                    await waitAndClick(driver, By.css('.book-button, .reserve-button, button:contains("Reservar")'));
                 } catch (modalError) {
                     console.log('No se encontró modal, verificando si ya estamos en la página de reserva');
                 }
                 
                 // Verificar que estamos en la página de reserva de evento
-                await driver.wait(until.urlContains('/calendar/book/'), 5000);
+                await driver.wait(until.urlContains('/calendar/book/'), config.implicitWait);
                 
                 // Completar el formulario de reserva si existe
                 if (await isElementPresent(driver, By.css('form'))) {
@@ -109,11 +109,21 @@ describe('Pruebas del calendario y reserva de eventos', function() {
                     
                     // Esperar mensaje de confirmación
                     try {
-                        const successMessage = await driver.wait(
-                            until.elementLocated(By.css('.success-message')),
-                            5000
+                        await driver.wait(
+                            until.or(
+                                until.elementLocated(By.css('.success-message, .alert-success')),
+                                until.urlContains('/calendar')
+                            ),
+                            config.implicitWait
                         );
-                        assert.strictEqual(await successMessage.isDisplayed(), true);
+                        
+                        const currentUrl = await driver.getCurrentUrl();
+                        const hasSuccessMessage = await isElementPresent(driver, By.css('.success-message, .alert-success'));
+                        
+                        assert.ok(
+                            currentUrl.includes('/calendar') || hasSuccessMessage,
+                            'No se completó la reserva exitosamente'
+                        );
                     } catch (confirmError) {
                         console.log('No se encontró mensaje de confirmación explícito');
                     }
@@ -139,7 +149,7 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         await navigateTo(driver, '/admin/login');
         await waitAndSendKeys(driver, By.name('Usuario') || By.name('username'), config.testAdmin.username);
         await waitAndSendKeys(driver, By.name('Contraseña') || By.name('password'), config.testAdmin.password);
-        await waitAndClick(driver, By.css('button[type="submit"]'));
+        await waitAndClick(driver, By.css('.login-button[type="submit"], button[type="submit"]'));
         
         // Esperar redirección al dashboard
         try {

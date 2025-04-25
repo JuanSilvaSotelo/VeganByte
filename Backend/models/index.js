@@ -3,9 +3,11 @@
 
 import Cliente from './cliente.model.js';
 import Administradores from './administradores.model.js';
-export { Evento } from './evento.model.js';  // Cambiar esta línea
+import { Experiencia, Taller } from './evento.model.js'; // Importar Experiencia y Taller
 
 export {
   Cliente,
-  Administradores
+  Administradores,
+  Experiencia, // Exportar Experiencia
+  Taller      // Exportar Taller
 };

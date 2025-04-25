@@ -255,6 +255,19 @@
   background-color: #45a049;
 }
 
+/* Estilos para el selector de tipo de evento en CreateEventForm */
+.select-tipo-evento {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  background-color: white; /* Asegurar fondo blanco */
+  color: #333; /* Asegurar color de texto */
+  cursor: pointer;
+  margin-bottom: 1rem; /* Añadir espacio debajo */
+}
+
 /* Estilos responsivos para el modal */
 @media (max-width: 768px) {
   .event-modal {

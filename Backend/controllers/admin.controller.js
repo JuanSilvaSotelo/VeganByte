@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import { Administradores, Cliente } from '../models/index.js';
-import { Evento } from '../models/index.js';
+import { Experiencia, Taller } from '../models/index.js';
 
 const loginAdmin = async (req, res) => {
   try {
@@ -40,28 +40,6 @@ const getUsuariosActivos = async (req, res) => {
   }
 };
 
-// Añade estos métodos al controlador
-
-export const getEventos = async (req, res) => {
-    try {
-        // Lógica para obtener eventos de la base de datos
-        const eventos = await Evento.find(); 
-        res.status(200).json(eventos);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al obtener eventos' });
-    }
-};
-
-export const createEvento = async (req, res) => {
-    try {
-        const { titulo, descripcion, fecha } = req.body;
-        const nuevoEvento = new Evento({ titulo, descripcion, fecha });
-        await nuevoEvento.save();
-        res.status(201).json(nuevoEvento);
-    } catch (error) {
-        res.status(400).json({ error: 'Error al crear evento' });
-    }
-};
 
 export {
   loginAdmin,

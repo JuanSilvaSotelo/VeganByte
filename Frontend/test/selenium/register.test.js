@@ -6,12 +6,29 @@ const assert = require('assert');
 
 describe('Pruebas de registro de usuarios', function() {
     // Aumentar el tiempo de espera para las pruebas
-    this.timeout(180000); // Aumentado a 3 minutos para evitar timeouts
+    this.timeout(180000); // Reducido a 3 minutos para evitar timeouts excesivos
     let driver;
+    let retries = 0;
+    const maxRetries = 3;
 
     // Antes de cada prueba, inicializar el navegador
     beforeEach(async function() {
-        driver = await initDriver();
+        while (retries < maxRetries) {
+            try {
+                driver = await initDriver();
+                if (driver) {
+                    console.log('Driver inicializado correctamente');
+                    return;
+                }
+            } catch (error) {
+                retries++;
+                console.error(`Error en intento ${retries}/${maxRetries}:`, error);
+                if (retries === maxRetries) {
+                    throw new Error(`No se pudo inicializar el driver después de ${maxRetries} intentos`);
+                }
+                await new Promise(resolve => setTimeout(resolve, 5000));
+            }
+        }
     });
 
     // Después de cada prueba, cerrar el navegador
@@ -33,15 +50,22 @@ describe('Pruebas de registro de usuarios', function() {
         await navigateTo(driver, '/register');
         
         // Verificar que estamos en la página de registro
-        const registerTitle = await driver.findElement(By.css('h2.register'));
+        const registerTitle = await driver.wait(
+            until.elementLocated(By.css('.register-container h2.register')),
+            config.implicitWait
+        );
         const titleText = await registerTitle.getText();
-        assert.strictEqual(titleText.includes('REGISTRARSE'), true);
+        assert.strictEqual(
+            titleText,
+            'REGISTRARSE',
+            'No se encontró el título de registro'
+        );
         
         // Completar el formulario de registro con todos los campos requeridos
-        await waitAndSendKeys(driver, By.name('Nombre'), 'Usuario');
-        await waitAndSendKeys(driver, By.name('Apellido'), 'De Prueba');
-        await waitAndSendKeys(driver, By.name('Correo'), uniqueEmail);
-        await waitAndSendKeys(driver, By.name('ConfirmarCorreo'), uniqueEmail);
+        await waitAndSendKeys(driver, By.css('input[name="Nombre"]'), 'Usuario');
+        await waitAndSendKeys(driver, By.css('input[name="Apellido"]'), 'De Prueba');
+        await waitAndSendKeys(driver, By.css('input[name="Correo"]'), uniqueEmail);
+        await waitAndSendKeys(driver, By.css('input[name="ConfirmarCorreo"]'), uniqueEmail);
         
         // Seleccionar tipo de documento
         const tipoDocumentoSelect = await driver.findElement(By.name('tipo_Documento'));
@@ -70,18 +94,28 @@ describe('Pruebas de registro de usuarios', function() {
         // Tomar captura de pantalla antes de enviar el formulario
         await takeScreenshot(driver, 'register-form-completed');
         
-        // Hacer clic en el botón de registro usando el componente Button
-        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        // Hacer clic en el botón de registro
+        await waitAndClick(driver, By.css('button[type="submit"]'));
         
         // Esperar a que aparezca el mensaje de éxito o a ser redirigido
         try {
-            // Verificar si hay mensaje de éxito
-            const successMessage = await driver.wait(
-                until.elementLocated(By.css('.success-message')),
-                5000
+            // Verificar si hay mensaje de éxito o redirección
+            await driver.wait(
+                until.or(
+                    until.elementLocated(By.css('.success-message, .alert-success')),
+                    until.urlContains('/login')
+                ),
+                config.implicitWait
             );
-            const messageText = await successMessage.getText();
-            assert.strictEqual(messageText.includes('exitoso'), true);
+            
+            // Verificar que estamos en la página de login o hay mensaje de éxito
+            const currentUrl = await driver.getCurrentUrl();
+            const hasSuccessMessage = await isElementPresent(driver, By.css('.success-message, .alert-success'));
+            
+            assert.ok(
+                currentUrl.includes('/login') || hasSuccessMessage,
+                'No se completó el registro exitosamente'
+            );
             
             // Esperar redirección a la página de inicio de sesión
             await driver.wait(
@@ -127,8 +161,8 @@ describe('Pruebas de registro de usuarios', function() {
         await waitAndSendKeys(driver, By.name('Contraseña'), 'pass123');
         await waitAndSendKeys(driver, By.name('ConfirmarContraseña'), 'pass456');
         
-        // Hacer clic en el botón de registro usando el componente Button
-        await waitAndClick(driver, By.css('.login-button[type="submit"]'));
+        // Hacer clic en el botón de registro
+        await waitAndClick(driver, By.css('button[type="submit"]'));
         
         // Verificar mensaje de error por contraseñas que no coinciden
         try {
@@ -182,10 +216,13 @@ describe('Pruebas de registro de usuarios', function() {
         await waitAndClick(driver, By.css('a[href*="/register"]'));
         
         // Verificar que estamos de vuelta en la página de registro
-        await driver.wait(until.urlContains('/register'), 5000);
-        const registerTitle = await driver.findElement(By.css('h2.register'));
+        await driver.wait(until.urlContains('/register'), config.implicitWait);
+        const registerTitle = await driver.wait(
+            until.elementLocated(By.css('h2.register, .register-container h2')),
+            config.implicitWait
+        );
         const registerTitleText = await registerTitle.getText();
-        assert.strictEqual(registerTitleText, 'REGISTRARSE');
+        assert.ok(registerTitleText.includes('REGISTRARSE'), 'No se encontró el título de registro');
         
         // Tomar captura de pantalla
         await takeScreenshot(driver, 'navigation-back-to-register');

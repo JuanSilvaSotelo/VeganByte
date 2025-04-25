@@ -61,7 +61,7 @@ create table Reserva (
 
 create table Talleres (
     Id_Taller int auto_increment primary key,
-    Id_Reserva int not null,
+    Id_Reserva int null, -- Permitir NULL para eventos independientes
     nombre_Taller varchar(80),
     fecha date,
     hora_Inicio time,
@@ -85,7 +85,7 @@ create table Hospedaje (
 
 create table Experiencias (
     Id_Experiencias int auto_increment primary key,
-    Id_Reserva int not null,
+    Id_Reserva int null, -- Permitir NULL para eventos independientes
     Tipo varchar(80),
     Descripcion varchar(80),
     Categoria enum("1", "2", "3"),
