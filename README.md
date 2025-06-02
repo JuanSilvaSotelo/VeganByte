@@ -145,9 +145,9 @@ Este proyecto fue desarrollado como parte de un ejercicio de aprendizaje y demos
 
 ### Miembros del Equipo
 
-- [Nombre del Miembro 1] - GitHub: [@usuario1](https://github.com/usuario1) (Reemplaza con datos reales)
-- [Nombre del Miembro 2] - GitHub: [@usuario2](https://github.com/usuario2) (Reemplaza con datos reales)
-- YEYOJ - GitHub: [@YEYOJ](https://github.com/YEYOJ)
+- Paula Dayana Rodriguez Avendaño - GitHub: [@PauRodri0422](https://github.com/PauRodri0422).
+- Juan Camilo Riaño Molano - GitHub: [@JuanCRiano](https://github.com/JuanCRiano)
+- Juan Diego Silva Sotelo - GitHub: [@JuanSilvaSotelo](https://github.com/JuanSilvaSotelo)
 
 ## Contribuciones
 
