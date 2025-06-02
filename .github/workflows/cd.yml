@@ -1,0 +1,51 @@
+name: CD VeganByte
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push-docker-images:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+    - name: Build and push Backend image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./Backend
+        file: ./Backend/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/veganbyte-backend:latest
+
+    - name: Build and push Frontend image
+      uses: docker/build-push-action@v4
+      with:
+        context: ./Frontend
+        file: ./Frontend/Dockerfile
+        push: true
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/veganbyte-frontend:latest
+        # Asegúrate de que VITE_API_BASE_URL se configure correctamente en el entorno de despliegue
+        # o que la imagen se construya con el valor adecuado si es necesario en tiempo de build.
+        # Si VITE_API_BASE_URL es un argumento de build en tu Dockerfile de frontend:
+        # build-args: |
+        #   VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL_PROD }}
+
+    - name: Verify Docker images on Docker Hub (optional)
+      run: |
+        echo "Verifying backend image..."
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/veganbyte-backend:latest
+        echo "Verifying frontend image..."
+        docker pull ${{ secrets.DOCKERHUB_USERNAME }}/veganbyte-frontend:latest
+        echo "Docker images pushed and verified (if pull is successful)."

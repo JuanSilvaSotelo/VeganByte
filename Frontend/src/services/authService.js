@@ -14,7 +14,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
  */
 export const loginAdmin = async (credentials) => {
   try {
-    const response = await axios.post(`${API_URL}/api/admin/login`, credentials);
+    const response = await axios.post('/api/admin/login', credentials);
     if (response.data.token) {
       localStorage.setItem('adminToken', response.data.token);
       localStorage.setItem('adminName', response.data.nombre);
@@ -78,7 +78,7 @@ export const getAuthHeaders = () => {
  */
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post(`${API_URL}/api/auth/login`, credentials);
+    const response = await axios.post('/api/auth/login', credentials);
     if (response.data.token) {
       localStorage.setItem('userToken', response.data.token);
       localStorage.setItem('userEmail', credentials.Usuario); // Guardar el correo/usuario
@@ -129,7 +129,7 @@ export const getUserEmail = () => {
  */
 export const requestPasswordReset = async (email) => {
   try {
-    const response = await axios.post(`${API_URL}/api/password/request-reset`, { email });
+    const response = await axios.post('/api/password/request-reset', { email });
     return response.data;
   } catch (error) {
     throw error;

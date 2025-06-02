@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80" # Mapea el puerto 80 del contenedor Nginx al puerto 5173 del host
+    depends_on:
+      - backend # Opcional: si el frontend necesita que el backend esté listo primero
+    volumes:
+      - ./Frontend:/app # Monta el código para desarrollo (si usas un dev server en Docker)
+      - /app/node_modules # Evita que node_modules local sobreescriba el del contenedor
+      - /app/dist # Asegura que el dist no sea sobreescrito si se monta el volumen /app
+    environment:
+      # Si tu frontend necesita variables de entorno en tiempo de ejecución (ej: URL del API)
+      # VITE_API_URL: http://localhost:5000/api # Ejemplo, ajusta según tu app
+      # O si el backend corre en Docker, sería:
+      VITE_API_BASE_URL: http://backend:5000 # El frontend se comunica con el backend a través del nombre de servicio 'backend'
+      # Asegúrate que el frontend use esta variable para llamar al backend.
+    networks:
+      - veganbyte-network
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000" # Mapea el puerto 5000 del contenedor al puerto 5000 del host
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db # El nombre del servicio de la base de datos en Docker Compose
+      DB_USER: ${DB_USER:-root} # Usa la variable de .env o 'root' por defecto
+      DB_PASSWORD: ${DB_PASSWORD:-1604} # Usa la variable de .env o '1604' por defecto
+      DB_DATABASE: ${DB_DATABASE:-veganByte} # Usa la variable de .env o 'veganByte' por defecto
+      PORT: ${PORT:-5000}
+      BCRYPT_SALT_ROUNDS: ${BCRYPT_SALT_ROUNDS:-10}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:5173} # Esta URL es para acceso externo, el backend se comunica con el frontend a través de la red de Docker si es necesario
+      JWT_SECRET: ${JWT_SECRET:-1604}
+    volumes:
+      - ./Backend:/usr/src/app # Monta el código del backend para desarrollo (hot-reloading)
+      - /usr/src/app/node_modules # Evita que node_modules local sobreescriba el del contenedor
+    networks:
+      - veganbyte-network
+
+  db:
+    image: mysql:8.0 # Puedes especificar la versión de MySQL que necesites
+    ports:
+      - "3307:3306" # Mapea el puerto 3306 del contenedor MySQL al 3307 del host (para evitar conflictos si tienes MySQL local)
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-1604} # Contraseña para el usuario root de MySQL
+      MYSQL_DATABASE: ${DB_DATABASE:-veganByte} # Crea esta base de datos al iniciar
+    volumes:
+      - mysql_data:/var/lib/mysql # Persiste los datos de la base de datos
+      - ./DB/DB.sql:/docker-entrypoint-initdb.d/init.sql # Opcional: Script SQL para inicializar la BD
+    networks:
+      - veganbyte-network
+
+volumes:
+  mysql_data: # Define el volumen para persistir los datos de MySQL
+
+networks:
+  veganbyte-network:
+    driver: bridge
