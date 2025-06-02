@@ -71,7 +71,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
           ubicacion: formData.ubicacion
         })
       };
-      await axios.post(`${API_URL}/api/eventos`, eventoData, {
+      await axios.post('/api/eventos', eventoData, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
