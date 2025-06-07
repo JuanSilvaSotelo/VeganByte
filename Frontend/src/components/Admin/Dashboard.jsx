@@ -18,7 +18,7 @@ const AdminDashboard = () => {
   const fetchActiveUsers = async () => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${API_URL}/api/admin/usuarios-activos`, getAuthHeaders());
+      const response = await axios.get('/api/admin/usuarios-activos', getAuthHeaders());
       setActiveUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -28,7 +28,7 @@ const AdminDashboard = () => {
   const fetchEvents = async () => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get(`${API_URL}/api/admin/eventos`, getAuthHeaders());
+      const response = await axios.get('/api/admin/eventos', getAuthHeaders());
       setEvents(response.data);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -103,7 +103,7 @@ const EventManagement = ({ events }) => {
     e.preventDefault();
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      await axios.post(`${API_URL}/api/admin/eventos`, newEvent, getAuthHeaders());
+      await axios.post('/api/admin/eventos', newEvent, getAuthHeaders());
       setNewEvent({ titulo: '', descripcion: '', fecha: '', tipo: 'taller' });
     } catch (error) {
       console.error('Error creating event:', error);

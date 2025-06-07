@@ -1,91 +1,164 @@
 
 
-# VeganByte
+<div align="center">
+ <h1 style="font-size: 30px; color: #4CAF50">VeganByte Project</h1>
+ </div>
 
-Este es el proyecto que realizamos en el Sena para la empresa Madre Raiz Casa Taller.
+VeganByte es una aplicación web completa diseñada para facilitar la gestión de eventos y usuarios, con un backend robusto y un frontend interactivo. Desarrollada con fines de aprendizaje y como un proyecto práctico, demuestra la integración de tecnologías modernas y el uso de Docker para la contenedorización y orquestación de servicios.
 
-## Descripción
+Esta aplicación proporciona una experiencia de usuario fluida para la creación, visualización y gestión de eventos, así como para la administración de usuarios. Utiliza contenedores Docker para el backend, el frontend y la base de datos, facilitando el despliegue y la escalabilidad.
 
-VeganByte es un proyecto orientado a proporcionar soluciones digitales para la empresa Madre Raíz Casa Taller. El proyecto se compone de varios módulos que incluyen un backend, una base de datos y un frontend.
+Además de sus aspectos funcionales, VeganByte sirve como una herramienta de aprendizaje práctica para comprender el ciclo de vida de las aplicaciones full-stack y su contenedorización con Docker. Mediante el uso de Dockerfiles, Docker Compose, volúmenes y redes de Docker, los desarrolladores pueden obtener información práctica sobre la gestión de dependencias, el escalado de aplicaciones y la orquestación eficaz de componentes dentro de un entorno contenedorizado.
 
-## Estructura del Proyecto
+## Tabla de Contenidos
 
-- **Backend:** Contiene la lógica del servidor y las conexiones con la base de datos.
-- **DB:** Incluye la configuración y migración de la base de datos.
-- **Frontend:** La interfaz de usuario para interactuar con el sistema.
+1. [Características](#características)
+2. [Primeros Pasos](#primeros-pasos)
+3. [Prerrequisitos](#prerrequisitos)
+4. [Instalación](#instalación)
+5. [Uso](#uso)
+6. [Estructura de Carpetas](#estructura-de-carpetas)
+7. [Tecnologías Utilizadas](#tecnologías-utilizadas)
+8. [Créditos](#créditos)
+9. [Contribuciones](#contribuciones)
+10. [Licencia](#licencia)
+11. [Documentación](#documentación)
 
-## Tecnologías Utilizadas
+## Características
 
-- **Lenguajes:** JavaScript, CSS, HTML
-- **Frameworks y Librerías:** Detalle de cualquier framework o librería adicional que pueda haberse utilizado.
-  
-## Configuración e Instalación
+### Contenedorización con Docker:
+
+- **Backend Service**: Contenedor Docker para la API construida con Node.js y Express.
+- **Frontend Service**: Contenedor Docker para la aplicación React servida con Nginx.
+- **Database Service**: Contenedor Docker para la base de datos MySQL.
+- **Dockerfiles Personalizados**: Guían en la creación de entornos para cada servicio.
+- **Docker Compose**: Orquesta todos los servicios para un fácil despliegue con un solo comando.
+
+### Gestión de Datos con Volúmenes Docker:
+
+- Demuestra cómo los volúmenes de Docker se utilizan para persistir los datos de la base de datos MySQL, asegurando que los datos no se pierdan cuando los contenedores se detienen o se reinician.
+
+### Comunicación en Red con Redes Docker:
+
+- Ilustra cómo las redes de Docker facilitan la comunicación entre los contenedores del frontend, backend y la base de datos de forma aislada y segura.
+
+## Primeros Pasos
 
 ### Prerrequisitos
 
-- Node.js (versión 14 o superior)
-- npm (versión 6 o superior)
+- [Docker](https://www.docker.com/get-started)
+- [Node.js](https://nodejs.org/) (para desarrollo local fuera de Docker)
+- [Git](https://git-scm.com/)
 
-### Instrucciones de Instalación
+### Instalación
 
-1. Clone el repositorio desde GitHub:
-   ```bash
-   git clone https://github.com/JuanSilvaSotelo/VeganByte.git
-   ```
-
-2. Navegue al directorio del proyecto:
-   ```bash
-   cd VeganByte
-   ```
-
-3. Instale las dependencias del backend y frontend:
-   ```bash
-   cd Backend
-   npm install
-   ```
-
-   ```bash
-   cd ../Frontend
-   npm install
-   ```
-
-### Configuración
-
-Cree un archivo `.env` en el directorio raíz del backend con el siguiente contenido:
-
-```properties
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=1604
-DB_DATABASE=veganByte
-PORT=5000
-BCRYPT_SALT_ROUNDS=10
-FRONTEND_URL=http://localhost:5173
-JWT_SECRET=1604
+Clona el repositorio del proyecto:
+```bash
+git clone <URL_DEL_REPOSITORIO_VEGANBYTE> # Reemplaza con la URL de tu repositorio
+cd VeganByte-1
 ```
 
-### Ejecución del Proyecto
+No se requiere la construcción manual de imágenes individuales si se utiliza Docker Compose, ya que este se encargará del proceso.
 
-1. Inicie el servidor de backend:
-   ```bash
-   cd Backend
-   npm start
-   ```
+## Uso
 
-2. Inicie el servidor de frontend:
-   ```bash
-   cd ../Frontend
-   npm start
-   ```
+Para iniciar todos los servicios (backend, frontend y base de datos) utilizando Docker Compose, ejecuta el siguiente comando desde la raíz del proyecto (`VeganByte-1`):
+
+```bash
+docker-compose up --build -d
+```
+
+- El frontend estará accesible en `http://localhost:5173`.
+- El backend estará accesible (principalmente para la comunicación interna del frontend) en `http://localhost:5000`.
+- La base de datos MySQL estará accesible en el host en el puerto `3307` (conectándose al contenedor en el puerto `3306`).
+
+Para detener los servicios:
+```bash
+docker-compose down
+```
+
+## Integración Continua y Despliegue Continuo (CI/CD)
+
+Este proyecto utiliza GitHub Actions para la automatización de CI/CD:
+
+- **`/.github/workflows/ci.yml`**: Este workflow se activa con cada `push` o `pull_request` a la rama `main`. Realiza las siguientes tareas:
+    - Checkout del código.
+    - Configuración de Node.js (para múltiples versiones).
+    - Instalación de dependencias para el Backend y el Frontend (`npm ci`).
+    - Ejecución de linters para el Backend y el Frontend (si están configurados en los respectivos `package.json` con un script `lint`).
+    - (Opcional, descomentado en el archivo) Ejecución de pruebas para Backend y Frontend (si están configurados con un script `test`).
+
+- **`/.github/workflows/cd.yml`**: Este workflow se activa con cada `push` a la rama `main`. Se encarga de construir las imágenes Docker del frontend y backend y publicarlas en Docker Hub.
+    - Checkout del código.
+    - Configuración de Docker Buildx.
+    - Inicio de sesión en Docker Hub (requiere secretos de GitHub).
+    - Construcción y push de la imagen Docker del Backend (`<DOCKERHUB_USERNAME>/veganbyte-backend:latest`).
+    - Construcción y push de la imagen Docker del Frontend (`<DOCKERHUB_USERNAME>/veganbyte-frontend:latest`).
+
+**Configuración Necesaria para CD:**
+
+Para que el workflow de Despliegue Continuo (`cd.yml`) funcione correctamente y pueda publicar las imágenes en Docker Hub, necesitas configurar los siguientes "Repository secrets" en la configuración de tu repositorio de GitHub (`Settings > Secrets and variables > Actions`):
+
+- `DOCKERHUB_USERNAME`: Tu nombre de usuario de Docker Hub.
+- `DOCKERHUB_TOKEN`: Un token de acceso personal de Docker Hub con permisos para leer y escribir paquetes. Puedes generar uno desde la configuración de seguridad de tu cuenta de Docker Hub.
+
+(Opcional) Si tu `Frontend/Dockerfile` utiliza un `ARG` para `VITE_API_BASE_URL` en producción (por ejemplo, `ARG VITE_API_BASE_URL`), también necesitarás configurar el secreto `VITE_API_BASE_URL_PROD` con la URL base de tu API en el entorno de producción.
+
+## Estructura de Carpetas
+
+```bash
+VeganByte-1/
+├── Backend/
+│   ├── Dockerfile
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── package.json
+│   ├── server.js
+│   └── src/
+│       └── ... (código fuente del backend)
+├── Frontend/
+│   ├── Dockerfile
+│   ├── nginx.conf
+│   ├── .gitignore
+│   ├── package.json
+│   └── src/
+│       └── ... (código fuente del frontend)
+├── DB/
+│   └── DB.sql (script de inicialización opcional)
+├── docker-compose.yml
+├── README.md
+└── start-all.bat (script opcional para desarrollo local sin Docker)
+```
+
+## Tecnologías Utilizadas
+
+- **Frontend**: React, Vite, Axios
+- **Backend**: Node.js, Express.js
+- **Base de Datos**: MySQL
+- **Contenedorización**: Docker, Docker Compose
+- **Servidor Web (Frontend en Docker)**: Nginx
+- **Control de Versiones**: Git
+
+## Créditos
+
+Este proyecto fue desarrollado como parte de un ejercicio de aprendizaje y demostración de tecnologías full-stack y Docker.
+
+### Miembros del Equipo
+
+- Paula Dayana Rodriguez Avendaño - GitHub: [@PauRodri0422](https://github.com/PauRodri0422).
+- Juan Camilo Riaño Molano - GitHub: [@JuanCRiano](https://github.com/JuanCRiano)
+- Juan Diego Silva Sotelo - GitHub: [@JuanSilvaSotelo](https://github.com/JuanSilvaSotelo)
 
 ## Contribuciones
 
-Por favor, siéntase libre de contribuir al proyecto. Para cambios mayores, abra primero un issue para discutir qué le gustaría cambiar.
+Si deseas contribuir al proyecto, por favor considera seguir las guías estándar de contribución de código abierto. Puedes hacer un fork del repositorio, crear una rama para tus cambios y enviar un Pull Request.
 
-## Contacto
+## Licencia
 
-Para más información sobre el proyecto y colaboración, puede ponerse en contacto con el desarrollador principal:
+Este proyecto está licenciado bajo la Licencia MIT. Consulta el archivo <mcfile name="LICENSE" path="c:\Users\YEYOJ\Documents\VeganByte-1\LICENSE"></mcfile> para más detalles.
 
-- Juan Silva Sotelo   
-- [GitHub](https://github.com/JuanSilvaSotelo)
+## Documentación
+
+Puedes encontrar más detalles sobre el proyecto y su configuración en este mismo `README.md` y explorando el código fuente en el repositorio:
+[https://github.com/YEYOJ/VeganByte-1](https://github.com/YEYOJ/VeganByte-1) (Reemplaza con la URL correcta de tu repositorio si es diferente)
 

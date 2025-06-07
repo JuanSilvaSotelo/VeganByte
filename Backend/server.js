@@ -48,10 +48,11 @@ app.use((req, res, next) => {
 });
 
 // Rutas
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/password', passwordRoutes);
-app.use('/api', eventosRoutes); // Montar rutas de eventos bajo /api
+const apiVersion = '/api/v1';
+app.use(`${apiVersion}/auth`, authRoutes);
+app.use(`${apiVersion}/admin`, adminRoutes);
+app.use(`${apiVersion}/password`, passwordRoutes);
+app.use(`${apiVersion}/eventos`, eventosRoutes); // Montar rutas de eventos bajo /api/v1/eventos
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {

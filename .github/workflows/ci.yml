@@ -1,0 +1,84 @@
+name: CI VeganByte
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: '**/package-lock.json'
+
+    - name: Install Backend Dependencies
+      run: |
+        echo "Installing backend dependencies..."
+        cd Backend
+        npm ci
+
+    - name: Run Backend Linter (if configured)
+      run: |
+        echo "Running backend linter..."
+        cd Backend
+        # Intenta ejecutar el script de lint, si no existe, no falla el workflow
+        # Asegúrate de tener un script "lint" en Backend/package.json
+        # Ejemplo: "lint": "eslint ."
+        if npm run lint --if-present; then
+          echo "Backend linting successful or no lint script found."
+        else
+          echo "Backend linting failed."
+          exit 1
+        fi
+
+    # Descomentar si tienes pruebas para el backend
+    # - name: Run Backend Tests
+    #   run: |
+    #     cd Backend
+    #     npm test --if-present
+
+    - name: Install Frontend Dependencies
+      run: |
+        echo "Installing frontend dependencies..."
+        cd Frontend
+        npm ci
+
+    - name: Run Frontend Linter (if configured)
+      run: |
+        echo "Running frontend linter..."
+        cd Frontend
+        # Intenta ejecutar el script de lint, si no existe, no falla el workflow
+        # Asegúrate de tener un script "lint" en Frontend/package.json
+        # Ejemplo: "lint": "eslint ."
+        if npm run lint --if-present; then
+          echo "Frontend linting successful or no lint script found."
+        else
+          echo "Frontend linting failed."
+          exit 1
+        fi
+
+    # Descomentar si tienes pruebas para el frontend
+    # - name: Run Frontend Tests
+    #   run: |
+    #     cd Frontend
+    #     npm test --if-present
+
+    # Descomentar y adaptar si necesitas construir el frontend
+    # - name: Build Frontend
+    #   run: |
+    #     cd Frontend
+    #     npm run build --if-present
