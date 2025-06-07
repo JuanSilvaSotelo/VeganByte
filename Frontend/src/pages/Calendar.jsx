@@ -50,7 +50,7 @@ const Calendar = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/eventos`); // Usar axios y la URL base
+      const response = await axios.get('/api/eventos'); // Usar axios y la URL base
       const data = response.data; // Acceder a los datos desde axios
       console.log('Datos crudos de eventos recibidos:', data); // Log para inspeccionar datos crudos
       const formattedEvents = data.map(event => {
@@ -142,7 +142,7 @@ const Calendar = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post(`${API_URL}/api/eventos`, newEvent, {
+      await axios.post('/api/eventos', newEvent, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

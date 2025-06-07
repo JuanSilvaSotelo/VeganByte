@@ -3,8 +3,7 @@ import axios from 'axios';
 import '../styles/Admin.css';
 
 // Configurar la URL base de axios
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-
+const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'; // Valor por defecto para desarrollo local
 axios.defaults.baseURL = API_URL;
 
 const Admin = () => {
