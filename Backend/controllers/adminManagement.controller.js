@@ -1,5 +1,6 @@
-import bcrypt from 'bcrypt';
-import { Administradores } from '../models/index.js';
+// Importar las dependencias necesarias
+import bcrypt from 'bcrypt'; // Para encriptar contraseñas
+import { Administradores } from '../models/index.js'; // Modelo de base de datos para administradores
 
 /**
  * Crear un nuevo administrador (solo accesible por SuperAdmin)
@@ -11,6 +12,7 @@ const createAdmin = async (req, res) => {
       return res.status(403).json({ error: 'Solo SuperAdmin puede crear nuevos administradores' });
     }
 
+    // Desestructurar el cuerpo de la solicitud para obtener los datos del nuevo administrador
     const {
       nombre, apellido, usuario, contraseña, correo, 
       tipoDocumento, numeroDocumento, sexo, contacto, 
@@ -30,7 +32,7 @@ const createAdmin = async (req, res) => {
       return res.status(400).json({ error: 'El nombre de usuario ya está en uso' });
     }
 
-    // Crear el nuevo administrador
+    // Crear el nuevo administrador con los datos proporcionados
     const adminData = {
       Nombre: nombre,
       Apellido: apellido,
@@ -46,13 +48,16 @@ const createAdmin = async (req, res) => {
       Rol: rol || 'Admin' // Por defecto es Admin si no se especifica
     };
 
+    // Crear el nuevo administrador en la base de datos
     const newAdminId = await Administradores.create(adminData);
 
+    // Responder con un mensaje de éxito y el ID del nuevo administrador
     res.status(201).json({ 
       message: 'Administrador creado exitosamente', 
       id: newAdminId 
     });
   } catch (error) {
+    // Manejo de errores en caso de que ocurra un problema
     console.error('Error al crear administrador:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
@@ -68,9 +73,12 @@ const getAdmins = async (req, res) => {
       return res.status(403).json({ error: 'Solo SuperAdmin puede ver la lista de administradores' });
     }
 
+    // Obtener todos los administradores de la base de datos
     const admins = await Administradores.findAll();
+    // Responder con la lista de administradores
     res.json(admins);
   } catch (error) {
+    // Manejo de errores en caso de que ocurra un problema
     console.error('Error al obtener administradores:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
@@ -81,7 +89,7 @@ const getAdmins = async (req, res) => {
  */
 const updateAdmin = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id } = req.params; // Obtener el ID del administrador a actualizar
     
     // Solo SuperAdmin puede modificar a otros administradores
     // Un Admin solo puede modificarse a sí mismo
@@ -131,20 +139,24 @@ const updateAdmin = async (req, res) => {
       return res.status(400).json({ error: 'No se proporcionaron datos para actualizar' });
     }
 
-    // Actualizar administrador
+    // Actualizar administrador en la base de datos
     const updated = await Administradores.update(id, updateData);
 
+    // Verificar si el administrador fue encontrado y actualizado
     if (!updated) {
       return res.status(404).json({ error: 'Administrador no encontrado' });
     }
 
+    // Responder con un mensaje de éxito
     res.json({ message: 'Administrador actualizado exitosamente' });
   } catch (error) {
+    // Manejo de errores en caso de que ocurra un problema
     console.error('Error al actualizar administrador:', error);
     res.status(500).json({ error: 'Error en el servidor' });
   }
 };
 
+// Exportar las funciones para su uso en otras partes de la aplicación
 export {
   createAdmin,
   getAdmins,

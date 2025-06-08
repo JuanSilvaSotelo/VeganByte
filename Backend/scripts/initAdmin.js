@@ -1,7 +1,8 @@
+// Script para inicializar un administrador por defecto en la base de datos
 import dotenv from 'dotenv';
 dotenv.config();
 
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { pool } from '../config/database.js';
 
 // Datos del administrador por defecto
@@ -22,6 +23,9 @@ const defaultAdmin = {
 
 /**
  * Función para inicializar el administrador por defecto
+ * - Verifica si ya existe un administrador en la base de datos.
+ * - Si no existe, crea uno usando los datos definidos arriba.
+ * - La contraseña se almacena de forma segura usando bcrypt.
  */
 async function initializeAdmin() {
   try {
@@ -31,6 +35,7 @@ async function initializeAdmin() {
     const [admins] = await pool.query('SELECT COUNT(*) as count FROM Administradores');
     
     if (admins[0].count > 0) {
+      // Si ya existe, no crea uno nuevo
       console.log('Ya existe al menos un administrador en el sistema.');
       return;
     }
@@ -38,11 +43,11 @@ async function initializeAdmin() {
     // No hay administradores, crear uno por defecto
     console.log('No se encontraron administradores. Creando administrador por defecto...');
     
-    // Hashear la contraseña
+    // Hashear la contraseña antes de guardarla
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
     const hashedPassword = await bcrypt.hash(defaultAdmin.Contraseña, saltRounds);
     
-    // Insertar el administrador
+    // Consulta SQL para insertar el administrador
     const query = `
       INSERT INTO Administradores 
       (Nombre, Apellido, Usuario, Contraseña, Correo, tipo_Documento, 
@@ -50,6 +55,7 @@ async function initializeAdmin() {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     
+    // Ejecutar la inserción en la base de datos
     await pool.query(query, [
       defaultAdmin.Nombre,
       defaultAdmin.Apellido,
@@ -70,6 +76,7 @@ async function initializeAdmin() {
     console.log(`Contraseña: ${defaultAdmin.Contraseña}`);
     console.log('Por favor, cambie esta contraseña después de iniciar sesión por primera vez.');
   } catch (error) {
+    // Manejo de errores durante la inicialización
     console.error('❌ Error al inicializar el administrador:', error);
   } finally {
     // Cerrar la conexión al finalizar
@@ -77,5 +84,5 @@ async function initializeAdmin() {
   }
 }
 
-// Ejecutar la función
+// Ejecutar la función principal para inicializar el administrador
 initializeAdmin();
