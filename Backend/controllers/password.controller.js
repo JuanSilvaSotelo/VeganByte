@@ -1,8 +1,10 @@
+// Controlador para la gestión de restablecimiento de contraseñas
 import Cliente from '../models/cliente.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import nodemailer from 'nodemailer';
 
+// Configuración del transporte de correo usando nodemailer y Gmail
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
@@ -12,28 +14,31 @@ const transporter = nodemailer.createTransport({
 });
 
 const PasswordController = {
+  // Solicitar restablecimiento de contraseña
   requestReset: async (req, res) => {
     try {
       const { email } = req.body;
+      // Buscar usuario por correo electrónico
       const user = await Cliente.findByEmail(email);
 
       if (!user) {
         return res.status(404).json({ error: 'No existe una cuenta con este correo electrónico' });
       }
 
-      // Generar token de restablecimiento
+      // Generar token de restablecimiento válido por 1 hora
       const resetToken = jwt.sign(
         { id: user.Id_Cliente },
         process.env.JWT_SECRET,
         { expiresIn: '1h' }
       );
 
-      // Guardar token en la base de datos (puedes agregar un campo reset_token en tu tabla)
+      // Guardar token en la base de datos si se implementa (comentado)
       // await Cliente.updateResetToken(user.Id_Cliente, resetToken);
 
-      // Enviar correo electrónico
+      // Construir URL de restablecimiento para el frontend
       const resetUrl = `${process.env.FRONTEND_URL}/reset-password/${resetToken}`;
       
+      // Opciones del correo electrónico
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
@@ -48,6 +53,7 @@ const PasswordController = {
         `
       };
 
+      // Enviar correo electrónico con el enlace de restablecimiento
       await transporter.sendMail(mailOptions);
 
       res.json({ message: 'Se ha enviado un enlace de restablecimiento a tu correo electrónico' });
@@ -57,22 +63,24 @@ const PasswordController = {
     }
   },
 
+  // Restablecer la contraseña usando el token recibido
   resetPassword: async (req, res) => {
     try {
       const { token, newPassword } = req.body;
 
-      // Verificar token
+      // Verificar y decodificar el token JWT
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      // Buscar usuario por ID decodificado
       const user = await Cliente.findById(decoded.id);
 
       if (!user) {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
 
-      // Hash nueva contraseña
+      // Hashear la nueva contraseña
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      // Actualizar contraseña
+      // Actualizar la contraseña en la base de datos
       await Cliente.updatePassword(user.Id_Cliente, hashedPassword);
 
       res.json({ message: 'Contraseña actualizada exitosamente' });

@@ -1,9 +1,10 @@
+// Página principal de inicio para la aplicación VeganByte
 import React from "react";
 import Header from "../components/Header";
 import { BottomNavigation } from "../components/BottomNavigation";
 import '../styles/Inicio.css';
 
-// Importación de imágenes
+// Importación de imágenes utilizadas en la página
 import fondo15 from "../assets/images/fondo-1-5.png";
 import image4 from "../assets/images/image-4.png";
 import image9 from "../assets/images/image-9.png";
@@ -16,18 +17,19 @@ import image15 from "../assets/images/image-15.png";
 import line4 from "../assets/images/line-4.svg";
 import { Link } from "react-router-dom";
 
+// Componente principal de la página de inicio
 export const Inicio = () => {
   return (
     <div className="inicio-page">
-      {/* Usar el componente Header */}
+      {/* Encabezado de la página */}
       <Header />
       
-      {/* Banner Principal */}
+      {/* Banner principal con imagen destacada */}
       <section className="hero-section">
         <img src={fondo15} alt="Paisaje Madre Raíz" className="hero-image" />
       </section>
 
-      {/* Título principal */}
+      {/* Título principal de la página */}
       <div className="main-title-container">
         <h1 className="hero-title">VOLVER A LA TIERRA CON LOS PIES Y LOS<br/>SENTIDOS EN EL PRESENTE</h1>
       </div>
@@ -49,6 +51,7 @@ export const Inicio = () => {
               <img src={image12} alt="Actividades al aire libre" className="circular-image" />
             </div>
           </div>
+          {/* Logo central de la sección */}
           <div className="center-logo">
             <div className="logo-container">
               <h2>madre<br/>raíz</h2>
@@ -91,7 +94,7 @@ export const Inicio = () => {
         </div>
       </section>
 
-      {/* Sección de estadísticas */}
+      {/* Sección de estadísticas de la organización */}
       <section className="stats-section">
         <div className="stat-item">
           <div className="stat-icon">😊</div>
@@ -109,7 +112,7 @@ export const Inicio = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Pie de página con información de contacto */}
       <footer className="main-footer">
         <div className="footer-content">
           <div className="footer-left">
