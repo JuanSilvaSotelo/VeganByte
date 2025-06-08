@@ -1,7 +1,9 @@
-import bcrypt from 'bcrypt';
+// Modelo para gestionar los administradores en la base de datos
+import bcrypt from 'bcryptjs';
 import { pool } from '../config/database.js';
 
 const Administradores = {
+  // Crear un nuevo administrador con contraseña encriptada
   create: async (adminData) => {
     const hashedPassword = await bcrypt.hash(adminData.Contraseña, 10);
     
@@ -30,6 +32,7 @@ const Administradores = {
     return result.insertId;
   },
 
+  // Buscar un administrador por su nombre de usuario
   findByUsername: async (username) => {
     const [results] = await pool.query(
       'SELECT * FROM Administradores WHERE Usuario = ?',
@@ -38,6 +41,7 @@ const Administradores = {
     return results[0];
   },
 
+  // Buscar un administrador por su ID primario
   findByPk: async (id) => {
     const [results] = await pool.query(
       'SELECT * FROM Administradores WHERE Id_Administradores = ?',
@@ -46,6 +50,7 @@ const Administradores = {
     return results[0];
   },
 
+  // Obtener todos los administradores con información básica
   findAll: async () => {
     const [results] = await pool.query(
       'SELECT Id_Administradores, Nombre, Apellido, Usuario, Correo, Rol, Ultimo_login FROM Administradores'
@@ -53,6 +58,7 @@ const Administradores = {
     return results;
   },
 
+  // Actualizar los datos de un administrador
   update: async (id, data) => {
     // Construir dinámicamente la consulta de actualización
     const fields = Object.keys(data).filter(key => key !== 'Contraseña');
@@ -79,4 +85,5 @@ const Administradores = {
   }
 };
 
+// Exportar el modelo de administradores para su uso en otros módulos
 export default Administradores;
