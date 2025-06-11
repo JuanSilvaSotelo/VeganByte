@@ -14,4 +14,7 @@ router.post('/register', validateRegister, AuthController.register);
 // Ruta para iniciar sesión de usuario
 router.post('/login', AuthController.login);
 
+// Ruta para verificar el correo electrónico
+router.get('/verify-email', AuthController.verifyEmail);
+
 export default router;

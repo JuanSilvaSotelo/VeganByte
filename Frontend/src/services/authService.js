@@ -5,7 +5,7 @@
 
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api/v1';
 
 /**
  * Realiza la autenticación del administrador
@@ -14,11 +14,56 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
  */
 export const loginAdmin = async (credentials) => {
   try {
-    const response = await axios.post('/api/admin/login', credentials);
+    const response = await axios.post(`${API_URL}/admin/login`, credentials);
     if (response.data.token) {
       localStorage.setItem('adminToken', response.data.token);
       localStorage.setItem('adminName', response.data.nombre);
     }
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+
+/**
+ * Registra un nuevo usuario
+ * @param {Object} userData - Datos del usuario a registrar
+ * @returns {Promise} - Promesa con los datos de la respuesta
+ */
+export const registerUser = async (userData) => {
+  try {
+    const response = await axios.post(`${API_URL}/auth/register`, userData);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Solicita un restablecimiento de contraseña enviando un correo electrónico.
+ * @param {string} email - El correo electrónico del usuario que solicita el restablecimiento.
+ * @returns {Promise<Object>} Una promesa que resuelve con la respuesta de la API.
+ */
+export const requestPasswordReset = async (email) => {
+  try {
+    const response = await axios.post(`${API_URL}/password/request-reset`, { email });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+/**
+ * Restablece la contraseña del usuario
+ * @param {String} token - Token de restablecimiento de contraseña
+ * @param {String} newPassword - Nueva contraseña
+ * @returns {Promise} - Promesa con los datos de la respuesta
+ */
+export const resetPassword = async (token, newPassword) => {
+  try {
+    const response = await axios.post(`${API_URL}/password/reset`, { token, newPassword });
     return response.data;
   } catch (error) {
     throw error;
@@ -78,7 +123,7 @@ export const getAuthHeaders = () => {
  */
 export const loginUser = async (credentials) => {
   try {
-    const response = await axios.post('/api/auth/login', credentials);
+    const response = await axios.post(`${API_URL}/auth/login`, credentials);
     if (response.data.token) {
       localStorage.setItem('userToken', response.data.token);
       localStorage.setItem('userEmail', credentials.Usuario); // Guardar el correo/usuario
@@ -88,6 +133,8 @@ export const loginUser = async (credentials) => {
     throw error;
   }
 };
+
+
 
 /**
  * Cierra la sesión del usuario
@@ -120,18 +167,4 @@ export const getUserToken = () => {
  */
 export const getUserEmail = () => {
   return localStorage.getItem('userEmail');
-};
-
-/**
- * Solicita un restablecimiento de contraseña
- * @param {String} email - Correo electrónico del usuario
- * @returns {Promise} - Promesa con los datos de la respuesta
- */
-export const requestPasswordReset = async (email) => {
-  try {
-    const response = await axios.post('/api/password/request-reset', { email });
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
 };

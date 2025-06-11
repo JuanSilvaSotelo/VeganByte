@@ -7,12 +7,13 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import '../styles/Calendar.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../services/authService';
 import CreateEventForm from '../components/CreateEventForm'; // Importar el componente CreateEventForm
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 
 const Calendar = () => {
   const [events, setEvents] = useState([]);
@@ -50,7 +51,7 @@ const Calendar = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get('/api/eventos'); // Usar axios y la URL base
+      const response = await axios.get(`${API_URL}/eventos`); // Usar axios y la URL base
       const data = response.data; // Acceder a los datos desde axios
       console.log('Datos crudos de eventos recibidos:', data); // Log para inspeccionar datos crudos
       const formattedEvents = data.map(event => {
@@ -142,7 +143,7 @@ const Calendar = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.post('/api/eventos', newEvent, {
+      await axios.post(`${API_URL}/eventos`, newEvent, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

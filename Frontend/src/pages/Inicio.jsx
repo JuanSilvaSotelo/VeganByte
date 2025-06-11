@@ -52,19 +52,19 @@ export const Inicio = () => {
           <div className="experience-item">
             <img src={rectangle240} alt="Experiencia 1" className="experience-img" />
             <div className="experience-overlay">
-              <span><Link to="/pc-entrenamiento">ENTRENAMIENTO</Link></span>
+              <span><Link to="/pc-cocina">COCINA</Link></span>
             </div>
           </div>
           <div className="experience-item">
             <img src={rectangle242} alt="Experiencia 2" className="experience-img" />
             <div className="experience-overlay">
-              <span><Link to="/pc-entrenamiento">ENTRENAMIENTO</Link></span>
+              <span><Link to="/pc-huerta">HUERTA</Link></span>
             </div>
           </div>
           <div className="experience-item">
             <img src={rectangle243} alt="Experiencia 3" className="experience-img" />
             <div className="experience-overlay">
-              <span>Texto 3</span>
+              <span><Link to="/pc-blog">BLOG</Link></span>
             </div>
           </div>
           <div className="experience-item">
