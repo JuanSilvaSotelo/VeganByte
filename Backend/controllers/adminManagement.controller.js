@@ -1,5 +1,5 @@
 // Importar las dependencias necesarias
-import bcrypt from 'bcrypt'; // Para encriptar contraseñas
+import bcrypt from 'bcryptjs'; // Para encriptar contraseñas
 import { Administradores } from '../models/index.js'; // Modelo de base de datos para administradores
 
 /**

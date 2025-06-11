@@ -1,20 +1,26 @@
 // Página principal de inicio para la aplicación VeganByte
 import React from "react";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
+import Entrenamiento from "./PCEntrenamiento";
 import { BottomNavigation } from "../components/BottomNavigation";
 import '../styles/Inicio.css';
 
 // Importación de imágenes utilizadas en la página
-import fondo15 from "../assets/images/fondo-1-5.png";
-import image4 from "../assets/images/image-4.png";
-import image9 from "../assets/images/image-9.png";
-import image10 from "../assets/images/image-10.png";
-import image11 from "../assets/images/image-11.png";
+import LogoEmpresa2 from "../assets/images/LogoEmpresa2.png";
+import ellipse3 from "../assets/images/ellipse-3.png";
+import ellipse4 from "../assets/images/ellipse-4.png";
+import image1 from "../assets/images/image-1.jpg";
 import image12 from "../assets/images/image-12.png";
 import image13 from "../assets/images/image-13.png";
 import image14 from "../assets/images/image-14.png";
 import image15 from "../assets/images/image-15.png";
-import line4 from "../assets/images/line-4.svg";
+import rectangle240 from "../assets/images/rectangle-240.jpg";
+import rectangle242 from "../assets/images/rectangle-242.jpg";
+import rectangle243 from "../assets/images/rectangle-243.jpg";
+import rectangle245 from "../assets/images/rectangle-245.png";
+import rectangle211 from "../assets/images/rectangle-211.png";
+import rectangle210 from "../assets/images/rectangle-210.png";
 import { Link } from "react-router-dom";
 
 // Componente principal de la página de inicio
@@ -26,7 +32,7 @@ export const Inicio = () => {
       
       {/* Banner principal con imagen destacada */}
       <section className="hero-section">
-        <img src={fondo15} alt="Paisaje Madre Raíz" className="hero-image" />
+        <img src={image1} alt="Paisaje Madre Raíz" className="hero-image" />
       </section>
 
       {/* Título principal de la página */}
@@ -35,26 +41,41 @@ export const Inicio = () => {
       </div>
 
       {/* Sección 1: Experiencias en la naturaleza */}
-      <section className="experience-section">
-        <div className="section-content">
-          <div className="image-grid">
-            <div className="image-item">
-              <img src={image9} alt="Persona en la naturaleza" className="circular-image" />
-            </div>
-            <div className="image-item">
-              <img src={image10} alt="Comida vegana" className="circular-image" />
-            </div>
-            <div className="image-item">
-              <img src={image11} alt="Paisaje natural" className="circular-image" />
-            </div>
-            <div className="image-item">
-              <img src={image12} alt="Actividades al aire libre" className="circular-image" />
+      <section className="experience-section-custom">
+        <div className="experience-bg-icons">
+          <img src={image12} alt="icono 1" className="bg-icon bg-icon-1" />
+          <img src={image13} alt="icono 2" className="bg-icon bg-icon-2" />
+          <img src={image14} alt="icono 3" className="bg-icon bg-icon-3" />
+          <img src={image15} alt="icono 4" className="bg-icon bg-icon-4" />
+        </div>
+        <div className="experience-grid">
+          <div className="experience-item">
+            <img src={rectangle240} alt="Experiencia 1" className="experience-img" />
+            <div className="experience-overlay">
+              <span><Link to="/pc-entrenamiento">ENTRENAMIENTO</Link></span>
             </div>
           </div>
-          {/* Logo central de la sección */}
-          <div className="center-logo">
+          <div className="experience-item">
+            <img src={rectangle242} alt="Experiencia 2" className="experience-img" />
+            <div className="experience-overlay">
+              <span><Link to="/pc-entrenamiento">ENTRENAMIENTO</Link></span>
+            </div>
+          </div>
+          <div className="experience-item">
+            <img src={rectangle243} alt="Experiencia 3" className="experience-img" />
+            <div className="experience-overlay">
+              <span>Texto 3</span>
+            </div>
+          </div>
+          <div className="experience-item">
+            <img src={rectangle245} alt="Experiencia 4" className="experience-img" />
+            <div className="experience-overlay">
+              <span>Texto 4</span>
+            </div>
+          </div>
+          <div className="experience-center-logo">
             <div className="logo-container">
-              <h2>madre<br/>raíz</h2>
+            <img src={LogoEmpresa2} alt="Logo" className="logo"/>
             </div>
           </div>
         </div>
@@ -66,19 +87,19 @@ export const Inicio = () => {
         
         <div className="circular-images-container">
           <div className="circular-image-item">
-            <img src={image13} alt="Experiencia con animales" className="circular-image large" />
+            <img src={rectangle211} alt="Experiencia con animales" className="circular-image large" />
             <div className="image-caption">
               <p>Te invitamos a esta maravillosa experiencia para ti y toda tu familia</p>
             </div>
           </div>
           <div className="circular-image-item">
-            <img src={image14} alt="Experiencia con animales" className="circular-image large" />
+            <img src={ellipse3} alt="Experiencia con animales" className="circular-image large" />
             <div className="image-caption">
               <p>Te invitamos a esta maravillosa experiencia para ti y toda tu familia</p>
             </div>
           </div>
           <div className="circular-image-item">
-            <img src={image15} alt="Experiencia con animales" className="circular-image large" />
+            <img src={ellipse4} alt="Experiencia con animales" className="circular-image large" />
             <div className="image-caption">
               <p>Te invitamos a esta maravillosa experiencia para ti y toda tu familia</p>
             </div>
@@ -90,7 +111,7 @@ export const Inicio = () => {
       <section className="food-section">
         <h2 className="section-title">VOLVER A LA TIERRA CULTIVANDO<br/>NUESTRO ALIMENTO</h2>
         <div className="food-image-container">
-          <img src={image12} alt="Cultivo de alimentos" className="food-image" />
+          <img src={rectangle210} alt="Cultivo de alimentos" className="food-image" />
         </div>
       </section>
 
@@ -113,19 +134,9 @@ export const Inicio = () => {
       </section>
 
       {/* Pie de página con información de contacto */}
-      <footer className="main-footer">
-        <div className="footer-content">
-          <div className="footer-left">
-            <p className="footer-title">CASA TALLER</p>
-            <p className="footer-logo-text">madre•raíz</p>
-          </div>
-          <div className="footer-right">
-            <p className="contact-title">¿Necesitas ayuda?</p>
-            <p className="contact-phone">+57 311 265 0586</p>
-            <p className="contact-email">CASAMADRERAIZ</p>
-          </div>
-        </div>
-      </footer>
+      <section>
+      <Footer />
+      </section>
     </div>
   );
 };
