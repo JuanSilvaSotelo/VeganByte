@@ -55,7 +55,96 @@ const getUsuariosActivos = async (req, res) => {
 };
 
 // Exportar las funciones para su uso en otras partes de la aplicación
+const createUser = async (req, res) => {
+  try {
+    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contraseña, fecha_Nacimiento, Direccion } = req.body;
+
+    const existingUser = await Cliente.findByEmail(Correo);
+    if (existingUser) {
+      return res.status(409).json({ error: 'El correo electrónico ya está registrado.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(Contraseña, 10);
+
+    const newUser = await Cliente.create({
+      Nombre,
+      Apellido,
+      tipo_Documento,
+      Numero_documento,
+      Sexo,
+      Correo,
+      Contacto,
+      Contraseña: hashedPassword,
+      fecha_Nacimiento,
+      Direccion,
+      is_verified: true, // Admin created users are automatically verified
+      verification_token: null
+    });
+
+    res.status(201).json({ message: 'Usuario creado exitosamente', user: newUser });
+  } catch (error) {
+    console.error('Error al crear usuario:', error);
+    res.status(500).json({ error: 'Error en el servidor al crear usuario' });
+  }
+};
+
+const updateUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contraseña, fecha_Nacimiento, Direccion } = req.body;
+
+    const user = await Cliente.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+
+    const updateData = {
+      Nombre,
+      Apellido,
+      tipo_Documento,
+      Numero_documento,
+      Sexo,
+      Correo,
+      Contacto,
+      fecha_Nacimiento,
+      Direccion
+    };
+
+    if (Contraseña) {
+      updateData.Contraseña = await bcrypt.hash(Contraseña, 10);
+    }
+
+    await Cliente.update(id, updateData);
+
+    res.json({ message: 'Usuario actualizado exitosamente.' });
+  } catch (error) {
+    console.error('Error al actualizar usuario:', error);
+    res.status(500).json({ error: 'Error en el servidor al actualizar usuario' });
+  }
+};
+
+const deleteUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const user = await Cliente.findById(id);
+    if (!user) {
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
+    }
+
+    await Cliente.delete(id);
+
+    res.json({ message: 'Usuario eliminado exitosamente.' });
+  } catch (error) {
+    console.error('Error al eliminar usuario:', error);
+    res.status(500).json({ error: 'Error en el servidor al eliminar usuario' });
+  }
+};
+
 export {
   loginAdmin,
-  getUsuariosActivos
+  getUsuariosActivos,
+  createUser,
+  updateUser,
+  deleteUser
 };

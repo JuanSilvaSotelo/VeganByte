@@ -4,13 +4,13 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 // Import assets for the page
-import heroImage from '../assets/entrenamiento/rectangle37.png'; // Main image for entrenamiento hero
-import leafIcon from '../assets/entrenamiento/leaf_icon.svg'; // Decorative leaf icon
-import principiantesImg from '../assets/entrenamiento/principiantes.png'; // Image for Principiantes
-import intermedioImg from '../assets/entrenamiento/intermedio.png';     // Image for Intermedio
-import expertosImg from '../assets/entrenamiento/expertos.png';         // Image for Expertos
-import tavoImg from '../assets/entrenamiento/tavo_buitrago.png';        // Image for Tavo Buitrago
-import annieImg from '../assets/entrenamiento/annie_pineda.png';         // Image for Annie Pineda
+import Ellipse5 from '../assets/entrenamiento/Ellipse-5.png'; // Main image for entrenamiento hero
+import starlogo from '../assets/entrenamiento/star_logo.svg'; // Decorative leaf icon
+import Rectangle37 from '../assets/entrenamiento/Rectangle-37.png'; // Image for Principiantes
+import Ellipse6 from '../assets/entrenamiento/Ellipse-6.png'; // Image for Intermedio
+import Ellipse7 from '../assets/entrenamiento/Ellipse-7.png'; // Image for Expertos
+import Ellipse11  from '../assets/entrenamiento/Ellipse-11.png'; // Image for Tavo Buitrago
+import Ellipse12 from '../assets/entrenamiento/Ellipse-12.png'; // Image for Annie Pineda
 
 function PCEntrenamiento() {
   return (
@@ -23,11 +23,11 @@ function PCEntrenamiento() {
         {/* Hero Section for Entrenamiento */}
         <section className="entrenamiento-hero-section">
           <div className="entrenamiento-hero-image-container">
-            <img src={heroImage} alt="Entrenamiento Madre Raíz" />
+            <img src={Rectangle37} alt="Entrenamiento Madre Raíz" />
           </div>
           <div className="entrenamiento-hero-text-container">
-            <img src={leafIcon} alt="" className="leaf-icon leaf-icon-top-left" />
-            <img src={leafIcon} alt="" className="leaf-icon leaf-icon-top-right" />
+            <img src={starlogo} alt="" className="leaf-icon leaf-icon-top-left" />
+            <img src={starlogo} alt="" className="leaf-icon leaf-icon-top-right" />
             <h2>ENTRENAMIENTO</h2>
             <p>
               Entrenamientos dirigidos por Tavo Buitrago y Annie Pineda, dos de
@@ -38,8 +38,8 @@ function PCEntrenamiento() {
               herramientas y conocimientos propios para que sean mucho más
               que atletas.
             </p>
-            <img src={leafIcon} alt="" className="leaf-icon leaf-icon-bottom-left" />
-            <img src={leafIcon} alt="" className="leaf-icon leaf-icon-bottom-right" />
+            <img src={starlogo} alt="" className="leaf-icon leaf-icon-bottom-left" />
+            <img src={starlogo} alt="" className="leaf-icon leaf-icon-bottom-right" />
           </div>
         </section>
 
@@ -48,15 +48,15 @@ function PCEntrenamiento() {
           <h2>Media Montaña</h2>
           <div className="entrenamiento-niveles-container">
             <div className="entrenamiento-nivel-item">
-              <img src={principiantesImg} alt="Principiantes" />
+              <img src={Ellipse5} alt="Principiantes" />
               <h3>PRINCIPIANTES</h3>
             </div>
             <div className="entrenamiento-nivel-item">
-              <img src={intermedioImg} alt="Intermedio" />
+              <img src={Ellipse6} alt="Intermedio" />
               <h3>INTERMEDIO</h3>
             </div>
             <div className="entrenamiento-nivel-item">
-              <img src={expertosImg} alt="Expertos" />
+              <img src={Ellipse7} alt="Expertos" />
               <h3>EXPERTOS</h3>
             </div>
           </div>
@@ -67,7 +67,7 @@ function PCEntrenamiento() {
         {/* Testimonials Section */}
         <section className="entrenamiento-testimonials-section">
           <div className="entrenamiento-testimonial-item tavo-testimonial">
-            <img src={tavoImg} alt="Tavo Buitrago" />
+            <img src={Ellipse11} alt="Tavo Buitrago" />
             <div className="entrenamiento-testimonial-text">
               <h3>TAVO BUITRAGO</h3>
               <p>
@@ -92,7 +92,7 @@ function PCEntrenamiento() {
                 del ser humano por sus caminos mientras disfrutamos de paisajes paradisíacos.
               </p>
             </div>
-            <img src={annieImg} alt="Annie Pineda" />
+            <img src={Ellipse12} alt="Annie Pineda" />
           </div>
         </section>
       </main>
