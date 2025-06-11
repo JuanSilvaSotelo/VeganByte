@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=GFS+Didot&family=Inter:wght@400;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -120,6 +122,216 @@ footer {
 footer img {
   height: 2.5rem;
   margin-left: 0.5rem;
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  /* Global adjustments */
+  body {
+    font-size: 14px;
+  }
+
+  /* Header adjustments */
+  header {
+    flex-direction: column;
+    padding: 0.5rem;
+    text-align: center;
+  }
+
+  header nav {
+    margin-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  header nav a {
+    margin: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  header img {
+    height: 2rem;
+  }
+
+  /* Main content adjustments */
+  main, .page-content {
+    padding-top: 120px; /* Increased for mobile header */
+  }
+
+  main {
+    height: auto;
+    min-height: calc(100vh - 120px);
+    padding: 1rem;
+  }
+
+  /* Login container adjustments */
+  .login-container {
+    width: 90%;
+    max-width: 400px;
+    padding: 1.5rem;
+    margin: 0 auto;
+  }
+
+  .login-container h2 {
+    font-size: 1.25rem;
+  }
+
+  /* Register container adjustments */
+  .register-container {
+    width: 95%;
+    max-width: 500px;
+    padding: 2rem;
+    margin: 0 auto;
+  }
+
+  .register-container h2 {
+    font-size: 1.5rem;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .row .input-container {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
+  .form-select {
+    width: 100%;
+  }
+
+  /* Footer adjustments */
+  footer {
+    flex-direction: column;
+    text-align: center;
+    padding: 1rem 0.5rem;
+  }
+
+  footer img {
+    height: 2rem;
+    margin: 0.5rem 0;
+  }
+
+  /* User info adjustments */
+  .user-info {
+    flex-direction: column;
+    gap: 5px;
+    text-align: center;
+  }
+
+  .logout-btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  /* Input field adjustments */
+  .input-field {
+    padding: 0.75rem;
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+
+  .login-button {
+    padding: 0.75rem 1rem;
+    font-size: 16px;
+    margin-left: 0;
+  }
+}
+
+/* Media Queries for Small Mobile Devices */
+@media (max-width: 480px) {
+  /* Global adjustments */
+  body {
+    font-size: 13px;
+  }
+
+  /* Header adjustments */
+  header {
+    padding: 0.4rem;
+  }
+
+  header nav a {
+    font-size: 0.85rem;
+    padding: 0.2rem 0.4rem;
+  }
+
+  /* Main content adjustments */
+  main, .page-content {
+    padding-top: 140px; /* Further increased for smaller screens */
+  }
+
+  /* Login container adjustments */
+  .login-container {
+    width: 95%;
+    padding: 1.2rem;
+  }
+
+  .login-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  /* Register container adjustments */
+  .register-container {
+    padding: 1.5rem;
+  }
+
+  .register-container h2 {
+    font-size: 1.2rem;
+  }
+
+  /* Input field adjustments */
+  .input-container label {
+    font-size: 0.9rem;
+  }
+
+  .input-field {
+    padding: 0.6rem;
+  }
+
+  /* Button adjustments */
+  .login-button {
+    padding: 0.6rem;
+  }
+
+  /* Inicio page specific adjustments */
+  .Inicio {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .Inicio .overlap,
+  .Inicio .div,
+  .Inicio .image {
+    position: relative;
+    width: 100%;
+    height: auto;
+    left: 0;
+    top: 0;
+  }
+
+  .Inicio .p {
+    font-size: 2rem;
+    width: 100%;
+    left: 0;
+    text-align: center;
+    padding: 0 1rem;
+  }
+
+  /* Adjust any fixed positioning to relative for mobile */
+  .Inicio [class^="text-wrapper"] {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    margin: 0.5rem 0;
+    text-align: center;
+  }
 }
 
 .register-container {

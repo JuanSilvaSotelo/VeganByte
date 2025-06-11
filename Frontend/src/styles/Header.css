@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=GFS+Didot&family=Inter:wght@400;700&display=swap');
+
 /* Estilos para el header */
 .site-header {
   position: fixed;
@@ -7,7 +9,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 30px;
+  padding: 21px 70px; /* Updated padding from Figma */
   z-index: 100;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   background-color: #3c6e41;
@@ -33,23 +35,31 @@
   align-items: center;
 }
 
-.logo-text {
+.logo {
   color: #fff;
-  font-size: 1.5rem;
-  font-weight: 400;
-  line-height: 1.2;
+  font-family: 'GFS Didot', serif;
+  width: 110px;
+  height: 70px;
+  margin-right: 10px;
 }
 
 /* Estilos para la navegación */
-.main-nav, .auth-nav {
+.main-nav {
   display: flex;
-  gap: 20px;
+  gap: 60px; /* Updated gap from Figma */
+}
+
+.auth-nav {
+  display: flex;
+  align-items: center; /* Ensure vertical alignment */
+  gap: 30px; /* Updated gap from Figma */
 }
 
 .site-header nav a {
   text-decoration: none;
   color: #fff;
-  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem; /* 16px */
   transition: color 0.3s ease;
 }
 
@@ -81,13 +91,15 @@
 
 .user-email {
   color: #fff;
-  font-size: 0.9rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem; /* 16px */
 }
 
 .logout-btn {
   background-color: transparent;
   border: 1px solid #fff;
   color: #fff;
+  font-family: 'Inter', sans-serif;
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
@@ -96,4 +108,53 @@
 
 .logout-btn:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 15px 20px; /* Smaller padding for mobile */
+    flex-direction: column; /* Stack logo and navs */
+    align-items: flex-start; /* Align items to the start */
+  }
+
+  .logo-text {
+    font-size: 1.8rem; /* Smaller logo text */
+    margin-bottom: 10px; /* Space below logo */
+  }
+
+  .main-nav, .auth-nav {
+    flex-direction: column; /* Stack nav items */
+    gap: 10px; /* Smaller gap between nav items */
+    width: 100%; /* Full width for navs */
+    align-items: flex-start; /* Align nav items to the start */
+  }
+
+  .site-header nav a {
+    font-size: 0.9rem; /* Slightly smaller font for nav links */
+    padding: 5px 0; /* Adjust padding for stacked items */
+  }
+
+  .auth-nav {
+    margin-top: 10px; /* Space above auth nav if main nav is present */
+  }
+
+  .user-info {
+    flex-direction: column; /* Stack user email and logout button */
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .logout-btn {
+    padding: 5px 8px;
+  }
+
+  .calendar {
+    width: 20px; /* Smaller calendar icon */
+    height: 20px;
+  }
+  
+  .home-header.scrolled {
+    background-image: url('../assets/Fondo.png'); /* Ensure background is visible on scroll */
+  }
 }

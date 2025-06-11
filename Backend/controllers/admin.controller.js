@@ -1,6 +1,6 @@
 // Importar las dependencias necesarias
 import jwt from 'jsonwebtoken'; // Para generar y verificar tokens JWT
-import bcrypt from 'bcrypt'; // Para encriptar y comparar contraseñas
+import bcrypt from 'bcryptjs'; // Para encriptar y comparar contraseñas
 import { Administradores, Cliente } from '../models/index.js'; // Modelos de base de datos
 import { Experiencia, Taller } from '../models/index.js'; // Modelos adicionales (no utilizados en este fragmento)
 

@@ -1,0 +1,74 @@
+.site-footer {
+    background-color: #0F280D; /* Color de fondo del Figma */
+    color: #FFFFFF; /* Color de texto general del Figma */
+    padding: 20px 70px; /* Relleno similar al header */
+    font-family: 'Inter', sans-serif; /* Fuente principal del Figma */
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre elementos */
+}
+
+.brand-name {
+    font-family: 'GFS Didot', serif; /* Fuente específica para CASAMADRERAIZ */
+    font-size: 24px; /* Tamaño de fuente para CASAMADRERAIZ */
+}
+
+.footer-logo {
+    height: 40px; /* Ajusta según el tamaño del logo en Figma */
+}
+
+.instagram-logo {
+    height: 24px; /* Ajusta según el tamaño del logo de Instagram en Figma */
+}
+
+.footer-right {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espacio entre elementos */
+}
+
+.help-text {
+    font-size: 16px; /* Tamaño de fuente para texto de ayuda */
+}
+
+.phone-number {
+    font-size: 16px; /* Tamaño de fuente para número de teléfono */
+    font-weight: bold;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .site-footer {
+        padding: 15px 20px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .footer-left,
+    .footer-right {
+        flex-direction: column;
+        text-align: center;
+        gap: 10px;
+    }
+
+    .brand-name {
+        font-size: 20px;
+    }
+
+    .help-text,
+    .phone-number {
+        font-size: 14px;
+    }
+}
