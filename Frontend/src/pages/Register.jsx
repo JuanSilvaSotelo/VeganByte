@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { registerUser } from '../services/authService';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
@@ -41,9 +41,10 @@ function Register() {
 
     try {
       setLoading(true);
-      const { ConfirmarCorreo, ConfirmarContraseña, ...userData } = formData;
+      const { ConfirmarCorreo, ConfirmarContraseña, Contraseña, ...dataToSend } = formData;
+       dataToSend.Contraseña = String(Contraseña);
       
-      const response = await axios.post('/api/auth/register', userData);
+      const response = await registerUser(dataToSend);
       
       if (response.status === 201) {
         setSuccess('¡Registro exitoso! Por favor inicia sesión');
@@ -182,9 +183,11 @@ function Register() {
             <Input
                 label="Teléfono"
                 name="Contacto"
-                type="tel"
+                type="text"
                 value={formData.Contacto}
                 onChange={handleChange}
+                pattern="[0-9]{10}" // Assuming a 10-digit phone number format
+                maxLength="10" // Limiting to 10 digits
                 required
               />
               <Input

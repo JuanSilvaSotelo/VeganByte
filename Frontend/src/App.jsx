@@ -13,6 +13,10 @@ import CreateEvent from './components/Calendar/CreateEvent';
 import EventBooking from './components/Calendar/EventBooking';
 import RequestReset from './pages/RequestReset';
 import ResetPassword from './pages/ResetPassword';
+import PCCocina from './pages/PCCocina';
+import PCHuerta from './pages/PCHuerta';
+import PCEntrenamiento from './pages/PCEntrenamiento';
+import PCBlog from './pages/PCBlog';
 import './styles/styles.css';
 
 function App() {
@@ -20,6 +24,11 @@ function App() {
       <ErrorBoundary>
         <Router>
             <Routes>
+                <Route path="/pc-cocina" element={<PCCocina />} />
+                <Route path="/pc-huerta" element={<PCHuerta />} />
+                <Route path="/pc-entrenamiento" element={<PCEntrenamiento />} />
+                <Route path="/pc-blog" element={<PCBlog />} />
+
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/calendar" element={<Calendar />} />

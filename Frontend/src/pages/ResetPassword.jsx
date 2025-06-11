@@ -4,10 +4,10 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
 import Button from '../components/Button';
-import axios from 'axios';
+import { resetPassword } from '../services/authService';
 import '../styles/Login.css';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -29,12 +29,9 @@ function ResetPassword() {
 
     try {
       setLoading(true);
-      const response = await axios.post('/api/password/reset', {
-        token,
-        newPassword: password
-      });
+      const response = await resetPassword(token, password);
 
-      setSuccess(response.data.message);
+      setSuccess(response.message);
       setTimeout(() => {
         navigate('/login');
       }, 2000);

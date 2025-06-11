@@ -13,6 +13,9 @@ router.post('/login', adminController.loginAdmin);
 
 // Rutas protegidas - requieren autenticación de administrador
 router.get('/usuarios-activos', verifyAdmin, adminController.getUsuariosActivos);
+router.post('/usuarios', verifyAdmin, adminController.createUser);
+router.put('/usuarios/:id', verifyAdmin, adminController.updateUser);
+router.delete('/usuarios/:id', verifyAdmin, adminController.deleteUser);
 
 /**
  * Rutas para gestión de administradores

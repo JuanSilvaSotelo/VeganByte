@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Palmer Lake Print';
+    src: url('PalmerLakePrint-Regular.eot');
+    src: local('Palmer Lake Print'), local('PalmerLakePrint-Regular'),
+        url('PalmerLakePrint-Regular.eot?#iefix') format('embedded-opentype'),
+        url('PalmerLakePrint-Regular.woff2') format('woff2'),
+        url('PalmerLakePrint-Regular.woff') format('woff'),
+        url('PalmerLakePrint-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Palmer Lake Script';
+    src: url('PalmerLakeScript-Regular.eot');
+    src: local('Palmer Lake Script'), local('PalmerLakeScript-Regular'),
+        url('PalmerLakeScript-Regular.eot?#iefix') format('embedded-opentype'),
+        url('PalmerLakeScript-Regular.woff2') format('woff2'),
+        url('PalmerLakeScript-Regular.woff') format('woff'),
+        url('PalmerLakeScript-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

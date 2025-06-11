@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../services/authService';
 import '../styles/Admin.css';
-
-// Configurar la URL base de axios
-const API_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'; // Valor por defecto para desarrollo local
-axios.defaults.baseURL = API_URL;
 
 const Admin = () => {
   const [usuarios, setUsuarios] = useState([]);
@@ -29,7 +26,7 @@ const Admin = () => {
     try {
       setLoading(true);
       setError('');
-      const response = await axios.get('/api/admin/usuarios-activos', {
+      const response = await axios.get(`${API_URL}/admin/usuarios-activos`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -46,7 +43,7 @@ const Admin = () => {
 
   const cargarEventos = async () => {
     try {
-      const response = await axios.get('/api/admin/eventos', {
+      const response = await axios.get(`${API_URL}/admin/eventos`, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }
@@ -78,7 +75,7 @@ const Admin = () => {
       
       console.log('Enviando datos de evento:', eventoData);
       
-      await axios.post('/api/admin/eventos', eventoData, {
+      await axios.post(`${API_URL}/admin/eventos`, eventoData, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
         }

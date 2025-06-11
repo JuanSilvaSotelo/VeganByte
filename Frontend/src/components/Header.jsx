@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import logo from '../assets/react.svg';
 import image4 from "../assets/images/image-4.png";
+import LogoEmpresa from "../assets/images/LogoEmpresa.png";
+import LogoEmpresa2 from "../assets/images/LogoEmpresa2.png";
 import { isUserAuthenticated, getUserEmail, logoutUser } from '../services/authService';
 import '../styles/Header.css';
 
@@ -42,8 +43,18 @@ function Header() {
     return (
         <header className={headerClasses}>
             <div className="logo-container">
-                <h2 className="logo-text">madre<br/>raíz</h2>
+                {scrolled ? (
+                    <img src={LogoEmpresa2} alt="Logo" className="logo"/>
+                ) : (
+                    <img src={LogoEmpresa} alt="Logo" className="logo"/>
+                )}
             </div>
+            <nav className="main-nav">
+                <Link to="/" className={location.pathname === '/' ? 'active mx-2' : 'mx-2'}>Inicio</Link>
+                <Link to="/quienes-somos" className={location.pathname === '/quienes-somos' ? 'active mx-2' : 'mx-2'}>Quienes Somos</Link>
+                <Link to="/galeria" className={location.pathname === '/galeria' ? 'active mx-2' : 'mx-2'}>Galería</Link>
+                <Link to="/blog" className={location.pathname === '/blog' ? 'active mx-2' : 'mx-2'}>Blog</Link>
+            </nav>
             <nav className="auth-nav">
                 {isAuthenticated ? (
                     <div className="user-info">
@@ -56,13 +67,7 @@ function Header() {
                         <Link to="/register" className="mx-2">Registrarse</Link>
                     </>
                 )}
-            </nav>
-            <nav className="main-nav">
-                <Link to="/" className={location.pathname === '/' ? 'active mx-2' : 'mx-2'}>Inicio</Link>
-                <Link to="/quienes-somos" className={location.pathname === '/quienes-somos' ? 'active mx-2' : 'mx-2'}>Quienes Somos</Link>
-                <Link to="/galeria" className={location.pathname === '/galeria' ? 'active mx-2' : 'mx-2'}>Galería</Link>
-                <Link to="/blog" className={location.pathname === '/blog' ? 'active mx-2' : 'mx-2'}>Blog</Link>
-                <Link to="/calendar" className={location.pathname === '/calendar'? 'active mx-2' : 'mx-2'}>
+                <Link to="/calendar" className={location.pathname === '/calendar' ? 'active' : ''}>
                     <img className="calendar" alt="calendar" src={image4} />
                 </Link>
             </nav>
