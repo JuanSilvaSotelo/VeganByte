@@ -1,0 +1,21 @@
+.about-us-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.about-us-container h1 {
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.about-us-container h2 {
+  color: #555;
+  margin-top: 30px;
+  margin-bottom: 15px;
+}
+
+.about-us-container p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
