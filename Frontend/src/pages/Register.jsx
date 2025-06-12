@@ -81,7 +81,7 @@ function Register() {
   return (
     <div>
       <Header />
-      <main>
+      <main className="register-main">
         <div className="register-container">
           <h2 className='register'>REGISTRARSE</h2>
           

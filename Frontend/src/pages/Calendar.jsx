@@ -9,6 +9,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../services/authService';
 import CreateEventForm from '../components/CreateEventForm'; // Importar el componente CreateEventForm
+import Footer from '../components/Footer';
+import { BottomNavigation } from '../components/BottomNavigation';
 
 moment.locale('es');
 const localizer = momentLocalizer(moment);
@@ -172,61 +174,55 @@ const Calendar = () => {
   };
 
   return (
-    <div className="calendar-container">
+    <div className="calendar-page">
       <Header />
-      {isAdmin && (
-        <button 
-          className="create-event-button" 
-          onClick={() => setShowEventModal(true)}
-        >
-          <i className="fas fa-plus"></i> Crear Evento
-        </button>
-      )}
-      <BigCalendar
-        localizer={localizer}
-        events={events}
-        startAccessor="start"
-        endAccessor="end"
-        style={{ height: 450 }}
-        selectable
-        onSelectSlot={handleSelectSlot}
-        onSelectEvent={handleSelectEvent}
-        dayPropGetter={(date) => {
-          const dateStr = moment(date).format('YYYY-MM-DD');
-          return {
-            className: availableDates.includes(dateStr) ? '' : 'disabled-date',
-            style: {
-              cursor: availableDates.includes(dateStr) ? 'pointer' : 'not-allowed',
-              backgroundColor: availableDates.includes(dateStr) ? '#ffffff' : '#f0f0f0'
-            }
-          };
-        }}
-        messages={{
-          next: 'Siguiente',
-          previous: 'Anterior',
-          today: 'Hoy',
-          month: 'Mes',
-          week: 'Semana',
-          day: 'Día',
-          agenda: 'Agenda',
-          date: 'Fecha',
-          time: 'Hora',
-          event: 'Evento',
-          noEventsInRange: 'No hay eventos en este rango.'
-        }}
-      />
-      
-      {/* Modal para crear eventos (solo visible para administradores) */}
-      {showEventModal && (
-        <div className="event-modal-overlay">
-          <div className="event-modal">
-            {/* Renderizar el componente CreateEventForm y pasarle la función closeModal */}
-            <CreateEventForm closeModal={closeModal} selectedDate={selectedDate} fetchEvents={fetchEvents} />
+      <div className="calendar-container">
+        {isAdmin && (
+          <button 
+            className="create-event-button" 
+            onClick={() => setShowEventModal(true)}
+          >
+            <i className="fas fa-plus"></i> Crear Evento
+          </button>
+        )}
+        <BigCalendar
+          localizer={localizer}
+          events={events}
+          startAccessor="start"
+          endAccessor="end"
+          style={{ height: 450 }}
+          selectable
+          onSelectSlot={handleSelectSlot}
+          onSelectEvent={handleSelectEvent}
+          dayPropGetter={(date) => {
+            const dateStr = moment(date).format('YYYY-MM-DD');
+            return {
+              className: availableDates.includes(dateStr) ? '' : 'disabled-date',
+              style: {
+                cursor: availableDates.includes(dateStr) ? 'pointer' : 'not-allowed',
+                backgroundColor: availableDates.includes(dateStr) ? '#ffffff' : '#f0f0f0'
+              }
+            };
+          }}
+        />
+
+        {showEventModal && (
+          <div className="event-modal-overlay">
+            <div className="event-modal">
+              <h2>Crear Nuevo Evento</h2>
+              <CreateEventForm
+                newEvent={newEvent}
+                handleEventChange={handleEventChange}
+                handleCreateEvent={handleCreateEvent}
+                closeModal={closeModal}
+              />
+            </div>
           </div>
-        </div>
-      )}
-    </div>
-  );
+        )}
+      </div>
+       <Footer />
+     </div>
+    );
 };
 
 export default Calendar;

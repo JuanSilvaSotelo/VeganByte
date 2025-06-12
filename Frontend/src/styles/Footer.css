@@ -1,74 +1,83 @@
 .site-footer {
-    background-color: #0F280D; /* Color de fondo del Figma */
-    color: #FFFFFF; /* Color de texto general del Figma */
-    padding: 20px 70px; /* Relleno similar al header */
-    font-family: 'Inter', sans-serif; /* Fuente principal del Figma */
+  position: relative;
+  width: 100%;
+  height: 334px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.footer-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../assets/Rectangle 55.png'); /* Asegúrate de tener esta imagen en assets */
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
 }
 
 .footer-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Ajusta según el diseño de Figma */
+  padding: 0 20px;
 }
 
 .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 15px; /* Espacio entre elementos */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.brand-name {
-    font-family: 'GFS Didot', serif; /* Fuente específica para CASAMADRERAIZ */
-    font-size: 24px; /* Tamaño de fuente para CASAMADRERAIZ */
+.casa-taller {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #FEBBB4;
+  margin-bottom: 10px; /* Espacio entre el texto y el logo */
 }
 
 .footer-logo {
-    height: 40px; /* Ajusta según el tamaño del logo en Figma */
-}
-
-.instagram-logo {
-    height: 24px; /* Ajusta según el tamaño del logo de Instagram en Figma */
+  width: 441px; /* Ajusta según el tamaño del logo en Figma */
+  height: 257.74px;
 }
 
 .footer-right {
-    display: flex;
-    align-items: center;
-    gap: 20px; /* Espacio entre elementos */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .help-text {
-    font-size: 16px; /* Tamaño de fuente para texto de ayuda */
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 33px;
+  color: #FEBBB4;
+  margin-bottom: 15px;
 }
 
-.phone-number {
-    font-size: 16px; /* Tamaño de fuente para número de teléfono */
-    font-weight: bold;
+.contact-info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .site-footer {
-        padding: 15px 20px;
-    }
+.contact-info .icon {
+  width: 50px; /* Ajusta el tamaño de los iconos */
+  height: 49px;
+  margin-right: 10px;
+}
 
-    .footer-content {
-        flex-direction: column;
-        gap: 15px;
-    }
-
-    .footer-left,
-    .footer-right {
-        flex-direction: column;
-        text-align: center;
-        gap: 10px;
-    }
-
-    .brand-name {
-        font-size: 20px;
-    }
-
-    .help-text,
-    .phone-number {
-        font-size: 14px;
-    }
+.phone-number,
+.instagram-user {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  color: #FEBBB4;
 }

@@ -1,10 +1,64 @@
+.register-main {
+  padding-top: 650px; /* Adjust based on header height */
+  padding-bottom: 650px; /* Adjust based on footer height */
+}
+
 .register-container {
-  max-width: 400px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border: 1px solid #ddd;
+  max-width: 800px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+}
+
+.register {
+  font-family: 'Cormorant Garamond', serif; /* Example font, adjust as needed */
+  font-size: 2.5rem;
+  color: #f0f0f0; /* Light color for the title */
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px; /* Space between columns */
+  margin-bottom: 1rem;
+}
+
+.input-container {
+  flex: 1; /* Distribute space equally among inputs in a row */
+  margin-bottom: 1rem;
+}
+
+.input-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #f0f0f0; /* Light color for labels */
+  font-weight: bold;
+}
+
+.input-field,
+.form-select {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc; /* Border color */
+  border-radius: 20px; /* More rounded corners */
+  background-color: #e0e0e0; /* Light gray background */
+  color: #333; /* Darker text color */
+  font-size: 1rem;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.input-field:focus,
+.form-select:focus {
+  border-color: #888; /* Darker border on focus */
+  outline: none;
 }
 
 .error-message {
@@ -15,4 +69,20 @@
 .success-message {
   color: #28a745;
   margin: 1rem 0;
+}
+
+.login-button {
+  background-color: #5A925E; /* Darker green from the image */
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 1rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2); /* Subtle shadow */
+}
+
+.login-button:hover {
+  background-color: #4C7A52; /* Slightly darker green on hover */
 }
