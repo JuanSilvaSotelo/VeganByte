@@ -17,6 +17,7 @@ import PCCocina from './pages/PCCocina';
 import PCHuerta from './pages/PCHuerta';
 import PCEntrenamiento from './pages/PCEntrenamiento';
 import PCBlog from './pages/PCBlog';
+import AboutUs from './pages/AboutUs';
 import './styles/styles.css';
 
 function App() {
@@ -55,6 +56,7 @@ function App() {
                 {/* Rutas de restablecimiento de contraseña */}
                 <Route path="/request-reset" element={<RequestReset />} />
                 <Route path="/reset-password/:token" element={<ResetPassword />} />
+                <Route path="/about-us" element={<AboutUs />} />
             </Routes>
         </Router>
       </ErrorBoundary>
