@@ -1,18 +1,18 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import BottomNavigation from '../components/BottomNavigation';
+import { BottomNavigation } from '../components/BottomNavigation';
 import '../styles/Cocina.css';
 import imageOne from '../assets/PC Cocina.png';
 import imageTwo from '../assets/PC Cocina.png';
 import imageThree from '../assets/Rectangle 55.png';
-import embuditos from '../assets/embuditos.png';
-import proteinasVegetales from '../assets/proteinas-vegetales.png';
-import tortasSinGluten from '../assets/tortas-sin-gluten.png';
-import panes from '../assets/panes.png';
-import lechesVegetales from '../assets/leches-vegetales.png';
-import sopasTradicionales from '../assets/sopas-tradicionales.png';
-import basicosDesayuno from '../assets/basicos-desayuno.png';
+import embuditos from '../assets/cocina/Ellipse13.png';
+import proteinasVegetales from '../assets/cocina/Ellipse14.png';
+import tortasSinGluten from '../assets/cocina/Ellipse14.png';
+import panes from '../assets/cocina/Ellipse14.png';
+import lechesVegetales from '../assets/cocina/Ellipse14.png';
+import sopasTradicionales from '../assets/cocina/Ellipse14.png';
+import basicosDesayuno from '../assets/cocina/Ellipse14.png';
 
 const Cocina = () => {
   return (
@@ -98,7 +98,6 @@ const Cocina = () => {
       </section>
 
       {/* Final Section */}
-      <BottomNavigation />
       <Footer />
     </div>
   );
