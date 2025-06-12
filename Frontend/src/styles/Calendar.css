@@ -1,14 +1,23 @@
+.calendar-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .calendar-container {
+  flex-grow: 1;
   padding: 20px;
-  height: 600px;
   margin-top: 100px; /* Aumentado para evitar superposición con el header */
   position: relative; /* Para posicionar el botón de crear evento */
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
 }
 
 @media screen and (max-width: 768px) {
   .calendar-container {
     padding: 10px;
-    height: 500px;
     margin-top: 70px; /* Ajuste para pantallas medianas */
   }
 
@@ -36,7 +45,6 @@
 
 @media screen and (max-width: 480px) {
   .calendar-container {
-    height: 400px;
     padding: 5px;
     margin-top: 60px; /* Ajuste para pantallas pequeñas */
   }
@@ -70,40 +78,48 @@
 
 .rbc-calendar {
   font-family: 'Inter', sans-serif;
-  height: 450px !important; /* Altura más compacta para el calendario */
+  height: 600px !important; /* Altura más compacta para el calendario */
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .rbc-header {
-  background-color: #3c6e41;
+  background-color: #4a7c59;
   color: white;
-  padding: 10px;
-  font-weight: 500;
+  padding: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #3c6e41;
 }
 
 .rbc-toolbar button {
-  color: #3c6e41;
-  border-color: #3c6e41;
+  color: #4a7c59;
+  border-color: #4a7c59;
+  transition: all 0.3s ease;
 }
 
 .rbc-toolbar button:hover,
 .rbc-toolbar button:active,
 .rbc-toolbar button.rbc-active {
-  background-color: #3c6e41;
+  background-color: #4a7c59;
   color: white;
-  border-color: #3c6e41;
+  border-color: #4a7c59;
 }
 
 .rbc-event {
-  background-color: #3c6e41;
-  border-color: #2c5231;
+  background-color: #6a994e;
+  border-color: #4a7c59;
+  font-size: 0.9em;
+  padding: 4px 8px;
+  border-radius: 4px;
 }
 
 .rbc-event.rbc-selected {
-  background-color: #2c5231;
+  background-color: #4a7c59;
 }
 
 .rbc-today {
-  background-color: rgba(60, 110, 65, 0.1);
+  background-color: rgba(74, 124, 89, 0.1);
 }
 
 .rbc-off-range-bg {
@@ -111,9 +127,9 @@
 }
 
 .rbc-toolbar-label {
-  font-size: 1.2em;
+  font-size: 1.5em;
   font-weight: bold;
-  color: #3c6e41;
+  color: #4a7c59;
 }
 
 .rbc-agenda-view table.rbc-agenda-table {
@@ -138,24 +154,30 @@
 /* Botón para crear eventos */
 .create-event-button {
   position: absolute;
-  top: 10px;
+  top: 20px;
   right: 20px;
-  background-color: #3c6e41;
+  background-color: #4a7c59;
   color: white;
   border: none;
-  border-radius: 5px;
-  padding: 10px 15px;
-  font-size: 1rem;
+  border-radius: 8px;
+  padding: 12px 20px;
+  font-size: 1.1rem;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 8px;
   z-index: 100;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .create-event-button:hover {
-  background-color: #2c5231;
+  background-color: #6a994e;
+  transform: translateY(-2px);
+}
+
+.create-event-button:active {
+  transform: translateY(0);
 }
 
 .create-event-button i {
