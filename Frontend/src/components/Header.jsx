@@ -43,17 +43,33 @@ function Header() {
     return (
         <header className={headerClasses}>
             <div className="logo-container">
-                {scrolled ? (
-                    <img src={LogoEmpresa2} alt="Logo" className="logo"/>
-                ) : (
-                    <img src={LogoEmpresa} alt="Logo" className="logo"/>
-                )}
+                <Link to="/">
+                    {scrolled ? (
+                        <img src={LogoEmpresa2} alt="Logo" className="logo"/>
+                    ) : (
+                        <img src={LogoEmpresa} alt="Logo" className="logo"/>
+                    )}
+                </Link>
             </div>
             <nav className="main-nav">
-                <Link to="/" className={location.pathname === '/' ? 'active mx-2' : 'mx-2'}>Inicio</Link>
                 <Link to="/about-us" className={location.pathname === '/about-us' ? 'active mx-2' : 'mx-2'}>Quienes Somos</Link>
-                <Link to="/galeria" className={location.pathname === '/galeria' ? 'active mx-2' : 'mx-2'}>Galería</Link>
-                <Link to="/blog" className={location.pathname === '/blog' ? 'active mx-2' : 'mx-2'}>Blog</Link>
+                <div className="dropdown">
+                    <span className="dropbtn">Servicios <i className="arrow down"></i></span>
+                    <div className="dropdown-content">
+                        <Link to="/servicios/cocina">Cocina</Link>
+                        <Link to="/servicios/huerta">Huerta</Link>
+                        <Link to="/servicios/senderismo">Senderismo</Link>
+                        <Link to="/servicios/entrenamiento">Entrenamiento</Link>
+                    </div>
+                </div>
+                <div className="dropdown">
+                    <span className="dropbtn">Social <i className="arrow down"></i></span>
+                    <div className="dropdown-content">
+                        <Link to="/social/galeria">Galería</Link>
+                        <Link to="/social/blog">Blog</Link>
+                    </div>
+                </div>
+                <Link to="/calendar" className={location.pathname === '/calendar' ? 'active mx-2' : 'mx-2'}>Calendario</Link>
             </nav>
             <nav className="auth-nav">
                 {isAuthenticated ? (

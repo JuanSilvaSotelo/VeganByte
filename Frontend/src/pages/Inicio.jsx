@@ -2,7 +2,6 @@
 import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import Entrenamiento from "./PCEntrenamiento";
 import { BottomNavigation } from "../components/BottomNavigation";
 import '../styles/Inicio.css';
 
@@ -50,28 +49,28 @@ export const Inicio = () => {
         </div>
         <div className="experience-grid">
           <div className="experience-item">
-            <img src={rectangle240} alt="Experiencia 1" className="experience-img" />
-            <div className="experience-overlay">
-              <span><Link to="/pc-cocina">COCINA</Link></span>
-            </div>
+            <img src={rectangle243} alt="Experiencia 1" className="experience-img" />
+            <Link to="/servicios/huerta" className="experience-overlay">
+              <span>HUERTA</span>
+            </Link>
           </div>
           <div className="experience-item">
-            <img src={rectangle242} alt="Experiencia 2" className="experience-img" />
-            <div className="experience-overlay">
-              <span><Link to="/pc-huerta">HUERTA</Link></span>
-            </div>
+            <img src={rectangle240} alt="Experiencia 2" className="experience-img" />
+            <Link to="/servicios/entrenamiento" className="experience-overlay">
+              <span>ENTRENAMIENTO</span>
+            </Link>
           </div>
           <div className="experience-item">
-            <img src={rectangle243} alt="Experiencia 3" className="experience-img" />
-            <div className="experience-overlay">
-              <span><Link to="/pc-blog">BLOG</Link></span>
-            </div>
+            <img src={rectangle245} alt="Experiencia 3" className="experience-img" />
+            <Link to="/servicios/cocina" className="experience-overlay">
+              <span>COCINA</span>
+            </Link>
           </div>
           <div className="experience-item">
-            <img src={rectangle245} alt="Experiencia 4" className="experience-img" />
-            <div className="experience-overlay">
-              <span>Texto 4</span>
-            </div>
+            <img src={rectangle240} alt="Experiencia 4" className="experience-img" />
+            <Link to="/servicios/senderismo" className="experience-overlay">
+              <span>SENDERISMO</span>
+            </Link>
           </div>
           <div className="experience-center-logo">
             <div className="logo-container">

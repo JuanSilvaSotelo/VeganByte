@@ -1,7 +1,23 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url('./assets/Fondo.png'); /* Assuming Fondo.png is in assets folder */
+  background-color: #365336; /* Dark green fallback color */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  font-family: 'Cormorant Garamond', serif; /* Apply a suitable font */
+  color: #f0f0f0; /* Default text color for the body */
+}
+
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0;
   text-align: center;
 }
 

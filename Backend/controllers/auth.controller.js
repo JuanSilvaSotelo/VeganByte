@@ -34,11 +34,14 @@ const AuthController = {
       });
       console.log('Nuevo usuario creado ID:', newUserId);
 
-      // Envía el correo electrónico de verificación
-      await emailService.sendVerificationEmail(req.body.Correo, verificationToken);
+      // Envía el correo electrónico de verificación de forma asíncrona
+      emailService.sendVerificationEmail(req.body.Correo, verificationToken).catch(error => {
+        console.error('Error al enviar correo de verificación:', error);
+        // Aquí podrías añadir lógica para reintentar o notificar al administrador
+      });
       
       res.status(201).json({
-        message: 'Registro exitoso. Por favor, verifica tu correo electrónico.',
+        message: 'Registro exitoso. Se ha enviado un correo electrónico de verificación a tu dirección. Por favor, revisa tu bandeja de entrada.',
         userId: newUserId
       });
     } catch (error) {
