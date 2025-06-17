@@ -123,7 +123,7 @@ const Cocina = () => {
               Casa Madre Raíz es mostrar que se puede vivir respetando y no siendo parte de la explotación
               de todos los demás animales, por eso en este taller queremos educar sobre veganismo a
               través de la alimentación, que cada uno de nuestros participantes se pueda llevar el mensaje
-              de que es un mundo increíble que vale toda la pena descubrir, seguir explorando y eligiendo.</h2>
+              de que es un mundo increíble que vale toda la  pena descubrir, seguir explorando y eligiendo.</h2>
               <img src={finalImage} alt="Imagen final" className="final-section-image" />
           <a href="https://wa.link/v6qfvb" className="contact-button">Mas Detalles</a>
           </div>
