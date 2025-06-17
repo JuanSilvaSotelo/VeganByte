@@ -1,7 +1,20 @@
+@font-face {
+  font-family: 'Palmer Lake Print';
+  src: url('PalmerLakePrint-Regular.eot');
+  src: local('Palmer Lake Print'), local('PalmerLakePrint-Regular'),
+      url('PalmerLakePrint-Regular.eot?#iefix') format('embedded-opentype'),
+      url('PalmerLakePrint-Regular.woff2') format('woff2'),
+      url('PalmerLakePrint-Regular.woff') format('woff'),
+      url('PalmerLakePrint-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .pc-quienes-somos-container {
   width: 100%;
   height: 100%;
-  background-color: #f8e8e8;
+  background-color: #EDE1E1;;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,7 +25,6 @@
 .background-image {
   width: 100%;
   height: 400px; /* Adjust height as needed */
-  background-image: url('../assets/cocina-header.png'); /* Placeholder, replace with actual image */
   background-size: cover;
   background-position: center;
 }
@@ -21,7 +33,7 @@
   width: 80%;
   max-width: 960px; /* Max width for content */
   margin-top: -100px; /* Overlap with the image */
-  background-color: #fff;
+  background-color: #DFFFDC;
   padding: 40px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -38,21 +50,23 @@
 }
 
 .title-section h1 {
-  font-family: 'Happy Monkey', cursive; /* Example font */
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique; /* Example font */
   font-size: 2.5em;
   margin: 0 20px;
-  color: #5a8d3c;
+  color: #000000;
+  font-weight: bolder;
 }
 
 .star {
-  font-size: 2em;
+  font-size: 5em;
   color: #f0b90b;
 }
 
 .text-block-1,
 .text-block-2 {
-  font-family: 'Roboto', sans-serif; /* Example font */
-  font-size: 1.1em;
+  font-family: 'inter', sans-serif; /* Example font */
+  font-size: 1.3rem;
   line-height: 1.6;
   margin-bottom: 20px;
   text-align: justify;

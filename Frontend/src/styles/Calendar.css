@@ -2,23 +2,246 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  padding-top: 10vh;
 }
 
-.calendar-container {
+.calendar-content {
   flex-grow: 1;
   padding: 20px;
-  margin-top: 100px; /* Aumentado para evitar superposición con el header */
-  position: relative; /* Para posicionar el botón de crear evento */
-  max-width: 1200px;
+  margin-top: 100px;
+  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   width: 100%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding-bottom: 50px;
+}
+
+.agendamiento-title {
+  text-align: center;
+  font-size: 2.5em;
+  color: #333;
+  margin-bottom: 30px;
+  font-family: 'Arial Black', Gadget, sans-serif; /* Example font, adjust as needed */
+}
+
+.calendar-header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #D9F2D9; /* Light green background */
+  padding: 15px 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.programate-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+}
+
+.header-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.icons-section {
+  display: flex;
+  gap: 15px;
+}
+
+.calendar-main-section {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.training-camp-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 20px;
+}
+
+.training-camp-text {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 100%;
+  max-width: 250px; /* Adjust as needed */
+}
+
+.dropdown-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #4a7c59;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+.dropdown-arrow {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #4a7c59;
+  pointer-events: none;
+}
+
+.calendar-display-section {
+  flex: 2;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  position: relative; /* For create event button */
+}
+
+.month-year-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Centra verticalmente los elementos */
+  margin-bottom: 15px;
+}
+
+.month-name {
+  font-size: 3em;
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+.year-number {
+  font-size: 1.5em;
+  color: #666;
+}
+
+.nav-arrow {
+  background: none;
+  border: none;
+  font-size: 2em; /* Tamaño de las flechas */
+  color: #4a7c59; /* Color de las flechas */
+  cursor: pointer;
+  padding: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.nav-arrow:hover {
+  color: #3a6347;
+}
+
+/* Adjust BigCalendar styles */
+.rbc-calendar {
+  height: 400px !important; /* Adjust height to fit image */
+  border: none; /* Remove default border */
+  box-shadow: none; /* Remove default shadow */
+}
+
+.rbc-header {
+  background-color: transparent; /* Remove background */
+  color: #333; /* Adjust text color */
+  font-weight: normal;
+  border-bottom: none;
+}
+
+.rbc-toolbar {
+  display: none; /* Oculta completamente la barra de herramientas */
+}
+
+.rbc-event {
+  background-color: #D9F2D9; /* Light green for events */
+  border-color: #4a7c59;
+  color: #333;
+}
+
+.rbc-today {
+  background-color: #D9F2D9; /* Light green for today */
+}
+
+.rbc-off-range-bg {
+  background-color: #f9f9f9; /* Lighter background for off-range days */
+}
+
+.rbc-toolbar-label {
+  font-size: 1.2em;
+  font-weight: normal;
+  color: #333;
+}
+
+.rbc-day-bg {
+  background-color: #fff;
+}
+
+.rbc-day-bg.disabled-date {
+  background-color: #f0f0f0;
+}
+
+.rbc-day-bg:not(.disabled-date):hover {
+  background-color: #e0e0e0;
+}
+
+.rbc-date-cell {
+  color: #333;
+}
+
+.rbc-date-cell.rbc-current {
+  color: #4a7c59; /* Highlight current date */
+  font-weight: bold;
+}
+
+.rbc-row-segment .rbc-event-content {
+  white-space: normal;
 }
 
 @media screen and (max-width: 768px) {
-  .calendar-container {
+  .calendar-content {
     padding: 10px;
-    margin-top: 70px; /* Ajuste para pantallas medianas */
+    margin-top: 70px;
+  }
+
+  .agendamiento-title {
+    font-size: 2em;
+  }
+
+  .calendar-header-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .calendar-main-section {
+    flex-direction: column;
+  }
+
+  .training-camp-section {
+    align-items: center;
+    text-align: center;
+  }
+
+  .dropdown-container {
+    max-width: 100%;
+  }
+
+  .month-name {
+    font-size: 2.5em;
+  }
+
+  .year-number {
+    font-size: 1.2em;
   }
 
   .rbc-toolbar {
@@ -44,9 +267,29 @@
 }
 
 @media screen and (max-width: 480px) {
-  .calendar-container {
+  .calendar-content {
     padding: 5px;
-    margin-top: 60px; /* Ajuste para pantallas pequeñas */
+    margin-top: 60px;
+  }
+
+  .agendamiento-title {
+    font-size: 1.8em;
+  }
+
+  .programate-section span {
+    font-size: 1em;
+  }
+
+  .training-camp-text {
+    font-size: 1.5em;
+  }
+
+  .month-name {
+    font-size: 2em;
+  }
+
+  .year-number {
+    font-size: 1em;
   }
 
   .rbc-toolbar button {
@@ -154,21 +397,21 @@
 /* Botón para crear eventos */
 .create-event-button {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 10px; /* Adjust top position */
+  right: 10px; /* Adjust right position */
   background-color: #4a7c59;
   color: white;
   border: none;
   border-radius: 8px;
-  padding: 12px 20px;
-  font-size: 1.1rem;
+  padding: 8px 15px; /* Smaller padding */
+  font-size: 0.9rem; /* Smaller font size */
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 5px; /* Smaller gap */
   z-index: 100;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .create-event-button:hover {

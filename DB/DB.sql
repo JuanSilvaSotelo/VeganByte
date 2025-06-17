@@ -16,7 +16,9 @@ create table Cliente (
     Contacto bigint check (Contacto >= 0 AND Contacto <= 99999999999) not null,
     fecha_Nacimiento date not null,
     Direccion varchar(80) not null,
-    Contraseña varchar(80) not null
+    Contraseña varchar(80) not null,
+    is_verified BOOLEAN DEFAULT FALSE,
+    verification_token VARCHAR(255) NULL
 );
 create table Administradores (
     Id_Administradores int not null auto_increment primary key,
@@ -99,7 +101,7 @@ create table Experiencias (
     foreign key (Id_Reserva) references Reserva(Id_Reserva)
 );
 
-/*CREACIÓN DEL PROCEDIMIENTO AGENDAR
+CREACIÓN DEL PROCEDIMIENTO AGENDAR
 DELIMITER $$
 
 CREATE PROCEDURE AgendarReserva(
@@ -181,7 +183,7 @@ BEGIN
 END$$
 
 DELIMITER ;
-
+/*
 INSERT INTO Cliente (tipo_Documento, Sexo, Nombre, Apellido, Correo, Contacto, fecha_Nacimiento, Direccion, Contraseña)
 VALUES ("Cedula de ciudadania", "Masculino", "Juan", "Pérez", "juan.perez@example.com", 3121234567, '1990-05-12', "Calle 123 #45-67", "password123");
 INSERT INTO Cliente (tipo_Documento, Sexo, Nombre, Apellido, Correo, Contacto, fecha_Nacimiento, Direccion, Contraseña)
@@ -349,4 +351,4 @@ DELIMITER ;
 
 call eliminarExperiencia(2,"Ascenso a la cima");
 
-select C.Nombre , C.Apellido, E.Descripcion, E.Id_Reserva As NumeroReserva  from Cliente C inner join Reserva R on C.Id_Cliente = R.Id_Cliente inner join Experiencias E on R.Id_Reserva = E.Id_Reserva;*/
+select C.Nombre , C.Apellido, E.Descripcion, E.Id_Reserva As NumeroReserva  from Cliente C inner join Reserva R on C.Id_Cliente = R.Id_Cliente inner join Experiencias E on R.Id_Reserva = E.Id_Reserva;

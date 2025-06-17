@@ -1,0 +1,307 @@
+@font-face {
+  font-family: 'Palmer Lake Print';
+  src: url('PalmerLakePrint-Regular.eot');
+  src: local('Palmer Lake Print'), local('PalmerLakePrint-Regular'),
+      url('PalmerLakePrint-Regular.eot?#iefix') format('embedded-opentype'),
+      url('PalmerLakePrint-Regular.woff2') format('woff2'),
+      url('PalmerLakePrint-Regular.woff') format('woff'),
+      url('PalmerLakePrint-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.senderismo-page {
+  background-color: #EDE1E1; /* White background for the page */
+  color: #000000; /* Dark grey for text */
+  font-family: 'Palmer Lake Print', cursive;
+  margin: 0;
+  padding: 0;
+}
+
+.senderismo-hero-section {
+  position: relative;
+  width: 100%;
+  height: 850px; /* Adjust based on Figma */
+  background-color: #EDE1E1; /* Replace with your image */
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: flex-end;
+  color: white;
+  text-align: center;
+  flex-direction: column;
+  margin-bottom: 80px;
+}
+
+.hero-content-senderismo {
+  max-width: 800px;
+  padding: 20px;
+  border-radius: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  bottom: 5vw;
+  left: 30%;
+}
+
+.hero-content-senderismo h1 {
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique;
+  font-weight: 900;
+  font-size: 2em;
+  margin-bottom: 20px;
+  color: #000000;
+  text-transform: uppercase;
+  padding: 15px;
+  top: 4.5vh;
+  position: relative;
+}
+
+.senderismo-image1 {
+  width: 55vw;
+  height: 48vh;
+  position: relative;
+  right: 13vw;
+  bottom: 5vh;
+}
+
+.senderismo-textInicial {
+  position: absolute;
+  display: flex;
+  bottom: 2vw;
+  left: 62vw;
+  width: 27vw;
+  height: 49vh;
+  border-radius: 15px;
+  background-color: #B1BFB0;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique;
+  font-weight: 900;
+  font-size: 1vw;
+  color: #000000;
+  padding: 0 3vw 0 3vw;
+}
+
+.decoration-senderismo {
+  position: absolute;
+  width: 27%;
+  height: 47%;
+  bottom: 10%;
+  left: 62.7%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.decorationE {
+  position: relative;
+  width: 5vw;
+  height: 5vw;
+
+}
+
+.decoration1 { top: -2vh; left: -3vw; z-index: 10;} /* Icono superior izquierdo */
+.decoration2 { top: -2vh; right: -13vw; z-index: 10;} /* Icono superior derecho */
+.decoration3 { bottom: -37vh; left: -13vw; z-index: 10;} /* Icono inferior izquierdo */
+.decoration4 { bottom: -37vh; right: -3vw; z-index: 10;} /* Icono inferior derecho */
+
+/* Media Montaña Section */
+.senderismo-media-montana-section {
+  background-image: url("../assets/images/fondo-1-5.png");
+  padding: 40px 20px;
+  text-align: center;
+  color: #FFFFFF;
+  margin-bottom: 30px;
+  height: 110vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.senderismo-media-montana-section h2 {
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 3em; /* Adjust size */
+  margin-bottom: 30px;
+  color: #f3d1d1;
+}
+
+.senderismo-niveles-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: 17vw;
+  flex-wrap: wrap; /* For responsiveness */
+}
+
+.senderismo-nivel-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 15vw; /* Adjust width */
+}
+
+.principiantes:hover, .intermedios:hover, .expertos:hover {
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
+}
+
+.image-wrapper {
+  position: relative;
+  width: 25vw; /* Adjust size */
+  height: 50vh;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 2px solid #FFFFFF; /* White border for circle images */
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%); /* Degradado de transparente a negro */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.image-wrapper:hover::before {
+  opacity: 1;
+}
+
+.media-text {
+  color: #f3d1d1;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique;
+  font-weight: 900;
+  font-size: 1.2em;
+  width: 25vw;
+  padding: 5vh 0 5vh 0;
+}
+
+.overlay-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #f3d1d1;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  font-size: 3em;
+  font-weight: 900;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: italic;
+}
+
+.image-wrapper:hover .overlay-text {
+  opacity: 1;
+}
+
+.senderismo-media-montana-section .info-text {
+  font-size: 1.4em;
+  margin-top: 20px;
+  margin-bottom: 25px;
+}
+
+.senderismo-contactanos-btn {
+  background-color: #0F280D; /* Black button */
+  color: #FFFFFF;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 20px;
+  font-size: 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+  width: 100%;
+  text-decoration: none;
+}
+
+.senderismo-contactanos-btn:hover {
+  background-color: #0F280D;
+}
+
+/* Testimonials Section (Tavo Buitrago, Annie Pineda) */
+.senderismo-testimonials-section {
+  padding: 30px 20px;
+  background-color: #EDE1E1;
+}
+
+.senderismo-testimonial-item {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 30px;
+  padding: 3vh 6vw 3vh 6vw;
+  border-radius: 8px;
+  text-align: center;
+  justify-content: space-between
+}
+
+/* Alternating layout for testimonials */
+.senderismo-testimonial-text:nth-child(even) {
+  flex-direction: row-reverse;
+}
+
+.senderismo-testimonial-item img {
+  width: 25vw; /* Adjust size */
+  height: 50vh;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.senderismo-testimonial-text h3 {
+  font-size: 3em; /* Adjust size */
+  color: #11490C; /* Dark green name */
+  margin-bottom: 10px;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: italic;
+  font-weight: 900;
+}
+
+.senderismo-testimonial-text p {
+  max-width: 53vw;
+  line-height: 1.7;
+  color: #000000;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique;
+  font-weight: 500;
+  font-size: 2em;
+}
+
+/* Footer Styles (re-using from previous, adjust if needed) */
+.senderismo-footer {
+  padding: 30px 20px;
+  background-color: #2A5A2A; /* Dark green background */
+  color: #FFFFFF;
+  text-align: center;
+}
+
+.senderismo-footer-content {
+  display: flex;
+  justify-content: space-around;
+  align-items: center; /* Center items vertically */
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 900px; /* Adjust max width */
+  margin: 0 auto;
+}

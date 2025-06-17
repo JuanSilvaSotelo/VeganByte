@@ -3,6 +3,7 @@ import { Route, Link, Routes } from 'react-router-dom';
 import axios from 'axios';
 import { getAuthHeaders, getAdminName, logoutAdmin } from '../../services/authService';
 import '../../styles/Admin.css';
+import UserManagement from './UserManagement';
 
 const AdminDashboard = () => {
   const [activeUsers, setActiveUsers] = useState([]);
@@ -49,6 +50,7 @@ const AdminDashboard = () => {
         </div>
         <ul>
           <li><Link to="/admin/usuarios">Usuarios Activos</Link></li>
+          <li><Link to="/admin/user-management">Gestión de Usuarios</Link></li>
           <li><Link to="/admin/eventos">Gestión de Eventos</Link></li>
           <li><Link to="/admin/estadisticas">Estadísticas</Link></li>
           <li><Link to="/calendar">Calendario de Eventos</Link></li>
@@ -59,6 +61,7 @@ const AdminDashboard = () => {
       <div className="admin-content">
         <Routes>
           <Route path="usuarios" element={<UsersList users={activeUsers} />} />
+          <Route path="user-management" element={<UserManagement />} />
           <Route path="eventos" element={<EventManagement events={events} />} />
           <Route path="estadisticas" element={<StatsDashboard />} />
         </Routes>

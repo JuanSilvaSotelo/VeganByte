@@ -32,6 +32,8 @@ const Calendar = () => {
     capacidad: 0,
     estado: 'disponible'
   });
+  const [currentDate, setCurrentDate] = useState(new Date()); // Nuevo estado para la fecha actual del calendario
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -176,35 +178,65 @@ const Calendar = () => {
   return (
     <div className="calendar-page">
       <Header />
-      <div className="calendar-container">
-        {isAdmin && (
-          <button 
-            className="create-event-button" 
-            onClick={() => setShowEventModal(true)}
-          >
-            <i className="fas fa-plus"></i> Crear Evento
-          </button>
-        )}
-        <BigCalendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: 450 }}
-          selectable
-          onSelectSlot={handleSelectSlot}
-          onSelectEvent={handleSelectEvent}
-          dayPropGetter={(date) => {
-            const dateStr = moment(date).format('YYYY-MM-DD');
-            return {
-              className: availableDates.includes(dateStr) ? '' : 'disabled-date',
-              style: {
-                cursor: availableDates.includes(dateStr) ? 'pointer' : 'not-allowed',
-                backgroundColor: availableDates.includes(dateStr) ? '#ffffff' : '#f0f0f0'
-              }
-            };
-          }}
-        />
+      <div className="calendar-content">
+        <h1 className="agendamiento-title">* AGENDAMIENTO *</h1>
+        <div className="calendar-header-section">
+          <div className="programate-section">
+            <img src="/Frontend/src/assets/Icons/calculator-icon.png" alt="Calculator Icon" className="header-icon" />
+            <span>Prográmate</span>
+          </div>
+          <div className="icons-section">
+            <img src="/Frontend/src/assets/Icons/people-icon.png" alt="People Icon" className="header-icon" />
+            <img src="/Frontend/src/assets/Icons/car-icon.png" alt="Car Icon" className="header-icon" />
+            <img src="/Frontend/src/assets/Icons/check-icon.png" alt="Check Icon" className="header-icon" />
+          </div>
+        </div>
+
+        <div className="calendar-main-section">
+          <div className="training-camp-section">
+            <p className="training-camp-text">TRAINNING CAMP</p>
+            <div className="dropdown-container">
+              <input type="text" placeholder="" className="dropdown-input" readOnly />
+              <span className="dropdown-arrow">&#9660;</span>
+            </div>
+          </div>
+
+          <div className="calendar-display-section">
+            <div className="month-year-display">
+              <button className="nav-arrow left-arrow" onClick={() => setCurrentDate(moment(currentDate).subtract(1, 'month').toDate())}>&#9664;</button>
+              <h2 className="month-name">{moment(currentDate).format('MMMM').toUpperCase()}</h2>
+              <span className="year-number">{moment(currentDate).format('YYYY')}</span>
+              <button className="nav-arrow right-arrow" onClick={() => setCurrentDate(moment(currentDate).add(1, 'month').toDate())}>&#9654;</button>
+            </div>
+            <BigCalendar
+              localizer={localizer}
+              events={events}
+              startAccessor="start"
+              endAccessor="end"
+              selectable
+              onSelectSlot={handleSelectSlot}
+              onSelectEvent={handleSelectEvent}
+              messages={{
+                next: 'Siguiente',
+                previous: 'Anterior',
+                today: 'Hoy',
+                month: 'Mes',
+                week: 'Semana',
+                day: 'Día',
+                agenda: 'Agenda',
+                date: 'Fecha',
+                time: 'Hora',
+                event: 'Evento',
+                noEventsInRange: 'No hay eventos en este rango.'
+              }}
+              culture='es'
+              toolbar={false} /* Elimina la barra de herramientas de navegación */
+              view='month' /* Establece la vista por defecto a mes */
+              date={currentDate} /* Controla la fecha del calendario */
+              onNavigate={setCurrentDate} /* Permite la navegación programática */
+            />
+          </div>
+        </div>
 
         {showEventModal && (
           <div className="event-modal-overlay">

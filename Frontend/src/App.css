@@ -5,7 +5,7 @@ html, body, #root {
 }
 
 body {
-  background-image: url('./assets/Fondo.png'); /* Assuming Fondo.png is in assets folder */
+  background-image: url('./assets/images/Fondo.png'); /* Assuming Fondo.png is in assets folder */
   background-color: #365336; /* Dark green fallback color */
   background-size: cover;
   background-position: center;

@@ -7,13 +7,13 @@
   left: 0;
   width: 100%;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 21px 70px; /* Updated padding from Figma */
+  flex-direction: column; /* Changed to column to stack elements */
+  align-items: center; /* Center items horizontally */
+  padding: 10px 70px; /* Adjusted padding */
   z-index: 100;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
   background-color: #3c6e41;
-  background-image: url('../assets/Fondo.png') /* Color verde por defecto para páginas que no son inicio */
+  background-image: url('../assets/images/Fondo.png');
 }
 
 /* Header transparente solo para la página de inicio */
@@ -25,8 +25,23 @@
 
 /* Header con fondo al hacer scroll */
 .home-header.scrolled {
-  background-image: url('../assets/Fondo.png'); /* Verde semi-transparente */
+  background-image: url('../assets/images/Fondo.png'); /* Verde semi-transparente */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header-top {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end; /* Align auth-nav to the right */
+  padding-bottom: 10px; /* Space between top and bottom rows */
+}
+
+.header-bottom {
+  width: 100%;
+  height: 6vw;
+  display: flex;
+  justify-content: space-around; /* Space between logo and main-nav */
+  align-items: center;
 }
 
 /* Estilos para el logo */
@@ -38,39 +53,50 @@
 .logo {
   color: #fff;
   font-family: 'GFS Didot', serif;
-  width: 110px;
-  height: 70px;
+  width: calc(100% - 6px);
+  height: 15vh;
   margin-right: 10px;
 }
 
 /* Estilos para la navegación */
 .main-nav {
   display: flex;
-  gap: 60px; /* Updated gap from Figma */
+  gap: 50px;
   align-items: center;
+  font-size: 20px;
 }
 
 .auth-nav {
   display: flex;
-  align-items: center; /* Ensure vertical alignment */
-  gap: 30px; /* Updated gap from Figma */
+  align-items: center;
+  gap: 30px;
+  font-size: 16px;
+}
+
+.auth-nav a {
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.auth-nav a:hover {
+  color: #ffffff !important;
 }
 
 .site-header nav a {
   text-decoration: none;
-  color: #fff;
+  color: #000000;
   font-family: 'Inter', sans-serif;
-  font-size: 1rem; /* 16px */
-  transition: color 0.3s ease;
 }
 
-.site-header nav a:hover {
-  color: #e0e0e0;
+.site-header:not(.scrolled) nav a:hover {
+  color: #000000;
 }
+
+
 
 .site-header nav a.active {
   font-weight: bold;
-  border-bottom: 2px solid #fff;
+  border-bottom: none;
 }
 
 /* Dropdown styles */
@@ -80,9 +106,8 @@
 }
 
 .dropbtn {
-  color: white;
+  color: black;
   padding: 16px;
-  font-size: 1rem;
   border: none;
   cursor: pointer;
   font-family: 'Inter', sans-serif;
@@ -91,10 +116,9 @@
 
 .dropdown-content {
   display: none;
-  position: absolute;
-  background-color: #3c6e4141; /* Color de fondo del header */
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  position: absolute; /* Changed from fixed to absolute */
+  top: 130%; /* Adjust this value to move it further down */
+  min-width: 300px;
   z-index: 1;
   border-radius: 5px;
   overflow: hidden;
@@ -102,14 +126,14 @@
 
 .dropdown-content a {
   color: white;
-  padding: 12px 16px;
+  padding: 20px 40px;
   text-decoration: none;
   display: block;
   text-align: left;
 }
 
 .dropdown-content a:hover {
-  background-color: #5a925e; /* Un tono más claro para el hover */
+  background-color: #14161459; /* Un tono más claro para el hover */
 }
 
 .dropdown:hover .dropdown-content {
@@ -118,7 +142,7 @@
 
 /* Arrow for dropdown */
 .arrow {
-  border: solid white;
+  border: solid black;
   border-width: 0 2px 2px 0;
   display: inline-block;
   padding: 3px;
@@ -147,6 +171,11 @@
   height: 24px;
 }
 
+.star {
+  width: 24px;
+  height: 24px;
+}
+
 /* Estilos para la información del usuario */
 .user-info {
   display: flex;
@@ -155,71 +184,134 @@
 }
 
 .user-email {
-  color: #fff;
+  color: #000000; /* Changed to black */
   font-family: 'Inter', sans-serif;
   font-size: 1rem; /* 16px */
 }
 
 .logout-btn {
   background-color: transparent;
-  border: 1px solid #fff;
-  color: #fff;
+  border: none;
+  color: #000000; /* Changed to black */
   font-family: 'Inter', sans-serif;
   padding: 5px 10px;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .logout-btn:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Asegurar que el texto del usuario y el botón de cerrar sesión también cambien de color */
+.scrolled-text .user-email,
+.scrolled-text .logout-btn {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.site-header nav.scrolled-text a {
+  color: #ffffff !important;
+}
+.site-header nav.scrolled-text a:hover,
+.scrolled-text .dropbtn {
+  color: #ffffff !important;
+}
+
+.scrolled-text .dropdown-content a,
+.scrolled-text .dropdown-content a:hover {
+  color: #ffffff !important;
+  border-color: #ffffff !important;
+}
+
+.scrolled-text .arrow.down {
+  border-color: #ffffff !important;
+}
+
+/* Hamburger menu styles */
+.menu-toggle {
+  display: none; /* Hidden by default */
+  flex-direction: column;
+  cursor: pointer;
+  padding: 10px;
+  z-index: 100;
+}
+
+.hamburger {
+  width: 25px;
+  height: 3px;
+  background-color: #333;
+  margin: 4px 0;
+  transition: 0.4s;
 }
 
 /* Media Queries for Mobile Responsiveness */
 @media (max-width: 768px) {
   .site-header {
-    padding: 15px 20px; /* Smaller padding for mobile */
-    flex-direction: column; /* Stack logo and navs */
-    align-items: flex-start; /* Align items to the start */
+    padding: 15px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-top,
+  .header-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-bottom: 0;
   }
 
   .logo-text {
-    font-size: 1.8rem; /* Smaller logo text */
-    margin-bottom: 10px; /* Space below logo */
+    font-size: 1.8rem;
+    margin-bottom: 10px;
   }
 
-  .main-nav, .auth-nav {
-    flex-direction: column; /* Stack nav items */
-    gap: 10px; /* Smaller gap between nav items */
-    width: 100%; /* Full width for navs */
-    align-items: flex-start; /* Align nav items to the start */
+  .main-nav {
+    display: none; /* Hide main nav by default on small screens */
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    top: 100%; /* Position below the header */
+    left: 0;
+    width: 100%;
+    background-color: #fff; /* Background for the dropdown menu */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 99;
+    padding: 10px 20px;
   }
 
-  .site-header nav a {
-    font-size: 0.9rem; /* Slightly smaller font for nav links */
-    padding: 5px 0; /* Adjust padding for stacked items */
+  .main-nav.open {
+    display: flex; /* Show when menu is open */
+  }
+
+  .main-nav a,
+  .dropbtn {
+    margin: 10px 0;
+    font-size: 0.9rem;
+    width: 100%; /* Full width for menu items */
+    text-align: left;
+  }
+
+  .dropdown-content {
+    position: static; /* Change to static for mobile */
+    transform: none; /* Remove transform */
+    box-shadow: none; /* Remove shadow */
+    background-color: #f1f1f1; /* Slightly different background for sub-items */
+    width: 100%;
+    padding-left: 20px; /* Indent sub-items */
+  }
+
+  .dropdown:hover .dropdown-content {
+    display: none; /* Hide on hover for mobile, will be controlled by JS */
+  }
+
+  /* Show hamburger menu */
+  .menu-toggle {
+    display: flex;
   }
 
   .auth-nav {
-    margin-top: 10px; /* Space above auth nav if main nav is present */
-  }
-
-  .user-info {
-    flex-direction: column; /* Stack user email and logout button */
-    align-items: flex-start;
-    gap: 5px;
-  }
-
-  .logout-btn {
-    padding: 5px 8px;
-  }
-
-  .calendar {
-    width: 20px; /* Smaller calendar icon */
-    height: 20px;
-  }
-  
-  .home-header.scrolled {
-    background-image: url('../assets/Fondo.png'); /* Ensure background is visible on scroll */
+    flex-direction: column;
+    gap: 10px;
   }
 }

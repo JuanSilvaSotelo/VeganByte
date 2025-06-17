@@ -1,3 +1,7 @@
+/*
+  Define la fuente personalizada 'Palmer Lake Print'.
+  Asegura que la fuente se cargue correctamente en diferentes navegadores y formatos.
+*/
 @font-face {
   font-family: 'Palmer Lake Print';
   src: url('PalmerLakePrint-Regular.eot');
@@ -11,519 +15,664 @@
   font-display: swap;
 }
 
-/* Estilos generales */
+/* Estilos generales para resetear márgenes, paddings y box-sizing */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Estilos para la página de inicio */
 .inicio-page {
-  font-family: 'Palmer Lake Print', cursive;
-  color: #333;
-  overflow-x: hidden;
-  background-color: #fff;
+  font-family: 'Palmer Lake Print', cursive; /* Fuente principal de la página */
+  color: #333; /* Color de texto principal */
+  overflow-x: hidden; /* Evita el scroll horizontal */
+  background-color: #EDE1E1; /* Color de fondo de la página */
 }
 
-/* Sección Hero */
+/* Contenedor del logo */
+.logo-container {
+  width: 400px; /* Ancho del contenedor del logo */
+  height: 400px; /* Alto del contenedor del logo */
+  display: flex; /* Usa flexbox para centrar el contenido */
+  justify-content: center; /* Centra horizontalmente */
+  align-items: center; /* Centra verticalmente */
+  overflow: hidden; /* Oculta cualquier contenido que se desborde */
+}
+
+/* Estilos del logo */
+.logo {
+  max-width: 70%; /* Ancho máximo del logo dentro de su contenedor */
+  max-height: 65%; /* Alto máximo del logo dentro de su contenedor */
+  object-fit: contain; /* Ajusta la imagen para que quepa dentro del contenedor */
+}
+
+/* Media queries para el contenedor del logo en pantallas medianas */
+@media (max-width: 768px) {
+  .logo-container {
+    width: 300px; /* Ancho ajustado para pantallas más pequeñas */
+    height: 300px; /* Alto ajustado para pantallas más pequeñas */
+  }
+}
+
+/* Media queries para el contenedor del logo en pantallas pequeñas */
+@media (max-width: 480px) {
+  .logo-container {
+    width: 200px; /* Ancho ajustado para pantallas aún más pequeñas */
+    height: 200px; /* Alto ajustado para pantallas aún más pequeñas */
+  }
+}
+
+/* Sección Hero: Contenedor principal de la sección de héroe */
 .hero-section {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-  margin-top: 0;
+  position: relative; /* Posicionamiento relativo para los elementos internos */
+  height: 100%; /* Ocupa el 100% del alto disponible */
+  width: 100%; /* Ocupa el 100% del ancho disponible */
+  overflow: hidden; /* Oculta cualquier contenido que se desborde */
+  margin-top: 0; /* Elimina el margen superior */
+  background-color: #EDE1E1; /* Color de fondo de la sección */
+  background: linear-gradient(to top, rgba(255, 255, 255, 0)), rgba(0, 0, 0, 1);
 }
 
+/* Imagen de fondo de la sección de héroe */
 .hero-image {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 100%; /* Ocupa el 100% del ancho */
+  height: 100%; /* Ocupa el 100% del alto */
+  object-fit: cover; /* Cubre el área manteniendo la relación de aspecto */
 }
 
+/* Media queries para la sección de héroe en pantallas medianas */
 @media (max-width: 768px) {
   .hero-section {
-    height: auto;
-    min-height: 200px;
+    height: auto; /* Altura automática */
+    min-height: 200px; /* Altura mínima para pantallas medianas */
+    background-color: #EDE1E1;
   }
 }
 
+/* Media queries para la sección de héroe en pantallas pequeñas */
 @media (max-width: 480px) {
   .hero-section {
-    min-height: 150px;
+    min-height: 150px; /* Altura mínima para pantallas pequeñas */
+    background-color: #EDE1E1;
   }
 }
 
+/* Capa de superposición sobre la imagen de héroe */
 .hero-overlay {
-  position: absolute;
-  bottom: 15%;
-  left: 0;
-  width: 100%;
-  text-align: center;
-  padding: 0 20px;
+  position: absolute; /* Posicionamiento absoluto */
+  bottom: 15%; /* 15% desde la parte inferior */
+  left: 0; /* Alineado a la izquierda */
+  width: 100%; /* Ocupa el 100% del ancho */
+  text-align: center; /* Centra el texto */
+  padding: 0 20px; /* Padding horizontal */
 }
 
+/* Contenedor del título principal */
 .main-title-container {
-  text-align: center;
-  padding: 40px 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  text-align: center; /* Centra el texto */
+  padding: 40px 20px; /* Espaciado interno */
+  max-width: 1200px; /* Ancho máximo del contenedor */
+  margin: 0 auto; /* Centra el contenedor horizontalmente */
 }
 
+/* Título principal de la sección de héroe */
 .hero-title {
-  font-size: 2.5rem;
-  color: #000;
-  font-weight: 400;
-  font-style: italic;
-  margin-bottom: 20px;
-  text-transform: uppercase;
-  line-height: 1.4;
-  font-family: 'Palmer Lake Print', cursive;
+  font-size: 2.5rem; /* Tamaño de fuente */
+  color: #000; /* Color del texto */
+  font-style: italic; /* Estilo de fuente itálica */
+  margin-bottom: 20px; /* Margen inferior */
+  text-transform: uppercase; /* Transforma el texto a mayúsculas */
+  line-height: 1.4; /* Altura de línea */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente del título */
+  font-weight: 900; /* Grosor de la fuente */
+  transform: translate(-50%, 50%);
+  left: 50%;
+  bottom: 50%;
+  position: relative;
 }
 
+/* Media queries para el título principal en pantallas grandes */
 @media (max-width: 1024px) {
   .hero-title {
-    font-size: 2rem;
+    font-size: 2rem; /* Tamaño de fuente ajustado */
   }
 }
 
+/* Media queries para el título principal en pantallas medianas */
 @media (max-width: 768px) {
   .hero-title {
-    font-size: 1.8rem;
-    padding: 0 10px;
+    font-size: 1.8rem; /* Tamaño de fuente ajustado */
+    padding: 0 10px; /* Espaciado interno ajustado */
   }
 }
 
+/* Media queries para el título principal en pantallas pequeñas */
 @media (max-width: 480px) {
   .hero-title {
-    font-size: 1.5rem;
+    font-size: 1.5rem; /* Tamaño de fuente ajustado */
   }
 }
 
 /* Los estilos del header ahora están en Header.css */
 
-/* Sección de experiencias personalizada */
+/* Sección de experiencias personalizada: Contenedor principal */
 .experience-section-custom {
-  position: relative;
-  padding: 80px 40px;
-  background-color: #fff;
-  text-align: center;
-  min-height: 500px;
+  position: relative; /* Posicionamiento relativo para los iconos de fondo */
+  padding: 80px 40px; /* Espaciado interno */
+  background-color: #EDE1E1; /* Color de fondo */
+  text-align: center; /* Centra el texto */
+  min-height: 500px; /* Altura mínima */
 }
 
+/* Media queries para la sección de experiencias en pantallas medianas */
 @media (max-width: 768px) {
   .experience-section-custom {
-    padding: 60px 20px;
-    min-height: auto;
+    padding: 60px 20px; /* Espaciado interno ajustado */
+    min-height: auto; /* Altura mínima automática */
+    background-color: #EDE1E1;
   }
 }
 
+/* Media queries para la sección de experiencias en pantallas pequeñas */
 @media (max-width: 480px) {
   .experience-section-custom {
-    padding: 40px 15px;
+    padding: 40px 15px; /* Espaciado interno ajustado */
+    background-color: #EDE1E1;
   }
 }
 
+/* Contenedor de los iconos de fondo de la sección de experiencias */
 .experience-bg-icons {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 5;
+  position: absolute; /* Posicionamiento absoluto */
+  width: 75%; /* Ocupa el 100% del ancho */
+  height: 97%; /* Ocupa el 100% del alto */
+  top: 2%; /* Alineado en la parte superior */
+  left: 13%; /* Alineado a la izquierda */
+  pointer-events: none; /* Los eventos del ratón no interactúan con este elemento */
+  z-index: 5; /* Capa de apilamiento */
 }
+
+/* Estilos generales para los iconos de fondo */
 .bg-icon {
-  position: absolute;
-  width: 90px;
-  height: 90px;
+  position: absolute; /* Mantiene los iconos fijos en la ventana */
+  width: 12%; /* Ancho fijo del icono */
+  height: 12%; /* Alto fijo del icono */
+  border-radius: 20%; /* Bordes redondeados */
+  background-color: #EDE1E1;
+  border: 10px solid #EDE1E1; /* Borde */;
 }
-.bg-icon-1 { position: absolute; top: 60px; left: 450px; border-radius: 20px; z-index: 10;}
-.bg-icon-2 { position: absolute; top: 60px; right: 450px; border-radius: 20px; z-index: 10;}
-.bg-icon-3 { position: absolute; bottom: 60px; left: 450px; border-radius: 20px; z-index: 10;}
-.bg-icon-4 { position: absolute; bottom: 60px; right: 450px; border-radius: 20px; z-index: 10;}
 
-@media (max-width: 600px) {
+/* Posicionamiento individual de los iconos de fondo */
+.bg-icon-1 { top: 40px; left: 40px; z-index: 10;} /* Icono superior izquierdo */
+.bg-icon-2 { top: 40px; right: 40px; z-index: 10;} /* Icono superior derecho */
+.bg-icon-3 { bottom: 40px; left: 40px; z-index: 10;} /* Icono inferior izquierdo */
+.bg-icon-4 { bottom: 40px; right: 40px; z-index: 10;} /* Icono inferior derecho */
+
+/* Media queries para los iconos de fondo en pantallas medianas */
+@media (max-width: 768px) {
   .bg-icon {
-    position: absolute;
-    width: 75px;
-    height: 75px;
+    width: 60px; /* Ancho ajustado */
+    height: 60px; /* Alto ajustado */
   }
-  .bg-icon-1 { top: 50px; left: 24px; }
-  .bg-icon-2 { top: 50px; right: 24px; }
-  .bg-icon-3 { bottom: 50px; left: 24px; }
-  .bg-icon-4 { bottom: 50px; right: 24px; }
+  .bg-icon-1 { top: 20px; left: 20px; } /* Posición ajustada */
+  .bg-icon-2 { top: 20px; right: 20px; } /* Posición ajustada */
+  .bg-icon-3 { bottom: 20px; left: 20px; } /* Posición ajustada */
+  .bg-icon-4 { bottom: 20px; right: 20px; } /* Posición ajustada */
 }
 
+/* Media queries para los iconos de fondo en pantallas pequeñas */
+@media (max-width: 480px) {
+  .bg-icon {
+    width: 40px; /* Ancho ajustado */
+    height: 40px; /* Alto ajustado */
+  }
+  .bg-icon-1 { top: 10px; left: 10px; } /* Posición ajustada */
+  .bg-icon-2 { top: 10px; right: 10px; } /* Posición ajustada */
+  .bg-icon-3 { bottom: 10px; left: 10px; } /* Posición ajustada */
+  .bg-icon-4 { bottom: 10px; right: 10px; } /* Posición ajustada */
+}
+
+/* Contenedor de la cuadrícula de experiencias */
 .experience-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  gap: 15px;
-  max-width: 900px; 
-  max-height: 800px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 2;
-  min-height: 370px;
+  display: grid; /* Usa CSS Grid para el diseño */
+  grid-template-columns: 1fr 1fr; /* Dos columnas de igual ancho */
+  grid-template-rows: 1fr 1fr; /* Dos filas de igual alto */
+  gap: 15px; /* Espacio entre elementos de la cuadrícula */
+  max-width: 900px; /* Ancho máximo de la cuadrícula */
+  max-height: 800px; /* Altura máxima de la cuadrícula */
+  margin: 0 auto; /* Centra la cuadrícula horizontalmente */
+  position: relative; /* Posicionamiento relativo */
+  z-index: 2; /* Capa de apilamiento */
+  min-height: 370px; /* Altura mínima de la cuadrícula */
 }
 
+/* Media queries para la cuadrícula de experiencias en pantallas medianas */
 @media (max-width: 768px) {
   .experience-grid {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    max-width: 400px;
-    min-height: auto;
+    grid-template-columns: 1fr; /* Una columna en pantallas medianas */
+    grid-template-rows: auto; /* Altura de fila automática */
+    max-width: 400px; /* Ancho máximo ajustado */
+    min-height: auto; /* Altura mínima automática */
   }
 }
 
+/* Media queries para la cuadrícula de experiencias en pantallas pequeñas */
 @media (max-width: 480px) {
   .experience-grid {
-    gap: 10px;
+    gap: 10px; /* Espacio ajustado */
   }
 }
 
-.experience-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; }
-.experience-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; }
-.experience-item:nth-child(3) { grid-area: 2 / 1 / 3 / 2; }
-.experience-item:nth-child(4) { grid-area: 2 / 2 / 3 / 3; }
+/* Posicionamiento de elementos individuales en la cuadrícula */
+.experience-item:nth-child(1) { grid-area: 1 / 1 / 2 / 2; } /* Primer elemento */
+.experience-item:nth-child(2) { grid-area: 1 / 2 / 2 / 3; } /* Segundo elemento */
+.experience-item:nth-child(3) { grid-area: 2 / 1 / 3 / 2; } /* Tercer elemento */
+.experience-item:nth-child(4) { grid-area: 2 / 2 / 3 / 3; } /* Cuarto elemento */
+
+/* Logo central en la cuadrícula de experiencias */
 .experience-center-logo {
-  grid-area: 1 / 1 / 3 / 3;
-  align-self: center;
-  justify-self: center;
+  grid-area: 1 / 1 / 3 / 3; /* Ocupa todo el espacio central */
+  align-self: center; /* Centra verticalmente */
+  justify-self: center; /* Centra horizontalmente */
 }
 
+/* Estilo para cada elemento de experiencia */
 .experience-item {
-  position: relative;
-  flex: 0 0 calc(25% - 22.5px);
-  max-width: calc(150% - 22.5px);
-  border-radius: 28px;
-  overflow: hidden;
-  cursor: pointer;
-  transition: box-shadow 0.3s;
-  box-shadow: none;
-  background: #fff;
-  margin: 0;
+  position: relative; /* Posicionamiento relativo */
+  flex: 0 0 calc(25% - 22.5px); /* Flexibilidad del elemento */
+  max-width: calc(150% - 22.5px); /* Ancho máximo */
+  border-radius: 28px; /* Bordes redondeados */
+  overflow: hidden; /* Oculta el contenido que se desborda */
+  cursor: pointer; /* Cambia el cursor a puntero */
+  transition: box-shadow 0.3s; /* Transición suave para la sombra */
+  box-shadow: none; /* Sin sombra inicial */
+  background: #fff; /* Color de fondo */
+  margin: 0; /* Sin margen */
 }
 
+/* Media queries para los elementos de experiencia en pantallas medianas */
 @media (max-width: 768px) {
   .experience-item {
-    max-width: 100%;
+    max-width: 100%; /* Ancho máximo del 100% */
   }
 }
 
+/* Imagen dentro del elemento de experiencia */
 .experience-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 28px;
-  display: block;
-  transition: filter 0.3s;
-  background: #fff;
-  margin: 0;
+  width: 100%; /* Ancho del 100% */
+  height: 100%; /* Alto del 100% */
+  object-fit: cover; /* Ajusta la imagen para cubrir el área */
+  border-radius: 28px; /* Bordes redondeados */
+  display: block; /* Muestra como bloque */
+  transition: filter 0.3s; /* Transición suave para el filtro */
+  background: #fff; /* Color de fondo */
+  margin: 0; /* Sin margen */
 }
 
+/* Capa de superposición en el elemento de experiencia */
 .experience-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0,0,0,0.35);
-  color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-size: 1.2rem;
-  font-family: 'Inter', sans-serif;
-  font-weight: 500;
-  border-radius: 28px;
+  position: absolute; /* Posicionamiento absoluto */
+  top: 60PX; /* 60px desde la parte superior */
+  left: 0; /* Alineado a la izquierda */
+  width: 100%; /* Ancho del 100% */
+  height: 89%; /* Alto del 89% */
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0)); /* Degradado de fondo */
+  color: #F2B4AE; /* Color del texto */
+  display: flex; /* Usa Flexbox para el diseño */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  opacity: 0; /* Opacidad inicial */
+  transition: opacity 0.3s; /* Transición suave para la opacidad */
+  font-size: 2.6rem; /* Tamaño de fuente */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente */
+  font-style: italic; /* Estilo de fuente itálica */
+  font-weight: 900; /* Grosor de la fuente */
+  border-radius: 28px; /* Bordes redondeados */
+  text-decoration: none; /* Sin decoración de texto */;
 }
 
+/* Efecto hover para la imagen de experiencia */
 .experience-item:hover .experience-img {
-  filter: brightness(0.7);
+  filter: brightness(0.7); /* Reduce el brillo al pasar el ratón */
 }
 
+/* Efecto hover para la superposición de experiencia */
 .experience-item:hover .experience-overlay {
-  opacity: 1;
+  opacity: 1; /* Muestra la superposición al pasar el ratón */
 }
 
+/* Logo central de experiencia */
 .experience-center-logo {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 3;
-  background-image: url('src/assets/fondo.png');
-  border-radius: 45px;
-  padding: 18px 32px;
-  box-shadow: none;
-  border: 15px solid #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: absolute; /* Posicionamiento absoluto */
+  top: 55%; /* 55% desde la parte superior */
+  left: 50%; /* 50% desde la izquierda */
+  transform: translate(-50%, -50%); /* Centra el elemento */
+  z-index: 3; /* Capa de apilamiento */
+  background-image: url('../assets/images/Fondo.png'); /* Imagen de fondo */
+  border-radius: 190px; /* Bordes redondeados */
+  padding: 18px 32px; /* Espaciado interno */
+  box-shadow: none; /* Sin sombra */
+  border: 15px solid #EDE1E1; /* Borde */
+  display: flex; /* Usa Flexbox para el diseño */
+  align-items: center; /* Centra verticalmente */
+  justify-content: center; /* Centra horizontalmente */
+  width: 50%; /* Ancho del 50% */
+  height: 40%; /* Alto del 40% */
 }
 
+/* Media queries para el logo central de experiencia en pantallas medianas */
 @media (max-width: 768px) {
   .experience-center-logo {
-    position: static;
-    transform: none;
-    margin: 20px auto;
-    padding: 10px 20px;
-    border: 8px solid #ffffff;
+    position: static; /* Posicionamiento estático */
+    transform: none; /* Sin transformación */
+    margin: 20px auto; /* Margen automático */
+    padding: 10px 20px; /* Espaciado interno ajustado */
+    border: 8px solid #EDE1E1; /* Borde ajustado */
   }
 }
+
 /* Sección de respeto animal */
 .animal-respect-section {
-  padding: 80px 40px;
-  text-align: center;
-  background-color: #f8f8f8;
+  padding: 25px 40px; /* Espaciado interno */
+  text-align: center; /* Centra el texto */
+  background-color: #EDE1E1; /* Color de fondo */
+  transform: translate(-50%);
+  left: 50%;
+  top: 50%;
+  position: relative;
 }
 
+/* Media queries para la sección de respeto animal en pantallas medianas */
 @media (max-width: 768px) {
   .animal-respect-section {
-    padding: 60px 20px;
+    padding: 60px 20px; /* Espaciado interno ajustado */
   }
 }
 
+/* Media queries para la sección de respeto animal en pantallas pequeñas */
 @media (max-width: 480px) {
   .animal-respect-section {
-    padding: 40px 15px;
+    padding: 40px 15px; /* Espaciado interno ajustado */
+    background-color: #EDE1E1
   }
 }
 
+/* Título de la sección */
 .section-title {
-  font-size: 2.2rem;
-  margin-bottom: 60px;
-  text-transform: uppercase;
-  font-weight: 400;
-  font-style: italic;
-  color: #333;
-  text-align: center;
-  font-family: 'Palmer Lake Print', cursive;
-  line-height: 1.3;
+  font-size: 2.2rem; /* Tamaño de fuente */
+  margin-bottom: 60px; /* Margen inferior */
+  text-transform: uppercase; /* Transforma el texto a mayúsculas */
+  font-weight: 900; /* Grosor de la fuente */
+  font-style: italic; /* Estilo de fuente itálica */
+  color: #333; /* Color del texto */
+  text-align: center; /* Centra el texto */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente */
+  line-height: 1.3; /* Altura de línea */
 }
 
+/* Contenedor de imágenes circulares */
 .circular-images-container {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin-top: 40px;
+  display: flex; /* Usa Flexbox para el diseño */
+  justify-content: center; /* Centra las imágenes horizontalmente */
+  gap: 30px; /* Espacio entre imágenes */
+  margin-top: 40px; /* Margen superior */
 }
 
+/* Media queries para el contenedor de imágenes circulares en pantallas medianas */
 @media (max-width: 768px) {
   .circular-images-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
+    flex-direction: column; /* Apila las imágenes verticalmente */
+    align-items: center; /* Centra las imágenes */
+    gap: 20px; /* Espacio ajustado */
   }
 }
 
+/* Elemento individual de imagen circular */
 .circular-image-item {
-  flex: 0 0 calc(33.333% - 40px);
-  max-width: calc(33.333% - 40px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex: 0 0 calc(33.333% - 40px); /* Flexibilidad del elemento */
+  max-width: calc(33.333% - 40px); /* Ancho máximo */
+  display: flex; /* Usa Flexbox para el diseño */
+  flex-direction: column; /* Apila el contenido verticalmente */
+  align-items: center; /* Centra el contenido */
 }
 
+/* Imagen circular grande */
 .circular-image.large {
-  width: 100%;
-  height: 70%;
-  max-width: 320px;
-  border-radius: 50%;
+  width: 100%; /* Ancho del 100% */
+  height: 50%; /* Alto del 60% */
+  max-width: 400px; /* Ancho máximo */
+  border-radius: 50%; /* Hace la imagen circular */
 }
 
+/* Leyenda de la imagen */
 .image-caption {
-  margin-top: 20px;
-  max-width: 280px;
+  margin-top: 20px; /* Margen superior */
+  max-width: 280px; /* Ancho máximo */
 }
 
+/* Párrafo de la leyenda de la imagen */
 .image-caption p {
-  font-size: 1rem;
-  line-height: 1.4;
-  font-style: italic;
-  color: #666;
+  font-size: 1.5rem; /* Tamaño de fuente */
+  line-height: 1.4; /* Altura de línea */
+  font-style: italic; /* Estilo de fuente itálica */
+  color: #666; /* Color del texto */
 }
 
 /* Sección de alimentos */
-.food-section {
-  padding: 80px 40px;
-  text-align: center;
-  background-color: #fff;
+.senderismo-section {
+  text-align: center; /* Centra el texto */
+  background-color: #EDE1E1; /* Color de fondo */
+  top: -50px;
+  position: relative;
 }
 
+/* Media queries para la sección de alimentos en pantallas medianas */
 @media (max-width: 768px) {
-  .food-section {
-    padding: 60px 20px;
+  .senderismo-section {
+    padding: 60px 20px; /* Espaciado interno ajustado */
   }
 }
 
+/* Media queries para la sección de alimentos en pantallas pequeñas */
 @media (max-width: 480px) {
-  .food-section {
-    padding: 40px 15px;
+  .senderismo-section {
+    padding: 40px 15px; /* Espaciado interno ajustado */
   }
 }
 
-.food-image-container {
-  margin-top: 40px;
-  max-width: 800px;
-  margin-left: auto;
-  margin-right: auto;
+/* Contenedor de la imagen de senderismo */
+.senderismo-image-container {
+  margin-top: 40px; /* Margen superior */
+  max-width: 100%; /* Ancho máximo del 100% */
+  margin-left: auto; /* Centra horizontalmente */
+  margin-right: auto; /* Centra horizontalmente */
 }
 
+/* Media queries para el contenedor de la imagen de senderismo en pantallas medianas */
 @media (max-width: 768px) {
-  .food-image-container {
-    margin-top: 20px;
+  .senderismo-image-container {
+    margin-top: 20px; /* Margen superior ajustado */
   }
 }
 
-.food-image {
-  width: 100%;
-  height: auto;
-  border-radius: 15px;
-  max-height: 600px;
-  object-fit: cover;
+/* Imagen de senderismo */
+.senderismo-image {
+  width: 100%; /* Ancho del 100% */
+  height: auto; /* Altura automática */
+  border-radius: 15px; /* Bordes redondeados */
+  max-height: 600px; /* Altura máxima */
+  object-fit: cover; /* Ajusta la imagen para cubrir el área */
 }
 
 /* Sección de estadísticas */
 .stats-section {
-  display: flex;
-  justify-content: center;
-  gap: 80px;
-  padding: 60px 40px;
-  background-color: #f8f8f8;
-  flex-wrap: wrap;
+  display: flex; /* Usa Flexbox para el diseño */
+  justify-content: center; /* Centra los elementos horizontalmente */
+  gap: 80px; /* Espacio entre elementos */
+  padding: 60px 0 80px 222px; /* Espaciado interno */
+  background-color: #EDE1E1; /* Color de fondo */
+  flex-wrap: inherit; /* Permite que los elementos se envuelvan */
 }
 
+/* Media queries para la sección de estadísticas en pantallas medianas */
 @media (max-width: 768px) {
   .stats-section {
-    flex-direction: column;
-    gap: 30px;
-    padding: 40px 20px;
+    flex-direction: column; /* Apila los elementos verticalmente */
+    gap: 30px; /* Espacio ajustado */
+    padding: 40px 20px; /* Espaciado interno ajustado */
   }
 }
 
+/* Elemento individual de estadística */
 .stat-item {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+  display: flex; /* Usa Flexbox para el diseño */
+  align-items: center; /* Centra los elementos verticalmente */
+  gap: 25px; /* Espacio entre el icono y el texto */
 }
 
+/* Icono de estadística */
 .stat-icon {
-  font-size: 3rem;
+  font-size: 3rem; /* Tamaño del icono */
 }
 
+/* Contenedor de texto de estadística */
 .stat-text {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
+  display: flex; /* Usa Flexbox para el diseño */
+  flex-direction: column; /* Apila el texto verticalmente */
+  text-align: left; /* Alinea el texto a la izquierda */
 }
 
+/* Media queries para el texto de estadística en pantallas pequeñas */
 @media (max-width: 480px) {
   .stat-text {
-    align-items: center;
+    align-items: center; /* Centra el texto */
   }
 }
 
+/* Número de estadística */
 .stat-number {
-  font-size: 2.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 2.5rem; /* Tamaño de fuente */
+  font-weight: bold; /* Grosor de la fuente */
+  color: #333; /* Color del texto */
 }
 
+/* Media queries para el número de estadística en pantallas pequeñas */
 @media (max-width: 480px) {
   .stat-number {
-    font-size: 2rem;
+    font-size: 2rem; /* Tamaño de fuente ajustado */
   }
 }
 
+/* Descripción de estadística */
 .stat-description {
-  font-size: 1rem;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 1rem; /* Tamaño de fuente */
+  color: #666; /* Color del texto */
+  text-transform: uppercase; /* Transforma el texto a mayúsculas */
+  letter-spacing: 1px; /* Espaciado entre letras */
 }
 
+/* Media queries para la descripción de estadística en pantallas pequeñas */
 @media (max-width: 480px) {
   .stat-description {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* Tamaño de fuente ajustado */
   }
 }
 
-/* Footer */
+/* Pie de página */
 .main-footer {
-  background-color: #2c6e49;
-  color: white;
-  padding: 40px;
+  background-color: #2c6e49; /* Color de fondo del pie de página */
+  color: white; /* Color del texto */
+  padding: 40px; /* Espaciado interno */
 }
 
+/* Contenido del pie de página */
 .footer-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex; /* Usa Flexbox para el diseño */
+  justify-content: space-between; /* Distribuye el espacio entre los elementos */
+  align-items: center; /* Centra los elementos verticalmente */
+  max-width: 1200px; /* Ancho máximo */
+  margin: 0 auto; /* Centra el contenido horizontalmente */
 }
 
+/* Sección izquierda del pie de página */
 .footer-left {
-  text-align: left;
+  text-align: left; /* Alinea el texto a la izquierda */
 }
 
+/* Título del pie de página */
 .footer-title {
-  font-size: 1rem;
-  font-weight: 500;
-  margin-bottom: 8px;
-  font-family: 'Inter', sans-serif;
+  font-size: 1rem; /* Tamaño de fuente */
+  font-weight: 500; /* Grosor de la fuente */
+  margin-bottom: 8px; /* Margen inferior */
+  font-family: 'Inter', sans-serif; /* Fuente */
 }
 
+/* Texto del logo en el pie de página */
 .footer-logo-text {
-  font-size: 1.8rem;
-  font-weight: 500;
-  font-family: 'GFS Didot', serif;
+  font-size: 1.8rem; /* Tamaño de fuente */
+  font-weight: 500; /* Grosor de la fuente */
+  font-family: 'GFS Didot', serif; /* Fuente */
 }
 
+/* Sección derecha del pie de página */
 .footer-right {
-  text-align: right;
+  text-align: right; /* Alinea el texto a la derecha */
 }
 
+/* Título de contacto */
 .contact-title {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  font-family: 'Palmer Lake Print', cursive;
+  font-size: 1.1rem; /* Tamaño de fuente */
+  margin-bottom: 8px; /* Margen inferior */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente */
 }
 
+/* Número de teléfono de contacto */
 .contact-phone {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-  font-family: 'Palmer Lake Print', cursive;
+  font-size: 1.1rem; /* Tamaño de fuente */
+  margin-bottom: 8px; /* Margen inferior */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente */
 }
 
+/* Correo electrónico de contacto */
 .contact-email {
-  font-size: 1rem;
-  font-family: 'Palmer Lake Print', cursive;
+  font-size: 1rem; /* Tamaño de fuente */
+  font-family: 'Palmer Lake Print', cursive; /* Fuente */
 }
 
+/* Navegación del pie de página */
 .footer-navigation {
-  margin-top: 30px;
+  margin-top: 30px; /* Margen superior */
 }
 
 /* Responsive para pantallas muy grandes */
 @media (min-width: 1400px) {
   .section-content,
   .circular-images-container,
-  .food-image-container,
-  .stats-section,
-  .footer-content {
-    max-width: 1400px;
+  .senderismo-image-container,
+  .stats-section {
+    max-width: 14000px; /* Ancho máximo ajustado */
   }
   
   .hero-title {
-    font-size: 3rem;
+    font-size: 2rem; /* Tamaño de fuente ajustado */
   }
   
   .section-title {
-    font-size: 2.5rem;
+    font-size: 2rem; /* Tamaño de fuente ajustado */
   }
+  .experience-bg-icons {
+    position: absolute; /* Posicionamiento absoluto */
+    width: 53.3%; /* Ocupa el 100% del ancho */
+    height: 92%; /* Ocupa el 100% del alto */
+    top: 4.2%; /* Alineado en la parte superior */
+    left: 23%; /* Alineado a la izquierda */
+    pointer-events: none; /* Los eventos del ratón no interactúan con este elemento */
+    z-index: 5; /* Capa de apilamiento */
+  }
+}
+
+.star-icon {
+  width: 14%;
+  height: 90%;
 }
