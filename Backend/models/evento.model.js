@@ -3,15 +3,25 @@ import { pool } from '../config/database.js';
 // Modelo para la tabla 'experiencias'
 export const Experiencia = {
   find: async () => {
-    const [rows] = await pool.query('SELECT * FROM Experiencias'); // Corrección del nombre de la tabla
+    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin FROM Experiencias'); // Corrección del nombre de la tabla
     // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
     return rows.map(row => ({ ...row, tipo: 'experiencia' }));
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT * FROM Experiencias WHERE Id_Experiencias = ?', [id]); // Corrección del nombre de la tabla y la clave primaria
-    // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
-    return rows[0] ? { ...rows[0], tipo: 'experiencia' } : null;
+    const [rows] = await pool.query('SELECT *, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Experiencias.Id_Experiencias AND Tipo_Evento = \'experiencia\') AS Inscritos FROM Experiencias WHERE Id_Experiencias = ?', [id]);
+    const inscritos = rows[0] ? rows[0].Inscritos : 0;
+    const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
+    let estado = 'Disponible';
+    if (rows[0] && rows[0].Estado === 'Cancelado') {
+      estado = 'Cancelado';
+    } else if (inscritos >= capacidad) {
+      estado = 'Completo';
+    }
+    console.log(`Experiencia ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
+    const returnedExperiencia = rows[0] ? { ...rows[0], tipo: 'experiencia', Capacidad: capacidad, Estado: estado } : null;
+    console.log('Returned Experiencia object:', returnedExperiencia);
+    return returnedExperiencia;
   },
 
   create: async (data) => {
@@ -20,9 +30,9 @@ export const Experiencia = {
       INSERT INTO Experiencias (
         Tipo, Descripcion, Categoria, Valor, 
         nivel_Running, duracion_Desplazamiento, duracion_Caminata,
-        servicios_Termales, Ubicacion
+        servicios_Termales, Ubicacion, Fecha, Hora_Inicio, Hora_Fin, cant_Personas, Estado
       )
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const [result] = await pool.query(query, [
       // data.Id_Reserva, // Omitido
@@ -34,7 +44,12 @@ export const Experiencia = {
       data.duracion_Desplazamiento,
       data.duracion_Caminata,
       data.servicios_Termales,
-      data.Ubicacion
+      data.Ubicacion,
+      data.Fecha,
+      data.Hora_Inicio,
+      data.Hora_Fin,
+      data.capacidad,
+      data.Estado || 'Disponible'
     ]);
     return result.insertId;
   },
@@ -43,12 +58,36 @@ export const Experiencia = {
     const fields = Object.keys(data);
     if (fields.length === 0) return false;
 
-    const setClause = fields.map(field => `${field} = ?`).join(', ');
-    const values = fields.map(field => data[field]);
+    if (data.capacidad !== undefined) {
+      data.cant_Personas = data.capacidad;
+      delete data.capacidad;
+    }
+    if (data.Estado !== undefined) {
+      // Ensure Estado is one of the allowed ENUM values
+      const allowedStates = ['Disponible', 'Cancelado', 'Completo'];
+      if (!allowedStates.includes(data.Estado)) {
+        throw new Error(`Invalid Estado value: ${data.Estado}. Must be one of ${allowedStates.join(', ')}`);
+      }
+    }
+
+
+    const setClause = Object.keys(data).map(field => `${field} = ?`).join(', ');
+    const values = Object.values(data);
     values.push(id);
 
-    const query = `UPDATE Experiencias SET ${setClause} WHERE Id_Experiencias = ?`; // Corrección del nombre de la tabla y la clave primaria
+    const query = `UPDATE Experiencias SET ${setClause} WHERE Id_Experiencias = ?`;
     const [result] = await pool.query(query, values);
+    return result.affectedRows > 0;
+  },
+
+  delete: async (id) => {
+    const [result] = await pool.query('DELETE FROM Experiencias WHERE Id_Experiencias = ?', [id]);
+    return result;
+  },
+
+  updateEstado: async (id, estado) => {
+    const query = `UPDATE Experiencias SET Estado = ? WHERE Id_Experiencias = ?`;
+    const [result] = await pool.query(query, [estado, id]);
     return result.affectedRows > 0;
   }
 };
@@ -56,15 +95,25 @@ export const Experiencia = {
 // Modelo para la tabla 'talleres'
 export const Taller = {
   find: async () => {
-    const [rows] = await pool.query('SELECT * FROM Talleres');
+    const [rows] = await pool.query('SELECT *, fecha AS Fecha, hora_Inicio AS Hora_Inicio, hora_Fin AS Hora_Fin FROM Talleres');
     // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
     return rows.map(row => ({ ...row, tipo: 'taller' }));
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT * FROM Talleres WHERE Id_Taller = ?', [id]);
-    // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
-    return rows[0] ? { ...rows[0], tipo: 'taller' } : null;
+    const [rows] = await pool.query('SELECT *, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Talleres.Id_Taller AND Tipo_Evento = \'taller\') AS Inscritos FROM Talleres WHERE Id_Taller = ?', [id]);
+    const inscritos = rows[0] ? rows[0].Inscritos : 0;
+    const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
+    let estado = 'Disponible';
+    if (rows[0] && rows[0].Estado === 'Cancelado') {
+      estado = 'Cancelado';
+    } else if (inscritos >= capacidad) {
+      estado = 'Completo';
+    }
+    console.log(`Taller ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
+    const returnedTaller = rows[0] ? { ...rows[0], tipo: 'taller', Capacidad: capacidad, Estado: estado } : null;
+    console.log('Returned Taller object:', returnedTaller);
+    return returnedTaller;
   },
 
   create: async (data) => {
@@ -73,9 +122,9 @@ export const Taller = {
     const query = `
       INSERT INTO Talleres (
         nombre_Taller, fecha,
-        hora_Inicio, hora_Fin, Valor
+        hora_Inicio, hora_Fin, Valor, cant_Personas
       )
-      VALUES (?, ?, ?, ?, ?)
+      VALUES (?, ?, ?, ?, ?, ?)
     `;
     const [result] = await pool.query(query, [
       // data.Id_Reserva, // Omitido
@@ -85,7 +134,8 @@ export const Taller = {
       data.fecha,
       data.hora_Inicio || '12:00',
       data.hora_Fin,
-      data.Valor
+      data.Valor,
+      data.cant_Personas
     ]);
     return result.insertId;
   },
@@ -94,12 +144,31 @@ export const Taller = {
     const fields = Object.keys(data);
     if (fields.length === 0) return false;
 
-    const setClause = fields.map(field => `${field} = ?`).join(', ');
-    const values = fields.map(field => data[field]);
+    // Handle cant_Personas specifically if it's present in data
+    if (data.capacidad !== undefined) {
+      data.cant_Personas = data.capacidad;
+      delete data.capacidad; // Remove original capacidad to avoid conflicts
+    }
+
+
+
+    const setClause = Object.keys(data).map(field => `${field} = ?`).join(', ');
+    const values = Object.values(data);
     values.push(id);
 
     const query = `UPDATE Talleres SET ${setClause} WHERE Id_Taller = ?`;
     const [result] = await pool.query(query, values);
+    return result.affectedRows > 0;
+  },
+
+  delete: async (id) => {
+    const [result] = await pool.query('DELETE FROM Talleres WHERE Id_Taller = ?', [id]);
+    return result;
+  },
+
+  updateEstado: async (id, estado) => {
+    const query = `UPDATE Talleres SET Estado = ? WHERE Id_Taller = ?`;
+    const [result] = await pool.query(query, [estado, id]);
     return result.affectedRows > 0;
   }
 };

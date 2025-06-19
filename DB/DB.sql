@@ -1,13 +1,11 @@
 create database veganByte;
 use veganByte;
-INSERT INTO Cliente (Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, fecha_Nacimiento, Direccion, Contraseña)
-VALUES ('Usuario', 'Prueba', 'Cedula de ciudadania', '123456789', 'Masculino', 'usuario.prueba@example.com', '1234567890', '1990-01-01', 'Calle Falsa 123', '12345678');
+
 select * from Cliente;
 
-UPDATE Cliente
-SET is_verified = TRUE
-WHERE Correo = 'test.user@example.com';
+select * from Talleres;
 
+select * from In;
 
 INSERT INTO Cliente (
     Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto,
@@ -84,8 +82,8 @@ create table Talleres (
     hora_Inicio time,
     hora_Fin time,
     Valor int,
-    disponible BOOLEAN DEFAULT TRUE,
-    cancelado BOOLEAN DEFAULT FALSE,
+    cant_Personas int,
+    Estado ENUM('Disponible', 'Cancelado', 'Completo') DEFAULT 'Disponible',
     foreign key (Id_Reserva) references Reserva(Id_Reserva)
 );
 
@@ -110,11 +108,15 @@ create table Experiencias (
     Categoria enum("1", "2", "3"),
     Valor int,
     cant_Personas int,
+    Fecha DATE,
+    Hora_Inicio TIME,
+    Hora_Fin TIME,
     nivel_Running int,
     duracion_Desplazamiento time,
     duracion_Caminata time,
     servicios_Termales enum("Si", "No"),
     Ubicacion varchar(80),
+    Estado ENUM('Disponible', 'Cancelado', 'Completo') DEFAULT 'Disponible',
     foreign key (Id_Reserva) references Reserva(Id_Reserva)
 );
 

@@ -1,7 +1,8 @@
 import jwt from 'jsonwebtoken';
 import Cliente from '../models/cliente.model.js';
-
 export const verifyToken = async (req, res, next) => {
+  console.log('*** Entrando a verifyToken ***');
+  console.log('*** Entrando a verifyToken ***');
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
@@ -17,6 +18,7 @@ export const verifyToken = async (req, res, next) => {
       return res.status(404).json({ message: 'Usuario no encontrado.' });
     }
 
+    console.log('Cliente object from DB:', cliente);
     req.user = cliente;
     next();
   } catch (error) {

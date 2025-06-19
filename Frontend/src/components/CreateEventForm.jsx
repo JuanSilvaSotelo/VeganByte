@@ -15,7 +15,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
     hora_inicio: eventToEdit?.Hora_Inicio || (selectedDate ? moment(selectedDate).format('HH:mm') : ''),
     hora_fin: eventToEdit?.Hora_Fin || '',
     valor: eventToEdit?.Valor || '',
-    capacidad: eventToEdit?.Capacidad || '',
+    capacidad: eventToEdit?.cant_Personas || '',
     tipo: eventToEdit?.tipo || tipoEvento,
     categoria: eventToEdit?.Categoria || '1',
     nivel_running: eventToEdit?.Nivel_Running || 1,
@@ -23,8 +23,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
     duracion_caminata: eventToEdit?.Duracion_Caminata || '',
     servicios_termales: eventToEdit?.Servicios_Termales || 'No',
     ubicacion: eventToEdit?.Ubicacion || '',
-    disponible: eventToEdit?.disponible ?? true,
-    cancelado: eventToEdit?.cancelado ?? false
+    estado: eventToEdit?.Estado || 'Disponible'
   });
   const [error, setError] = useState('');
 
@@ -38,7 +37,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         hora_inicio: eventToEdit.Hora_Inicio || '',
         hora_fin: eventToEdit.Hora_Fin || '',
         valor: eventToEdit.Valor || '',
-        capacidad: eventToEdit.Capacidad || '',
+        capacidad: eventToEdit.cant_Personas || '',
         tipo: eventToEdit.tipo,
         categoria: eventToEdit.Categoria || '1',
         nivel_running: eventToEdit.Nivel_Running || 1,
@@ -46,8 +45,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         duracion_caminata: eventToEdit.Duracion_Caminata || '',
         servicios_termales: eventToEdit.Servicios_Termales || 'No',
         ubicacion: eventToEdit.Ubicacion || '',
-        disponible: eventToEdit.disponible ?? true,
-        cancelado: eventToEdit.cancelado ?? false,
+        estado: eventToEdit.Estado || 'Disponible',
       });
     } else if (selectedDate) {
       setFormData(prev => ({
@@ -60,6 +58,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(`handleChange: name=${name}, value=${value}`);
     setFormData(prevState => ({
       ...prevState,
       [name]: value
@@ -80,8 +79,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         valor: parseFloat(formData.valor),
         capacidad: parseInt(formData.capacidad, 10),
         tipo: tipoEvento,
-        disponible: formData.disponible,
-        cancelado: formData.cancelado,
+        estado: formData.estado,
         ...(tipoEvento === 'taller' && {
           nombre_taller: formData.titulo
         }),
@@ -99,7 +97,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
       if (eventToEdit) {
         const eventId = eventToEdit.Id_Experiencias || eventToEdit.Id_Taller;
         const url = `${API_URL}/eventos/${eventId}`;
-        console.log('Sending PUT request to:', url, 'con datos:', eventoData);
+        console.log('Sending PUT request to:', url, 'con datos:', eventoData, 'estado:', eventoData.estado, 'capacidad:', eventoData.capacidad);
         await axios.put(url, eventoData, {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -107,7 +105,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         });
       } else {
         console.log('Sending POST request to:', `${API_URL}/eventos`, 'with data:', eventoData);
-        await axios.post(`${API_URL}/api/v1/eventos`, eventoData, {
+        await axios.post(`${API_URL}/eventos`, eventoData, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -199,34 +197,24 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
             name="valor"
             value={formData.valor}
             onChange={handleChange}
-            min="0"
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="estado">Estado</label>
+          <select
+            id="estado"
+            name="estado"
+            value={formData.estado}
+            onChange={handleChange}
             required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="disponible">Disponible</label>
-          <input
-            type="checkbox"
-            id="disponible"
-            name="disponible"
-            checked={formData.disponible}
-            onChange={(e) => setFormData(prev => ({ ...prev, disponible: e.target.checked }))}
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="cancelado">Cancelado</label>
-          <input
-            type="checkbox"
-            id="cancelado"
-            name="cancelado"
-            checked={formData.cancelado}
-            onChange={(e) => setFormData(prev => ({ ...prev, cancelado: e.target.checked }))}
-          />
+          >
+            <option value="Disponible">Disponible</option>
+            <option value="Cancelado">Cancelado</option>
+            <option value="Completo">Completo</option>
+          </select>
         </div>
         <div className="form-group">
-          <label htmlFor="capacidad">Capacidad (Número de Personas)</label>
+          <label htmlFor="capacidad">Capacidad</label>
           <input
             type="number"
             id="capacidad"

@@ -1,6 +1,7 @@
 // Controlador para la gestión de eventos (experiencias y talleres)
 import { Experiencia, Taller } from '../models/evento.model.js';
 import Cliente from '../models/cliente.model.js';
+import { InscripcionEvento } from '../models/inscripcionEvento.model.js';
 
 export const eventosController = {
   // Obtener todos los eventos (experiencias y talleres)
@@ -32,6 +33,7 @@ export const eventosController = {
 
   // Crear un nuevo evento (solo administradores)
   createEvento: async (req, res) => {
+    console.log('*** Entrando a createEvento en eventos.controller.js ***');
     try {
       // Verificar si el usuario es administrador
       if (!req.admin) {
@@ -50,8 +52,14 @@ export const eventosController = {
         tipo 
       } = req.body;
 
+      console.log('Valor recibido en req.body:', valor); // Añadir este log
+
+      // Convertir fecha a formato YYYY-MM-DD si es necesario
+      const formattedFecha = fecha ? new Date(fecha).toISOString().split('T')[0] : null;
+
       // Validar tipo de evento
       if (!['taller', 'experiencia'].includes(tipo)) {
+        console.log('Error: Tipo de evento inválido recibido:', tipo);
         return res.status(400).json({ message: 'Tipo de evento inválido' });
       }
 
@@ -65,6 +73,7 @@ export const eventosController = {
       };
 
       if (tipo === 'experiencia') {
+        console.log('Received body for Experiencia creation:', req.body);
         // Extraer datos específicos de experiencia
         const { 
           tipo_experiencia, 
@@ -73,7 +82,8 @@ export const eventosController = {
           duracion_desplazamiento, 
           duracion_caminata, 
           servicios_termales, 
-          ubicacion 
+          ubicacion, 
+          capacidad 
         } = req.body;
 
         // Construir objeto para experiencia
@@ -85,13 +95,18 @@ export const eventosController = {
           duracion_Desplazamiento: duracion_desplazamiento,
           duracion_Caminata: duracion_caminata,
           servicios_Termales: servicios_termales,
-          Ubicacion: ubicacion
+          Ubicacion: ubicacion,
+          Fecha: formattedFecha,
+          Hora_Inicio: hora_inicio,
+          Hora_Fin: hora_fin,
+          cant_Personas: capacidad // Add capacidad to experienciaData
         };
+        console.log('Experiencia Data before creation:', experienciaData);
         nuevoEventoId = await Experiencia.create(experienciaData);
         message = 'Experiencia creada exitosamente';
       } else { // tipo === 'taller'
         // Extraer datos específicos de taller
-        const { nombre_taller } = req.body;
+        const { nombre_taller, cant_personas } = req.body;
 
         // Construir objeto para taller
         const tallerData = {
@@ -99,8 +114,11 @@ export const eventosController = {
           nombre_Taller: nombre_taller || titulo,
           fecha: fecha,
           hora_Inicio: hora_inicio || '12:00',
-          hora_Fin: hora_fin
+          hora_Fin: hora_fin,
+          cant_Personas: cant_personas || capacidad // Use cant_personas if available, otherwise use capacidad
         };
+        console.log('Received body for Taller creation:', req.body);
+        console.log('Taller Data before creation:', tallerData);
         nuevoEventoId = await Taller.create(tallerData);
         message = 'Taller creado exitosamente';
       }
@@ -117,18 +135,61 @@ export const eventosController = {
     }
   },
 
+  deleteEvento: async (req, res) => {
+    try {
+      if (!req.admin) {
+        return res.status(403).json({ message: 'No autorizado' });
+      }
+
+      const { eventoId } = req.params;
+      const { tipo } = req.body; // Expect 'tipo' in the request body to determine model
+      console.log('Received DELETE request for eventoId:', eventoId, 'and tipo:', tipo);
+
+      if (!eventoId || !tipo) {
+        return res.status(400).json({ message: 'ID de evento y tipo son requeridos' });
+      }
+
+      let result;
+      if (tipo === 'experiencia') {
+        result = await Experiencia.delete(eventoId);
+      } else if (tipo === 'taller') {
+        result = await Taller.delete(eventoId);
+      } else {
+        return res.status(400).json({ message: 'Tipo de evento inválido' });
+      }
+
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Evento no encontrado o ya eliminado' });
+      }
+
+      res.status(200).json({ message: 'Evento eliminado exitosamente' });
+    } catch (error) {
+      console.error('Error al eliminar evento:', error);
+      res.status(500).json({ message: 'Error interno del servidor al eliminar evento', error: error.message });
+    }
+  },
+
+
+
   // Agendar un evento (usuarios)
   agendarEvento: async (req, res) => {
+    console.log('*** Entrando a agendarEvento ***');
+    console.log('Iniciando agendarEvento...');
     try {
       // Lógica pendiente de refactorización para SQL
-      const { eventoId, tipo } = req.params;
-      const clienteId = req.user._id;
+      const { eventoId } = req.params;
+      const { tipo } = req.body;
+      const clienteId = req.user.Id_Cliente; // Asumiendo que el ID del cliente está en req.user.Id_Cliente
+
+      if (!eventoId || !tipo || !clienteId) {
+        return res.status(400).json({ message: 'ID de evento, tipo y ID de cliente son requeridos' });
+      }
 
       let evento;
-      if (tipo === 'experiencia') {
-        evento = await Experiencia.findById(eventoId);
-      } else if (tipo === 'taller') {
+      if (tipo === 'taller') {
         evento = await Taller.findById(eventoId);
+      } else if (tipo === 'experiencia') {
+        evento = await Experiencia.findById(eventoId);
       } else {
         return res.status(400).json({ message: 'Tipo de evento inválido' });
       }
@@ -137,14 +198,72 @@ export const eventosController = {
         return res.status(404).json({ message: 'Evento no encontrado' });
       }
 
-      if (!evento.Disponible || evento.Estado !== 'disponible') {
-        return res.status(400).json({ message: 'Evento no disponible' });
+      // Verificar disponibilidad del evento
+      if (evento.Estado === 'Completo' || evento.Estado === 'Cancelado') {
+        return res.status(400).json({ message: `El evento ${evento.Estado.toLowerCase()}` });
       }
 
-      // Aquí debería ir la lógica de inscripción (ver comentarios en el código)
-      res.status(501).json({ message: 'Funcionalidad de agendar pendiente de refactorización para SQL' });
+      console.log('Evento disponible. Procediendo con la verificación de inscripción y capacidad.');
+
+      console.log('Verificando si el usuario ya está inscrito...');
+      // Verificar si el usuario ya está inscrito
+      const existingRegistration = await InscripcionEvento.findByClienteAndEvento(clienteId, eventoId, tipo);
+      console.log('Existing registration:', existingRegistration);
+
+      if (existingRegistration) {
+        console.log('Error: El usuario ya está inscrito en este evento.');
+        return res.status(400).json({ message: 'Ya estás inscrito en este evento' });
+      }
+
+      // Lógica para verificar capacidad y crear inscripción
+      let currentParticipants;
+      let capacidadMaxima;
+
+      if (tipo === 'taller') {
+        currentParticipants = await InscripcionEvento.countParticipantsForEvent(eventoId, 'taller');
+        capacidadMaxima = evento.cant_Personas;
+      } else if (tipo === 'experiencia') {
+        currentParticipants = await InscripcionEvento.countParticipantsForEvent(eventoId, 'experiencia');
+        capacidadMaxima = evento.cant_Personas;
+      }
+
+      console.log(`Participantes actuales: ${currentParticipants}, Capacidad máxima: ${capacidadMaxima}`);
+
+      if (currentParticipants >= capacidadMaxima) {
+        console.log('Error: Capacidad máxima alcanzada para el evento.');
+        // Actualizar el estado del evento a 'Completo' si la capacidad está llena
+        if (tipo === 'taller') {
+          await Taller.updateEstado(eventoId, 'Completo');
+        } else if (tipo === 'experiencia') {
+          await Experiencia.updateEstado(eventoId, 'Completo');
+        }
+        return res.status(400).json({ message: 'Capacidad máxima alcanzada para este evento' });
+      }
+
+      // Crear la inscripción
+      const inscripcionId = await InscripcionEvento.create({
+        Id_Cliente: clienteId,
+        Id_Evento: eventoId,
+        Tipo_Evento: tipo,
+      });
+
+      console.log(`Inscripción creada con ID: ${inscripcionId}`);
+
+      // Si la inscripción fue exitosa y la capacidad se llenó, actualizar el estado del evento
+      if (currentParticipants + 1 >= capacidadMaxima) {
+        console.log('Capacidad del evento alcanzada. Actualizando estado a Completo.');
+        if (tipo === 'taller') {
+          await Taller.updateEstado(eventoId, 'Completo');
+        } else if (tipo === 'experiencia') {
+          await Experiencia.updateEstado(eventoId, 'Completo');
+        }
+      }
+
+      res.status(201).json({ message: 'Inscripción exitosa', inscripcionId });
     } catch (error) {
-      res.status(500).json({ message: 'Error al agendar evento', error: error.message });
+      console.error('Error detallado al agendar evento:', error);
+      console.error('Error detallado al agendar evento:', error.stack);
+      res.status(500).json({ message: 'Error interno del servidor al agendar evento', error: error.message, details: error.stack });
     }
   },
 
@@ -152,7 +271,8 @@ export const eventosController = {
   cancelarRegistro: async (req, res) => {
     try {
       // Lógica pendiente de refactorización para SQL
-      const { eventoId, tipo } = req.params;
+      const { eventoId } = req.params;
+      const { tipo } = req.query;
       const clienteId = req.user._id;
 
       // Aquí debería ir la lógica de cancelación de inscripción (ver comentarios en el código)
@@ -165,28 +285,90 @@ export const eventosController = {
   // Obtener un evento específico por ID
   getEventoById: async (req, res) => {
     try {
-      // Lógica pendiente de refactorización para SQL
-      const { eventoId, tipo } = req.params;
+      const { eventoId } = req.params;
+      const { tipo } = req.query;
 
-      let evento;
+      let EventoModel;
       if (tipo === 'experiencia') {
-        evento = await Experiencia.findById(eventoId);
-        // Aquí se podría obtener información adicional del creador usando JOIN
+        EventoModel = Experiencia;
       } else if (tipo === 'taller') {
-        evento = await Taller.findById(eventoId);
-        // Aquí se podría obtener información adicional del creador usando JOIN
+        EventoModel = Taller;
       } else {
         return res.status(400).json({ message: 'Tipo de evento inválido' });
       }
+
+      const evento = await EventoModel.findById(eventoId);
 
       if (!evento) {
         return res.status(404).json({ message: 'Evento no encontrado' });
       }
 
-      // Respuesta temporal mientras se refactoriza la lógica
-      res.status(501).json({ message: 'Funcionalidad de obtener evento por ID pendiente de refactorización completa para SQL (joins/datos relacionados)' });
+      res.json(evento);
     } catch (error) {
+      console.error('Error al obtener evento por ID:', error);
       res.status(500).json({ message: 'Error al obtener evento', error: error.message });
     }
-  }
-};
+  },
+
+  // Actualizar un evento (solo administradores)
+  updateEvento: async (req, res) => {
+    try {
+      if (!req.admin) {
+        return res.status(403).json({ message: 'No autorizado' });
+      }
+
+      const { eventoId } = req.params;
+      const { tipo, ...updateData } = req.body; // updateData will contain all fields from req.body except 'tipo'
+
+      if (!eventoId || !tipo) {
+        return res.status(400).json({ message: 'ID de evento y tipo son requeridos para la actualización' });
+      }
+
+      let EventoModel;
+      if (tipo === 'experiencia') {
+        EventoModel = Experiencia;
+      } else if (tipo === 'taller') {
+        EventoModel = Taller;
+      } else {
+        return res.status(400).json({ message: 'Tipo de evento inválido' });
+      }
+
+      // The model's update function already handles mapping 'capacidad' to 'cant_Personas'
+      // The model's update function already handles mapping 'capacidad' to 'cant_Personas'
+      // and converting 'disponible'/'cancelado' to tinyint.
+      if (tipo === 'taller') {
+        if (updateData.titulo !== undefined) {
+          delete updateData.titulo;
+        }
+        if (updateData.descripcion !== undefined) {
+          delete updateData.descripcion;
+        }
+      } else if (tipo === 'experiencia') {
+        if (updateData.titulo !== undefined) {
+          delete updateData.titulo;
+        }
+        if (updateData.tipo_experiencia !== undefined) {
+          delete updateData.tipo_experiencia;
+        }
+      }
+
+      const updated = await EventoModel.update(eventoId, updateData);
+
+      if (!updated) {
+        return res.status(404).json({ message: 'Evento no encontrado para actualizar o no se realizaron cambios' });
+      }
+
+      const updatedEvento = await EventoModel.findById(eventoId);
+
+      if (!updatedEvento) {
+        return res.status(404).json({ message: 'Evento no encontrado para actualizar' });
+      }
+
+      res.status(200).json({ message: 'Evento actualizado exitosamente', evento: updatedEvento });
+    } catch (error) {
+      console.error('Error al actualizar evento:', error);
+      res.status(500).json({ message: 'Error al actualizar evento', error: error.message });
+    }
+  },
+
+}

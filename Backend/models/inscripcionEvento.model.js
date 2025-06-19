@@ -1,13 +1,22 @@
 import { pool } from '../config/database.js';
 
 export const InscripcionEvento = {
-  create: async (clienteId, eventoId, tipoEvento) => {
+  create: async (data) => {
     const query = `
       INSERT INTO InscripcionesEventos (Id_Cliente, Id_Evento, Tipo_Evento)
       VALUES (?, ?, ?)
     `;
-    const [result] = await pool.query(query, [clienteId, eventoId, tipoEvento]);
+    const [result] = await pool.query(query, [data.Id_Cliente, data.Id_Evento, data.Tipo_Evento]);
     return result.insertId;
+  },
+
+  countParticipantsForEvent: async (eventoId, tipoEvento) => {
+    const query = `
+      SELECT COUNT(*) AS count FROM InscripcionesEventos
+      WHERE Id_Evento = ? AND Tipo_Evento = ?
+    `;
+    const [rows] = await pool.query(query, [eventoId, tipoEvento]);
+    return rows[0].count;
   },
 
   findByClienteAndEvento: async (clienteId, eventoId, tipoEvento) => {
@@ -19,12 +28,24 @@ export const InscripcionEvento = {
     return rows[0];
   },
 
-  delete: async (clienteId, eventoId, tipoEvento) => {
-    const query = `
-      DELETE FROM InscripcionesEventos
-      WHERE Id_Cliente = ? AND Id_Evento = ? AND Tipo_Evento = ?
-    `;
-    const [result] = await pool.query(query, [clienteId, eventoId, tipoEvento]);
+  delete: async (options) => {
+    let query = `DELETE FROM InscripcionesEventos WHERE 1=1`;
+    const params = [];
+
+    if (options.Id_Cliente) {
+      query += ` AND Id_Cliente = ?`;
+      params.push(options.Id_Cliente);
+    }
+    if (options.Id_Evento) {
+      query += ` AND Id_Evento = ?`;
+      params.push(options.Id_Evento);
+    }
+    if (options.Tipo_Evento) {
+      query += ` AND Tipo_Evento = ?`;
+      params.push(options.Tipo_Evento);
+    }
+
+    const [result] = await pool.query(query, params);
     return result.affectedRows > 0;
   },
 

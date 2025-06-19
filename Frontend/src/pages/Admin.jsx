@@ -15,7 +15,7 @@ const Admin = () => {
     descripcion: '',
     fecha: '',
     capacidad: 0,
-    estado: 'disponible',
+    estado: 'Disponible',
     tipo: 'experiencia'
   });
 
@@ -68,15 +68,46 @@ const Admin = () => {
 
   const cargarEventos = useCallback(async () => {
     try {
-
       console.log('Requesting events from:', `${API_URL}/eventos`);
       const response = await axios.get(`${API_URL}/eventos`, getAuthHeaders());
-      console.log('Eventos cargados:', response.data);
-      setEventos(response.data);
+      console.log('Eventos cargados (raw):', response.data);
+      // Asegurarse de que los IDs sean correctos
+      const processedEvents = response.data.map(event => {
+        if (event.tipo === 'experiencia' && event.Id_Experiencias === undefined) {
+          console.warn('Experiencia sin Id_Experiencias:', event);
+        }
+        if (event.tipo === 'taller' && event.Id_Taller === undefined) {
+          console.warn('Taller sin Id_Taller:', event);
+        }
+        return event;
+      });
+      setEventos(processedEvents);
+
     } catch (error) {
       console.error('Error al cargar eventos:', error.response?.data || error.message);
     }
   }, [setEventos]);
+
+  const handleDeleteEvent = async (id, tipo) => {
+    console.log('handleDeleteEvent called with ID:', id, 'and Type:', tipo);
+    if (window.confirm(`¿Estás seguro de que quieres eliminar este ${tipo}?`)) {
+      try {
+      const response = await fetch(`${API_URL}/eventos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
+        },
+        body: JSON.stringify({ tipo })
+      });
+        alert(`${tipo} eliminado exitosamente`);
+        cargarEventos(); // Recargar eventos después de la eliminación
+      } catch (error) {
+        console.error(`Error al eliminar ${tipo}:`, error.response?.data || error.message);
+        alert(`Error al eliminar ${tipo}: ` + (error.response?.data?.message || error.message));
+      }
+    }
+  };
 
   const handleEventoChange = (e) => {
     const { name, value } = e.target;
@@ -109,7 +140,7 @@ const Admin = () => {
         descripcion: '',
         fecha: '',
         capacidad: 0,
-        estado: 'disponible',
+        estado: 'Disponible',
         tipo: 'experiencia'
       });
       
@@ -179,6 +210,51 @@ const Admin = () => {
           <h3>Gestión de Eventos</h3>
           <button onClick={handleOpenCreateEventModal} className="create-event-button">Crear Nuevo Evento</button>
 
+          <div className="event-list">
+            {eventos.length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>Título</th>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Hora Inicio</th>
+                    <th>Hora Fin</th>
+                    <th>Valor</th>
+                    <th>Capacidad</th>
+                    <th>Tipo</th>
+                    <th>Acciones</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {eventos.map(event => (
+                    <tr key={event.Id_Experiencias || event.Id_Taller}>
+                      <td>{event.Tipo || event.nombre_Taller || event.titulo}</td>
+                      <td>{event.Descripcion || event.descripcion}</td>
+                      <td>{new Date(event.Fecha || event.fecha).toLocaleDateString()}</td>
+                      <td>{event.Hora_Inicio || event.hora_Inicio}</td>
+                      <td>{event.Hora_Fin || event.hora_Fin}</td>
+                      <td>{event.Valor || event.valor}</td>
+                      <td>{event.cant_Personas || event.capacidad}</td>
+                      <td>{event.tipo}</td>
+                      <td>
+                        <button onClick={() => handleOpenEditEventModal(event)} className="edit-button">Editar</button>
+                        <button onClick={() => {
+                          console.log('Attempting to delete event:', event.Id_Experiencias || event.Id_Taller, event.tipo);
+                          handleDeleteEvent(event.Id_Experiencias || event.Id_Taller, event.tipo);
+                        }} className="delete-button">Eliminar</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <p>No hay eventos disponibles.</p>
+            )}
+          </div>
+
+
+
           {showCreateEventModal && (
             <Modal onClose={handleCloseCreateEventModal}>
               <CreateEventForm
@@ -197,44 +273,6 @@ const Admin = () => {
               />
             </Modal>
           )}
-
-          <div className="eventos-list">
-            <h4>Eventos Programados</h4>
-            <table>
-              <thead>
-                <tr>
-                  <th>Descripción</th>
-                  <th>Fecha</th>
-                  <th>Hora</th>
-                  <th>Valor</th>
-                  <th>Capacidad</th>
-                  <th>Tipo</th>
-                  <th>Disponible</th>
-                  <th>Cancelado</th>
-                  <th>Acciones</th>
-                </tr>
-              </thead>
-              <tbody>
-                {eventos.map((evento, index) => (
-                  <tr key={index}>
-                    <td>{evento.Titulo || evento.nombre_Taller}</td>
-                    <td>{evento.Descripcion}</td>
-                    <td>{new Date(evento.Fecha).toLocaleDateString()}</td>
-                    <td>{evento.Hora_Inicio} - {evento.Hora_Fin}</td>
-                    <td>{evento.Valor}</td>
-                    <td>{evento.Capacidad}</td>
-                    <td>{evento.tipo}</td>
-                    <td>{evento.disponible ? 'Sí' : 'No'}</td>
-                    <td>{evento.cancelado ? 'Sí' : 'No'}</td>
-                    <td>
-                      <button onClick={() => handleOpenEditEventModal(evento)} className="edit-button">Editar</button>
-                      {/* <button onClick={() => handleDeleteEvent(evento.Id_Experiencias || evento.Id_Taller, evento.tipo)} className="delete-button">Eliminar</button> */}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
         </section>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { Administradores } from '../models/index.js';
 
 // Función para verificar el token y los privilegios de administrador
 const verifyAdmin = async (req, res, next) => {
+  console.log('*** Entrando a verifyAdmin ***');
   try {
     // Obtener el token del encabezado de autorización
     const token = req.headers.authorization?.split(' ')[1];
