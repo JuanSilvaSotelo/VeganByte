@@ -12,10 +12,21 @@ const BookEventForm = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
 
+  console.log('VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
+
   useEffect(() => {
+    const token = localStorage.getItem('userToken');
+    console.log('Token en BookEventForm:', token);
+    if (!token) {
+      navigate('/register');
+      return;
+    }
+
     const fetchEvento = async () => {
       try {
-        const response = await fetch(`/api/v1/eventos/${eventId}?tipo=${tipo}`);
+        const fetchUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/eventos/${eventId}?tipo=${tipo}`;
+        console.log('Fetching event data from:', fetchUrl);
+        const response = await fetch(fetchUrl);
         if (!response.ok) {
           throw new Error('Evento no encontrado');
         }
@@ -34,13 +45,17 @@ const BookEventForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('userToken');
+      console.log('Token en handleSubmit:', token);
       if (!token) {
         navigate('/register');
         return;
       }
 
-      const response = await fetch(`/api/v1/eventos/${eventId}/agendar`, {
+      const agendarUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/eventos/${eventId}/agendar`;
+      const requestBody = { eventoId: eventId, tipo: tipo };
+      console.log('Sending POST request to:', agendarUrl, 'with body:', requestBody);
+      const response = await fetch(agendarUrl, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -69,7 +84,7 @@ const BookEventForm = () => {
   }
 
   console.log('Evento object before render:', evento);
-  console.log('Evento disponible:', evento?.disponible);
+  console.log('Evento estado:', evento?.Estado);
   if (!evento) {
     return <div className="error-message">Evento no encontrado</div>;
   }
@@ -92,12 +107,12 @@ const BookEventForm = () => {
         <button 
           type="submit" 
           className="submit-button"
-          disabled={!evento.disponible}
+          disabled={evento.Estado !== 'Disponible'}
         >
           Inscribirse al Evento
         </button>
       </form>
-      {!evento.disponible && (
+      {evento.Estado !== 'Disponible' && (
         <p className="event-full">Este evento está completo</p>
       )}
     </div>

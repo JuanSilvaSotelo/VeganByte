@@ -26,6 +26,19 @@ Además de sus aspectos funcionales, VeganByte sirve como una herramienta de apr
 
 ## Características
 
+### Gestión de Eventos:
+
+- **Creación y Edición**: Permite a los administradores crear y modificar eventos, incluyendo talleres y experiencias, con detalles como título, descripción, fecha, hora, valor y capacidad.
+- **Visualización**: Los usuarios pueden ver los eventos disponibles, con información detallada de cada uno.
+- **Tipos de Eventos**: Soporte para diferentes tipos de eventos (talleres y experiencias), cada uno con campos específicos.
+- **Estado del Evento**: Gestión del estado de los eventos (e.g., Disponible).
+
+### Gestión de Usuarios:
+
+- **Autenticación de Administradores**: Sistema de login para administradores con verificación de roles (Admin, SuperAdmin).
+- **Registro de Usuarios**: Permite el registro de nuevos usuarios en la plataforma.
+- **Restablecimiento de Contraseña**: Funcionalidad para solicitar y restablecer contraseñas.
+
 ### Contenedorización con Docker:
 
 - **Backend Service**: Contenedor Docker para la API construida con Node.js y Express.
@@ -107,36 +120,92 @@ Para que el workflow de Despliegue Continuo (`cd.yml`) funcione correctamente y 
 ## Estructura de Carpetas
 
 ```bash
-VeganByte-1/
+VeganByte/
+├── .github/
+│   └── workflows/
+│       ├── cd.yml
+│       └── ci.yml
+├── .gitignore
 ├── Backend/
-│   ├── Dockerfile
-│   ├── .env.example
 │   ├── .gitignore
+│   ├── Dockerfile
+│   ├── config/
+│   │   └── database.js
+│   ├── const bcrypt = require('bcrypt');.js
+│   ├── controllers/
+│   │   ├── admin.controller.js
+│   │   ├── adminManagement.controller.js
+│   │   ├── auth.controller.js
+│   │   ├── eventos.controller.js
+│   │   └── password.controller.js
+│   ├── generateHash.cjs
+│   ├── middlewares/
+│   │   ├── adminAuth.js
+│   │   └── auth.js
+│   ├── models/
+│   │   ├── administradores.model.js
+│   │   ├── cliente.model.js
+│   │   ├── evento.model.js
+│   │   ├── index.js
+│   │   └── inscripcionEvento.model.js
+│   ├── package-lock.json
 │   ├── package.json
+│   ├── routes/
+│   │   ├── admin.routes.js
+│   │   ├── auth.routes.js
+│   │   ├── eventos.routes.js
+│   │   └── password.routes.js
+│   ├── scripts/
+│   │   └── initAdmin.js
 │   ├── server.js
-│   └── src/
-│       └── ... (código fuente del backend)
-├── Frontend/
-│   ├── Dockerfile
-│   ├── nginx.conf
-│   ├── .gitignore
-│   ├── package.json
-│   └── src/
-│       └── ... (código fuente del frontend)
+│   ├── services/
+│   │   ├── database.service.js
+│   │   └── email.service.js
+│   └── utils/
+│       ├── errors/
+│       └── validators/
 ├── DB/
-│   └── DB.sql (script de inicialización opcional)
-├── docker-compose.yml
+│   ├── DB VEGANBYTE PAULA RODRIGUEZ.txt
+│   └── DB.sql
+├── Frontend/
+│   ├── .gitignore
+│   ├── Dockerfile
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── public/
+│   │   └── IconInicioPag.svg
+│   ├── src/
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── main.jsx
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── styles/
+│   ├── test/
+│   │   ├── selenium/
+│   │   └── setupTests.js
+│   └── vite.config.js
+├── LICENSE
 ├── README.md
-└── start-all.bat (script opcional para desarrollo local sin Docker)
+├── docker-compose.yml
+├── instrucciones.md
+├── package-lock.json
+├── package.json
+└── start-all.bat
 ```
 
 ## Tecnologías Utilizadas
 
-- **Frontend**: React, Vite, Axios
-- **Backend**: Node.js, Express.js
-- **Base de Datos**: MySQL
+- **Frontend**: React, Vite, Axios, Nginx (para servir la aplicación en Docker)
+- **Backend**: Node.js, Express.js, bcrypt (para manejo de contraseñas), Nodemailer (para envío de correos)
+- **Base de Datos**: MySQL, Sequelize (ORM)
 - **Contenedorización**: Docker, Docker Compose
-- **Servidor Web (Frontend en Docker)**: Nginx
+- **Integración Continua/Despliegue Continuo (CI/CD)**: GitHub Actions
 - **Control de Versiones**: Git
 
 ## Créditos

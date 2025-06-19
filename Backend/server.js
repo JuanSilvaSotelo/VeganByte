@@ -39,8 +39,13 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options('*', cors(corsOptions)); // Debe estar antes de las rutas
 app.use(express.json());
+app.use((req, res, next) => {
+  console.log('Request Body:', req.body);
+  next();
+});
 
 // Middleware de registro para diagnóstico
+
 app.use((req, res, next) => {
   console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
   console.log('Origin:', req.headers.origin);
@@ -52,7 +57,8 @@ const apiVersion = '/api/v1';
 app.use(`${apiVersion}/auth`, authRoutes);
 app.use(`${apiVersion}/admin`, adminRoutes);
 app.use(`${apiVersion}/password`, passwordRoutes);
-app.use(`${apiVersion}/eventos`, eventosRoutes); // Montar rutas de eventos bajo /api/v1/eventos
+console.log('Mounting eventos routes...');
+app.use(`/api/v1/eventos`, eventosRoutes); // Montar rutas de eventos bajo /api/v1/eventos
 
 // Prueba de conexión a DB
 app.get('/test-db', async (req, res) => {

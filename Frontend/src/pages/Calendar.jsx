@@ -30,7 +30,7 @@ const Calendar = () => {
     fecha: '',
     hora: '',
     capacidad: 0,
-    estado: 'disponible'
+    estado: 'Disponible'
   });
   const [currentDate, setCurrentDate] = useState(new Date()); // Nuevo estado para la fecha actual del calendario
 
@@ -86,7 +86,7 @@ const Calendar = () => {
           end: end,
           desc: event.Descripcion, // Usar Descripcion (puede ser undefined para talleres)
           // Los siguientes campos pueden no existir en todos los tipos, manejar con cuidado
-          disponible: event.Disponible, // Asumiendo que existe en ambos o se maneja en el backend
+
           capacidad: event.cant_Personas, // Usar cant_Personas para experiencias (puede ser undefined para talleres)
           tipo: event.tipo // Mantener el tipo para posible lógica futura
         };
@@ -185,7 +185,7 @@ const Calendar = () => {
         fecha: '',
         hora: '',
         capacidad: 0,
-        estado: 'disponible'
+        estado: 'Disponible'
       });
       setShowEventModal(false);
       

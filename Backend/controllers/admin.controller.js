@@ -1,7 +1,7 @@
 // Importar las dependencias necesarias
 import jwt from 'jsonwebtoken'; // Para generar y verificar tokens JWT
 import bcrypt from 'bcryptjs'; // Para encriptar y comparar contraseñas
-import { Administradores, Cliente } from '../models/index.js'; // Modelos de base de datos
+import { Administradores, Cliente, InscripcionEvento } from '../models/index.js'; // Modelos de base de datos
 import { Experiencia, Taller } from '../models/index.js'; // Modelos adicionales (no utilizados en este fragmento)
 
 // Función para manejar el inicio de sesión de un administrador
@@ -43,8 +43,9 @@ const getUsuariosActivos = async (req, res) => {
   try {
     // Obtener todos los usuarios activos con los atributos especificados
     const usuarios = await Cliente.findAll({
-      attributes: ['Nombre', 'Apellido', 'Correo', 'fecha_Nacimiento', 'Direccion'], // Atributos a devolver
-      order: [['fecha_Nacimiento', 'DESC']] // Ordenar por fecha de nacimiento de forma descendente
+      attributes: ['Id_Cliente', 'Nombre', 'Apellido', 'Correo', 'fecha_Nacimiento', 'Direccion'], // Atributos a devolver
+      order: [['fecha_Nacimiento', 'DESC']], // Ordenar por fecha de nacimiento de forma descendente
+      raw: true // Asegura que los resultados sean objetos planos y no instancias del modelo
     });
     // Responder con la lista de usuarios
     res.json(usuarios);
@@ -132,6 +133,10 @@ const deleteUser = async (req, res) => {
       return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
+    // Eliminar todas las inscripciones de eventos asociadas a este cliente
+    await InscripcionEvento.delete({ Id_Cliente: id });
+
+    // Ahora se puede eliminar el cliente
     await Cliente.delete(id);
 
     res.json({ message: 'Usuario eliminado exitosamente.' });

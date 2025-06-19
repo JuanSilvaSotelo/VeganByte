@@ -8,7 +8,7 @@ const Cliente = {
   // Obtener todos los clientes ordenados por fecha de nacimiento descendente
   findAll: async () => {
     const [results] = await pool.query(
-      'SELECT Nombre, Apellido, Correo, fecha_Nacimiento, Direccion FROM Cliente ORDER BY fecha_Nacimiento DESC'
+      'SELECT Id_Cliente, Nombre, Apellido, Correo, fecha_Nacimiento, Direccion FROM Cliente ORDER BY fecha_Nacimiento DESC'
     );
     return results;
   },
