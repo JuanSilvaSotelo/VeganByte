@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { API_URL } from '../services/authService';
+import { API_URL, getAuthHeaders } from '../services/authService';
+import CreateEventForm from '../components/CreateEventForm';
+import Modal from '../components/Modal';
 import '../styles/Admin.css';
 
 const Admin = () => {
@@ -16,6 +18,29 @@ const Admin = () => {
     estado: 'disponible',
     tipo: 'experiencia'
   });
+
+  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
+  const [showEditEventModal, setShowEditEventModal] = useState(false);
+  const [eventToEdit, setEventToEdit] = useState(null);
+
+  const handleOpenCreateEventModal = () => {
+    setShowCreateEventModal(true);
+  };
+
+  const handleCloseCreateEventModal = () => {
+    setShowCreateEventModal(false);
+  };
+
+  const handleOpenEditEventModal = (event) => {
+    console.log('Evento a editar:', event);
+    setEventToEdit(event);
+    setShowEditEventModal(true);
+  };
+
+  const handleCloseEditEventModal = () => {
+    setEventToEdit(null);
+    setShowEditEventModal(false);
+  };
 
   useEffect(() => {
     cargarUsuarios();
@@ -41,19 +66,17 @@ const Admin = () => {
     }
   };
 
-  const cargarEventos = async () => {
+  const cargarEventos = useCallback(async () => {
     try {
-      const response = await axios.get(`${API_URL}/admin/eventos`, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        }
-      });
+
+      console.log('Requesting events from:', `${API_URL}/eventos`);
+      const response = await axios.get(`${API_URL}/eventos`, getAuthHeaders());
       console.log('Eventos cargados:', response.data);
       setEventos(response.data);
     } catch (error) {
       console.error('Error al cargar eventos:', error.response?.data || error.message);
     }
-  };
+  }, [setEventos]);
 
   const handleEventoChange = (e) => {
     const { name, value } = e.target;
@@ -123,6 +146,9 @@ const Admin = () => {
           <h3>Usuarios Registrados</h3>
           {loading && <p>Cargando usuarios...</p>}
           {error && <p className="error-message">{error}</p>}
+          {console.log('Admin: loading', loading)}
+          {console.log('Admin: error', error)}
+          {console.log('Admin: eventos', eventos)}
           {!loading && !error && (
             <table>
               <thead>
@@ -151,67 +177,59 @@ const Admin = () => {
 
         <section id="eventos" className="event-management">
           <h3>Gestión de Eventos</h3>
-          <form onSubmit={crearEvento}>
-            <input
-              type="text"
-              name="titulo"
-              placeholder="Título del evento"
-              value={nuevoEvento.titulo}
-              onChange={handleEventoChange}
-              required
-            />
-            <textarea
-              name="descripcion"
-              placeholder="Descripción del evento"
-              value={nuevoEvento.descripcion}
-              onChange={handleEventoChange}
-              required
-            />
-            <input
-              type="datetime-local"
-              name="fecha"
-              value={nuevoEvento.fecha}
-              onChange={handleEventoChange}
-              required
-            />
-            <input
-              type="number"
-              name="capacidad"
-              placeholder="Capacidad máxima"
-              value={nuevoEvento.capacidad}
-              onChange={handleEventoChange}
-              required
-            />
-            <select
-              name="tipo"
-              value={nuevoEvento.tipo}
-              onChange={handleEventoChange}
-              required
-            >
-              <option value="experiencia">Experiencia</option>
-              <option value="taller">Taller</option>
-            </select>
-            <button type="submit">Crear Evento</button>
-          </form>
+          <button onClick={handleOpenCreateEventModal} className="create-event-button">Crear Nuevo Evento</button>
+
+          {showCreateEventModal && (
+            <Modal onClose={handleCloseCreateEventModal}>
+              <CreateEventForm
+                closeModal={handleCloseCreateEventModal}
+                fetchEvents={cargarEventos}
+              />
+            </Modal>
+          )}
+
+          {showEditEventModal && (
+            <Modal onClose={handleCloseEditEventModal}>
+              <CreateEventForm
+                closeModal={handleCloseEditEventModal}
+                fetchEvents={cargarEventos}
+                eventToEdit={eventToEdit}
+              />
+            </Modal>
+          )}
 
           <div className="eventos-list">
             <h4>Eventos Programados</h4>
             <table>
               <thead>
                 <tr>
-                  <th>Título</th>
+                  <th>Descripción</th>
                   <th>Fecha</th>
+                  <th>Hora</th>
+                  <th>Valor</th>
                   <th>Capacidad</th>
-                  <th>Estado</th>
+                  <th>Tipo</th>
+                  <th>Disponible</th>
+                  <th>Cancelado</th>
+                  <th>Acciones</th>
                 </tr>
               </thead>
               <tbody>
                 {eventos.map((evento, index) => (
                   <tr key={index}>
-                    <td>{evento.titulo}</td>
-                    <td>{new Date(evento.fecha).toLocaleString()}</td>
-                    <td>{evento.capacidad}</td>
-                    <td>{evento.estado}</td>
+                    <td>{evento.Titulo || evento.nombre_Taller}</td>
+                    <td>{evento.Descripcion}</td>
+                    <td>{new Date(evento.Fecha).toLocaleDateString()}</td>
+                    <td>{evento.Hora_Inicio} - {evento.Hora_Fin}</td>
+                    <td>{evento.Valor}</td>
+                    <td>{evento.Capacidad}</td>
+                    <td>{evento.tipo}</td>
+                    <td>{evento.disponible ? 'Sí' : 'No'}</td>
+                    <td>{evento.cancelado ? 'Sí' : 'No'}</td>
+                    <td>
+                      <button onClick={() => handleOpenEditEventModal(evento)} className="edit-button">Editar</button>
+                      {/* <button onClick={() => handleDeleteEvent(evento.Id_Experiencias || evento.Id_Taller, evento.tipo)} className="delete-button">Eliminar</button> */}
+                    </td>
                   </tr>
                 ))}
               </tbody>

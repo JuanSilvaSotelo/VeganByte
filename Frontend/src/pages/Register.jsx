@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { registerUser } from '../services/authService';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Input from '../components/Input';
@@ -25,6 +26,7 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -47,27 +49,20 @@ function Register() {
       const response = await registerUser(dataToSend);
       
       if (response.status === 201) {
-        setSuccess('¡Registro exitoso! Por favor inicia sesión');
-        setFormData({
-          Nombre: '',
-          Apellido: '',
-          tipo_Documento: 'Cedula de ciudadania',
-          Numero_documento: '',
-          Sexo: 'Masculino',
-          Correo: '',
-          ConfirmarCorreo: '',
-          Contacto: '',
-          fecha_Nacimiento: '',
-          Direccion: '',
-          Contraseña: '',
-          ConfirmarContraseña: ''
-        });
+        console.log('Registration successful, navigating to verification-sent. Response status:', response.status);
+        navigate('/verification-sent');
+      } else {
+        console.log('Registration response status:', response.status);
+        setError('Error en el registro: ' + response.status);
       }
     } catch (err) {
         const errorMessage = err.response?.data?.error?.message || 
                             err.message || 
                             "Error en el registro";
         setError(errorMessage); 
+        console.error('Registration error:', err);
+      } finally {
+        setLoading(false);
       }
   };
 

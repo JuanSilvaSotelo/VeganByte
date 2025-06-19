@@ -1,5 +1,5 @@
 // Importar las dependencias necesarias
-import React, { useState } from 'react'; // Importar React y el hook useState
+import React, { useState, useEffect } from 'react'; // Importar React y el hook useState y useEffect
 import { useNavigate } from 'react-router-dom'; // Importar el hook useNavigate para la navegación
 import Header from '../components/Header'; // Importar el componente Header
 import Footer from '../components/Footer'; // Importar el componente Footer
@@ -11,6 +11,7 @@ import '../styles/Login.css'; // Importar estilos para el componente
 // Componente funcional Login
 function Login() {
   const navigate = useNavigate(); // Hook para la navegación
+  const searchParams = new URLSearchParams(window.location.search);
   const [formData, setFormData] = useState({ // Estado para almacenar los datos del formulario
     Usuario: '',
     Contraseña: ''
@@ -19,6 +20,15 @@ function Login() {
   const [loading, setLoading] = useState(false); // Estado para manejar el estado de carga
   const [error, setError] = useState(''); // Estado para manejar mensajes de error
   const [success, setSuccess] = useState(''); // Estado para manejar mensajes de éxito
+
+  useEffect(() => {
+    const verified = searchParams.get('verified');
+    if (verified === 'true') {
+      setSuccess('¡Correo electrónico verificado exitosamente! Ahora puedes iniciar sesión.');
+      // Limpiar el parámetro 'verified' de la URL para evitar que el mensaje se muestre de nuevo al recargar
+      navigate('/login', { replace: true });
+    }
+  }, [searchParams, navigate]);
 
   // Función para manejar el envío del formulario
   const handleSubmit = async (e) => {
@@ -32,6 +42,7 @@ function Login() {
 
       // Verificar si se recibió un token en la respuesta
       if (response.token) {
+        localStorage.setItem('token', response.token); // Store the token
         setSuccess('Inicio de sesión exitoso'); // Establecer mensaje de éxito
         // Redirigir automáticamente a la página de inicio después de 1 segundo
         setTimeout(() => {

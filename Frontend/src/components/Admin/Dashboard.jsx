@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Route, Link, Routes } from 'react-router-dom';
 import axios from 'axios';
-import { getAuthHeaders, getAdminName, logoutAdmin } from '../../services/authService';
+import { API_URL, getAuthHeaders, getAdminName, logoutAdmin } from '../../services/authService';
 import '../../styles/Admin.css';
 import UserManagement from './UserManagement';
+import Admin from '../../pages/Admin';
 
 const AdminDashboard = () => {
   const [activeUsers, setActiveUsers] = useState([]);
@@ -18,8 +19,7 @@ const AdminDashboard = () => {
 
   const fetchActiveUsers = async () => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get('/api/admin/usuarios-activos', getAuthHeaders());
+      const response = await axios.get(`${API_URL}/admin/usuarios-activos`, getAuthHeaders());
       setActiveUsers(response.data);
     } catch (error) {
       console.error('Error fetching users:', error);
@@ -28,8 +28,7 @@ const AdminDashboard = () => {
 
   const fetchEvents = async () => {
     try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      const response = await axios.get('/api/admin/eventos', getAuthHeaders());
+      const response = await axios.get(`${API_URL}/eventos`, getAuthHeaders());
       setEvents(response.data);
     } catch (error) {
       console.error('Error fetching events:', error);
@@ -62,7 +61,7 @@ const AdminDashboard = () => {
         <Routes>
           <Route path="usuarios" element={<UsersList users={activeUsers} />} />
           <Route path="user-management" element={<UserManagement />} />
-          <Route path="eventos" element={<EventManagement events={events} />} />
+          <Route path="eventos" element={<Admin />} />
           <Route path="estadisticas" element={<StatsDashboard />} />
         </Routes>
       </div>
@@ -93,59 +92,6 @@ const UsersList = ({ users }) => (
     </table>
   </div>
 );
-
-const EventManagement = ({ events }) => {
-  const [newEvent, setNewEvent] = useState({
-    titulo: '',
-    descripcion: '',
-    fecha: '',
-    tipo: 'taller'
-  });
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
-      await axios.post('/api/admin/eventos', newEvent, getAuthHeaders());
-      setNewEvent({ titulo: '', descripcion: '', fecha: '', tipo: 'taller' });
-    } catch (error) {
-      console.error('Error creating event:', error);
-    }
-  };
-
-  return (
-    <div className="event-management">
-      <h3>Crear Nuevo Evento</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Título del evento"
-          value={newEvent.titulo}
-          onChange={(e) => setNewEvent({...newEvent, titulo: e.target.value})}
-        />
-        <textarea
-          placeholder="Descripción"
-          value={newEvent.descripcion}
-          onChange={(e) => setNewEvent({...newEvent, descripcion: e.target.value})}
-        />
-        <input
-          type="date"
-          value={newEvent.fecha}
-          onChange={(e) => setNewEvent({...newEvent, fecha: e.target.value})}
-        />
-        <select
-          value={newEvent.tipo}
-          onChange={(e) => setNewEvent({...newEvent, tipo: e.target.value})}
-        >
-          <option value="taller">Taller</option>
-          <option value="experiencia">Experiencia</option>
-          <option value="evento">Evento Especial</option>
-        </select>
-        <button type="submit">Crear Evento</button>
-      </form>
-    </div>
-  );
-};
 
 const StatsDashboard = () => (
   <div className="stats-container">

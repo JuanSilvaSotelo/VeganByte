@@ -29,6 +29,7 @@ const UserManagement = () => {
                 }
             });
             setUsers(response.data);
+            console.log('Fetched users:', response.data);
             setLoading(false);
         } catch (err) {
             setError('Error al cargar usuarios.');

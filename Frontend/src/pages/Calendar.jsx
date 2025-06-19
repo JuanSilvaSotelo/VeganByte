@@ -18,8 +18,8 @@ const localizer = momentLocalizer(moment);
 
 
 const Calendar = () => {
-  const [events, setEvents] = useState([]);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+   const [events, setEvents] = useState([]);
+
   const [isAdmin, setIsAdmin] = useState(false);
   const [availableDates, setAvailableDates] = useState([]);
   const [showEventModal, setShowEventModal] = useState(false);
@@ -40,8 +40,9 @@ const Calendar = () => {
     // Verificar autenticación y rol del usuario
     const token = localStorage.getItem('token');
     const adminToken = localStorage.getItem('adminToken');
-    setIsAuthenticated(!!token || !!adminToken);
+
     setIsAdmin(!!adminToken);
+    console.log('Calendar mounted. isAdmin:', !!adminToken);
 
     // Cargar eventos
     fetchEvents();
@@ -63,6 +64,8 @@ const Calendar = () => {
         // Determinar el título y otros campos basados en el tipo
         const title = event.tipo === 'taller' ? event.nombre_Taller : event.Tipo || event.titulo; // Usar nombre_Taller para talleres, Tipo o titulo para experiencias
         const id = event.tipo === 'taller' ? event.Id_Taller : event.Id_Experiencias; // Usar la ID correcta
+        console.log('Original event object:', event);
+        console.log('Assigned ID:', id);
         if (id === undefined || id === null) {
           console.warn('ID de evento indefinido o nulo para el evento:', event);
         }
@@ -97,42 +100,64 @@ const Calendar = () => {
   const handleSelectSlot = (slotInfo) => {
     const selectedDate = moment(slotInfo.start).format('YYYY-MM-DD');
     
-    if (!isAuthenticated) {
+    console.log('handleSelectSlot triggered.');
+    const token = localStorage.getItem('token');
+    const adminToken = localStorage.getItem('adminToken');
+    const userIsAuthenticated = !!token || !!adminToken;
+
+    console.log('Inside handleSelectSlot: token:', token);
+    console.log('Inside handleSelectSlot: adminToken:', adminToken);
+    console.log('Inside handleSelectSlot: userIsAuthenticated:', userIsAuthenticated);
+
+    if (!userIsAuthenticated) {
       navigate('/register');
       return;
     }
 
-    if (isAdmin) {
-      // Mostrar modal para crear evento
-      setSelectedDate(slotInfo.start);
-      setNewEvent(prev => ({
-        ...prev,
-        fecha: moment(slotInfo.start).format('YYYY-MM-DD'),
-        hora: moment(slotInfo.start).format('HH:mm')
-      }));
-      setShowEventModal(true);
-    } else {
-      // Redirigir al formulario de agendamiento si hay eventos disponibles
-      if (availableDates.includes(selectedDate)) {
-        navigate('/agendar-evento', {
-          state: { date: slotInfo.start }
-        });
-      }
+    // If authenticated but not admin, prevent any further action related to slot selection
+    if (!isAdmin) {
+      console.log('Authenticated non-admin clicked on slot. No action taken.');
+      return;
     }
+
+    // From here, we know isAuthenticated is true and isAdmin is true
+    // Mostrar modal para crear evento (only for admins)
+    setSelectedDate(slotInfo.start);
+    setNewEvent(prev => ({
+      ...prev,
+      fecha: moment(slotInfo.start).format('YYYY-MM-DD'),
+      hora: moment(slotInfo.start).format('HH:mm')
+    }));
+    setShowEventModal(true);
   };
 
   const handleSelectEvent = (event) => {
-    if (!isAuthenticated) {
-      navigate('/registro');
+    console.log('handleSelectEvent triggered.');
+    const token = localStorage.getItem('token');
+    const adminToken = localStorage.getItem('adminToken');
+    const userIsAuthenticated = !!token || !!adminToken;
+
+    console.log('Inside handleSelectEvent: token:', token);
+    console.log('Inside handleSelectEvent: adminToken:', adminToken);
+    console.log('Inside handleSelectEvent: userIsAuthenticated:', userIsAuthenticated);
+
+    if (!userIsAuthenticated) {
+      navigate('/register');
       return;
     }
+
+    // If the user is authenticated but not an admin, they should only be able to view event details
+    // and potentially register, not edit or create events.
+    // The current logic already navigates to /evento/:id, which is appropriate for viewing details.
+    // Further logic for registration would be within the /evento/:id page.
+
 
     // Mostrar detalles del evento o formulario de inscripción
     if (!event || event.id === undefined || event.id === null) {
       console.error('Intento de navegar a un evento con ID inválido:', event);
       return; // Evitar la navegación si el ID no es válido
     }
-    navigate(`/evento/${event.id}`);
+    navigate(`/calendar/book/${event.id}?tipo=${event.tipo}`);
   };
 
   const handleEventChange = (e) => {
@@ -179,18 +204,23 @@ const Calendar = () => {
     <div className="calendar-page">
       <Header />
       <div className="calendar-content">
-        <h1 className="agendamiento-title">* AGENDAMIENTO *</h1>
-        <div className="calendar-header-section">
-          <div className="programate-section">
-            <img src="/Frontend/src/assets/Icons/calculator-icon.png" alt="Calculator Icon" className="header-icon" />
-            <span>Prográmate</span>
-          </div>
-          <div className="icons-section">
-            <img src="/Frontend/src/assets/Icons/people-icon.png" alt="People Icon" className="header-icon" />
-            <img src="/Frontend/src/assets/Icons/car-icon.png" alt="Car Icon" className="header-icon" />
-            <img src="/Frontend/src/assets/Icons/check-icon.png" alt="Check Icon" className="header-icon" />
-          </div>
-        </div>
+        {console.log('Rendering Calendar. isAdmin:', isAdmin)}
+        {isAdmin && (
+          <>
+            <h1 className="agendamiento-title">* AGENDAMIENTO *</h1>
+            <div className="calendar-header-section">
+              <div className="programate-section">
+                <img src="/Frontend/src/assets/Icons/calculator-icon.png" alt="Calculator Icon" className="header-icon" />
+                <span>Prográmate</span>
+              </div>
+              <div className="icons-section">
+                <img src="/Frontend/src/assets/Icons/people-icon.png" alt="People Icon" className="header-icon" />
+                <img src="/Frontend/src/assets/Icons/car-icon.png" alt="Car Icon" className="header-icon" />
+                <img src="/Frontend/src/assets/Icons/check-icon.png" alt="Check Icon" className="header-icon" />
+              </div>
+            </div>
+          </>
+        )}
 
         <div className="calendar-main-section">
           <div className="training-camp-section">
@@ -208,12 +238,13 @@ const Calendar = () => {
               <span className="year-number">{moment(currentDate).format('YYYY')}</span>
               <button className="nav-arrow right-arrow" onClick={() => setCurrentDate(moment(currentDate).add(1, 'month').toDate())}>&#9654;</button>
             </div>
-            <BigCalendar
-              localizer={localizer}
-              events={events}
+            {console.log('BigCalendar selectable prop:', isAdmin)}
+          <BigCalendar
+            localizer={localizer}
+            events={events}
               startAccessor="start"
               endAccessor="end"
-              selectable
+              selectable={true}
               onSelectSlot={handleSelectSlot}
               onSelectEvent={handleSelectEvent}
               messages={{
@@ -238,18 +269,13 @@ const Calendar = () => {
           </div>
         </div>
 
-        {showEventModal && (
-          <div className="event-modal-overlay">
-            <div className="event-modal">
-              <h2>Crear Nuevo Evento</h2>
-              <CreateEventForm
-                newEvent={newEvent}
-                handleEventChange={handleEventChange}
-                handleCreateEvent={handleCreateEvent}
-                closeModal={closeModal}
-              />
-            </div>
-          </div>
+        {showEventModal && isAdmin && (
+          <CreateEventForm
+            newEvent={newEvent}
+            handleEventChange={handleEventChange}
+            handleCreateEvent={handleCreateEvent}
+            closeModal={closeModal}
+          />
         )}
       </div>
        <Footer />

@@ -1,7 +1,22 @@
 create database veganByte;
 use veganByte;
-
+INSERT INTO Cliente (Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, fecha_Nacimiento, Direccion, Contraseña)
+VALUES ('Usuario', 'Prueba', 'Cedula de ciudadania', '123456789', 'Masculino', 'usuario.prueba@example.com', '1234567890', '1990-01-01', 'Calle Falsa 123', '12345678');
 select * from Cliente;
+
+UPDATE Cliente
+SET is_verified = TRUE
+WHERE Correo = 'test.user@example.com';
+
+
+INSERT INTO Cliente (
+    Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto,
+    fecha_Nacimiento, Direccion, Contraseña, is_verified, verification_token
+)
+VALUES (
+    'Test', 'User', 'Cedula de ciudadania', '1234567892', 'Masculino', 'test.user@example.com', '3001234567',
+    '1990-01-01', 'Test Address 123', '$2b$10$/wJVzhyNYqSvkW3vzPKKrujV5CtndKYd7gYzP9pRubtvNJAt1XRGK', TRUE, NULL
+);
 
 /*CREACIÓN DE TABLAS  PRIMARY/FOREIGN  KEYS*/
 
@@ -69,6 +84,8 @@ create table Talleres (
     hora_Inicio time,
     hora_Fin time,
     Valor int,
+    disponible BOOLEAN DEFAULT TRUE,
+    cancelado BOOLEAN DEFAULT FALSE,
     foreign key (Id_Reserva) references Reserva(Id_Reserva)
 );
 
@@ -99,6 +116,15 @@ create table Experiencias (
     servicios_Termales enum("Si", "No"),
     Ubicacion varchar(80),
     foreign key (Id_Reserva) references Reserva(Id_Reserva)
+);
+
+create table InscripcionesEventos (
+    Id_Inscripcion int not null auto_increment primary key,
+    Id_Cliente int not null,
+    Id_Evento int not null,
+    Tipo_Evento enum('taller', 'experiencia') not null,
+    Fecha_Inscripcion datetime default current_timestamp,
+    foreign key (Id_Cliente) references Cliente(Id_Cliente)
 );
 
 CREACIÓN DEL PROCEDIMIENTO AGENDAR

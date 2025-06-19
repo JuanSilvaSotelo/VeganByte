@@ -35,7 +35,7 @@ export const loginAdmin = async (credentials) => {
 export const registerUser = async (userData) => {
   try {
     const response = await axios.post(`${API_URL}/auth/register`, userData);
-    return response.data;
+    return response;
   } catch (error) {
     throw error;
   }

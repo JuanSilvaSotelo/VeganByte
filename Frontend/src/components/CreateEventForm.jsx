@@ -4,37 +4,59 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/Calendar.css';
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+import { API_URL } from '../services/authService';
 
-const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
-  const [tipoEvento, setTipoEvento] = useState('taller');
+const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit }) => {
+  const [tipoEvento, setTipoEvento] = useState(eventToEdit?.tipo || 'taller');
   const [formData, setFormData] = useState({
-    titulo: '',
-    descripcion: '',
-    fecha: selectedDate ? moment(selectedDate).format('YYYY-MM-DD') : '',
-    hora_inicio: selectedDate ? moment(selectedDate).format('HH:mm') : '',
-    hora_fin: '',
-    valor: '',
-    capacidad: '',
-    tipo: tipoEvento,
-    categoria: '1',
-    nivel_running: 1,
-    duracion_desplazamiento: '',
-    duracion_caminata: '',
-    servicios_termales: 'No',
-    ubicacion: ''
+    titulo: eventToEdit?.Titulo || eventToEdit?.nombre_Taller || '',
+    descripcion: eventToEdit?.Descripcion || '',
+    fecha: eventToEdit?.Fecha ? moment(eventToEdit.Fecha).format('YYYY-MM-DD') : (selectedDate ? moment(selectedDate).format('YYYY-MM-DD') : ''),
+    hora_inicio: eventToEdit?.Hora_Inicio || (selectedDate ? moment(selectedDate).format('HH:mm') : ''),
+    hora_fin: eventToEdit?.Hora_Fin || '',
+    valor: eventToEdit?.Valor || '',
+    capacidad: eventToEdit?.Capacidad || '',
+    tipo: eventToEdit?.tipo || tipoEvento,
+    categoria: eventToEdit?.Categoria || '1',
+    nivel_running: eventToEdit?.Nivel_Running || 1,
+    duracion_desplazamiento: eventToEdit?.Duracion_Desplazamiento || '',
+    duracion_caminata: eventToEdit?.Duracion_Caminata || '',
+    servicios_termales: eventToEdit?.Servicios_Termales || 'No',
+    ubicacion: eventToEdit?.Ubicacion || '',
+    disponible: eventToEdit?.disponible ?? true,
+    cancelado: eventToEdit?.cancelado ?? false
   });
   const [error, setError] = useState('');
 
   useEffect(() => {
-    if (selectedDate) {
+    if (eventToEdit) {
+      setTipoEvento(eventToEdit.tipo);
+      setFormData({
+        titulo: eventToEdit.Titulo || eventToEdit.nombre_Taller || '',
+        descripcion: eventToEdit.Descripcion || '',
+        fecha: moment(eventToEdit.Fecha).format('YYYY-MM-DD'),
+        hora_inicio: eventToEdit.Hora_Inicio || '',
+        hora_fin: eventToEdit.Hora_Fin || '',
+        valor: eventToEdit.Valor || '',
+        capacidad: eventToEdit.Capacidad || '',
+        tipo: eventToEdit.tipo,
+        categoria: eventToEdit.Categoria || '1',
+        nivel_running: eventToEdit.Nivel_Running || 1,
+        duracion_desplazamiento: eventToEdit.Duracion_Desplazamiento || '',
+        duracion_caminata: eventToEdit.Duracion_Caminata || '',
+        servicios_termales: eventToEdit.Servicios_Termales || 'No',
+        ubicacion: eventToEdit.Ubicacion || '',
+        disponible: eventToEdit.disponible ?? true,
+        cancelado: eventToEdit.cancelado ?? false,
+      });
+    } else if (selectedDate) {
       setFormData(prev => ({
         ...prev,
         fecha: moment(selectedDate).format('YYYY-MM-DD'),
         hora_inicio: moment(selectedDate).format('HH:mm')
       }));
     }
-  }, [selectedDate]);
+  }, [eventToEdit, selectedDate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -58,6 +80,8 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
         valor: parseFloat(formData.valor),
         capacidad: parseInt(formData.capacidad, 10),
         tipo: tipoEvento,
+        disponible: formData.disponible,
+        cancelado: formData.cancelado,
         ...(tipoEvento === 'taller' && {
           nombre_taller: formData.titulo
         }),
@@ -71,11 +95,24 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
           ubicacion: formData.ubicacion
         })
       };
-      await axios.post('/api/eventos', eventoData, {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        }
-      });
+
+      if (eventToEdit) {
+        const eventId = eventToEdit.Id_Experiencias || eventToEdit.Id_Taller;
+        const url = `${API_URL}/eventos/${eventId}`;
+        console.log('Sending PUT request to:', url, 'con datos:', eventoData);
+        await axios.put(url, eventoData, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      } else {
+        console.log('Sending POST request to:', `${API_URL}/eventos`, 'with data:', eventoData);
+        await axios.post(`${API_URL}/api/v1/eventos`, eventoData, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+      }
       fetchEvents();
       closeModal();
     } catch (error) {
@@ -85,7 +122,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
 
   return (
     <div className="create-event-container">
-      <h2>Crear Nuevo Evento</h2>
+      <h2>{eventToEdit ? 'Editar Evento' : 'Crear Nuevo Evento'}</h2>
       {error && <div className="error-message">{error}</div>}
       <form onSubmit={handleSubmit} className="event-form">
         <div className="form-group">
@@ -164,6 +201,28 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
             onChange={handleChange}
             min="0"
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="disponible">Disponible</label>
+          <input
+            type="checkbox"
+            id="disponible"
+            name="disponible"
+            checked={formData.disponible}
+            onChange={(e) => setFormData(prev => ({ ...prev, disponible: e.target.checked }))}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="cancelado">Cancelado</label>
+          <input
+            type="checkbox"
+            id="cancelado"
+            name="cancelado"
+            checked={formData.cancelado}
+            onChange={(e) => setFormData(prev => ({ ...prev, cancelado: e.target.checked }))}
           />
         </div>
         <div className="form-group">
@@ -269,7 +328,7 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents }) => {
         )}
         <div className="modal-buttons">
           <button type="button" className="cancel-button" onClick={closeModal}>Cancelar</button>
-          <button type="submit" className="submit-button">Crear {tipoEvento === 'taller' ? 'Taller' : 'Experiencia'}</button>
+          <button type="submit" className="submit-button">{eventToEdit ? 'Guardar Cambios' : `Crear ${tipoEvento === 'taller' ? 'Taller' : 'Experiencia'}`}</button>
         </div>
       </form>
     </div>
