@@ -78,6 +78,11 @@ const AuthController = {
         return res.status(401).json({ error: 'Usuario o contraseña incorrectos' });
       }
 
+      // Verifica si el usuario ha verificado su correo electrónico
+      if (!user.is_verified) {
+        return res.status(401).json({ error: 'Por favor, verifica tu correo electrónico antes de iniciar sesión.' });
+      }
+
       // Genera el token JWT
       const token = jwt.sign({ id: user.Id_Cliente }, process.env.JWT_SECRET, {
         expiresIn: '1h',
