@@ -5,7 +5,8 @@ select * from Cliente;
 
 select * from Talleres;
 
-select * from In;
+select * from Experiencias;
+
 
 INSERT INTO Cliente (
     Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto,
@@ -79,8 +80,8 @@ create table Talleres (
     Id_Reserva int null, -- Permitir NULL para eventos independientes
     nombre_Taller varchar(80),
     fecha date,
-    hora_Inicio time,
-    hora_Fin time,
+    Hora_Inicio time,
+    Hora_Fin time,
     Valor int,
     cant_Personas int,
     Estado ENUM('Disponible', 'Cancelado', 'Completo') DEFAULT 'Disponible',

@@ -60,32 +60,7 @@ export const eventosController = {
     }
   },
 
-  // Crear un nuevo evento (solo administradores)
-  createEvento: async (req, res) => {
-    console.log('Intentando obtener todos los eventos...'); // Log inicial
-    try {
-      // Consultar todas las experiencias
-      console.log('Consultando experiencias...');
-      const experiencias = await Experiencia.find();
-      console.log(`Experiencias encontradas: ${experiencias.length}`);
 
-      // Consultar todos los talleres
-      console.log('Consultando talleres...');
-      const talleres = await Taller.find();
-      console.log(`Talleres encontrados: ${talleres.length}`);
-
-      // Combinar ambos tipos de eventos y agregar el campo 'tipo'
-      const eventos = [
-        ...experiencias.map(e => ({ ...e, tipo: 'experiencia' })),
-        ...talleres.map(t => ({ ...t, tipo: 'taller' }))
-      ];
-      console.log(`Total de eventos combinados: ${eventos.length}`);
-      res.json(eventos);
-    } catch (error) {
-      console.error('Error detallado al obtener eventos:', error);
-      res.status(500).json({ message: 'Error al obtener eventos', error: error.message });
-    }
-  },
 
   // Crear un nuevo evento (solo administradores)
   createEvento: async (req, res) => {
@@ -101,8 +76,8 @@ export const eventosController = {
         titulo, 
         descripcion, 
         fecha, 
-        hora_inicio, 
-        hora_fin, 
+        Hora_Inicio, 
+        Hora_Fin, 
         valor, 
         capacidad, 
         tipo 
@@ -132,20 +107,23 @@ export const eventosController = {
         console.log('Received body for Experiencia creation:', req.body);
         // Extraer datos específicos de experiencia
         const { 
-          tipo_experiencia, 
+          titulo, 
           categoria, 
           nivel_running, 
           duracion_desplazamiento, 
           duracion_caminata, 
           servicios_termales, 
           ubicacion, 
-          capacidad 
-        } = req.body;
+          capacidad,
+          cant_Personas,
+          Hora_Inicio,
+          Hora_Fin
+      } = req.body;
 
         // Construir objeto para experiencia
         const experienciaData = {
           ...commonModelData,
-          Tipo: tipo_experiencia || titulo,
+          Tipo: titulo,
           Categoria: categoria,
           nivel_Running: nivel_running,
           duracion_Desplazamiento: duracion_desplazamiento,
@@ -153,9 +131,9 @@ export const eventosController = {
           servicios_Termales: servicios_termales,
           Ubicacion: ubicacion,
           Fecha: formattedFecha,
-          Hora_Inicio: hora_inicio,
-          Hora_Fin: hora_fin,
-          cant_Personas: capacidad // Add capacidad to experienciaData
+          Hora_Inicio: Hora_Inicio,
+          Hora_Fin: Hora_Fin,
+          cant_Personas: cant_Personas || capacidad // Use cant_Personas if available, otherwise use capacidad
         };
         console.log('Experiencia Data before creation:', experienciaData);
         nuevoEventoId = await Experiencia.create(experienciaData);
@@ -169,8 +147,8 @@ export const eventosController = {
           Valor: valor,
           nombre_Taller: nombre_taller || titulo,
           fecha: fecha,
-          hora_Inicio: hora_inicio || '12:00',
-          hora_Fin: hora_fin,
+          Hora_Inicio: Hora_Inicio,
+          Hora_Fin: Hora_Fin,
           cant_Personas: cant_personas || capacidad // Use cant_personas if available, otherwise use capacidad
         };
         console.log('Received body for Taller creation:', req.body);
@@ -389,22 +367,38 @@ export const eventosController = {
         return res.status(400).json({ message: 'Tipo de evento inválido' });
       }
 
-      // The model's update function already handles mapping 'capacidad' to 'cant_Personas'
-      // The model's update function already handles mapping 'capacidad' to 'cant_Personas'
       // and converting 'disponible'/'cancelado' to tinyint.
-      if (tipo === 'taller') {
+      if (tipo === 'experiencia') {
+        if (updateData.titulo !== undefined) {
+          updateData.Tipo = updateData.titulo;
+          delete updateData.titulo;
+        }
+        if (updateData.hora_inicio !== undefined) {
+          updateData.Hora_Inicio = updateData.hora_inicio;
+          delete updateData.hora_inicio;
+        }
+        if (updateData.hora_fin !== undefined) {
+          updateData.Hora_Fin = updateData.hora_fin;
+          delete updateData.hora_fin;
+        }
+        if (updateData.tipo_experiencia !== undefined) {
+          updateData.Tipo = updateData.tipo_experiencia;
+          delete updateData.tipo_experiencia;
+        }
+      } else if (tipo === 'taller') {
         if (updateData.titulo !== undefined) {
           delete updateData.titulo;
         }
         if (updateData.descripcion !== undefined) {
           delete updateData.descripcion;
         }
-      } else if (tipo === 'experiencia') {
-        if (updateData.titulo !== undefined) {
-          delete updateData.titulo;
+        if (updateData.Hora_inicio !== undefined) {
+          updateData.Hora_Inicio = updateData.Hora_inicio;
+          delete updateData.Hora_inicio;
         }
-        if (updateData.tipo_experiencia !== undefined) {
-          delete updateData.tipo_experiencia;
+        if (updateData.Hora_fin !== undefined) {
+          updateData.Hora_Fin = updateData.Hora_fin;
+          delete updateData.Hora_fin;
         }
       }
 

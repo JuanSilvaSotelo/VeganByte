@@ -3,13 +3,13 @@ import { pool } from '../config/database.js';
 // Modelo para la tabla 'experiencias'
 export const Experiencia = {
   find: async () => {
-    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin FROM Experiencias'); // Corrección del nombre de la tabla
+    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin FROM Experiencias');
     // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
     return rows.map(row => ({ ...row, tipo: 'experiencia' }));
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio AS hora_inicio, Hora_Fin AS hora_fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Experiencias.Id_Experiencias AND Tipo_Evento = \'experiencia\') AS Inscritos FROM Experiencias WHERE Id_Experiencias = ?', [id]);
+    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Experiencias.Id_Experiencias AND Tipo_Evento = \'experiencia\') AS Inscritos FROM Experiencias WHERE Id_Experiencias = ?', [id]);
     const inscritos = rows[0] ? rows[0].Inscritos : 0;
     const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
     let estado = 'Disponible';
@@ -19,7 +19,7 @@ export const Experiencia = {
       estado = 'Completo';
     }
     console.log(`Experiencia ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
-    const returnedExperiencia = rows[0] ? { ...rows[0], tipo: 'experiencia', capacidad: capacidad, Estado: estado, inscritos_count: inscritos, hora_inicio: rows[0].Hora_Inicio } : null;
+    const returnedExperiencia = rows[0] ? { ...rows[0], tipo: 'experiencia', capacidad: capacidad, Estado: estado, inscritos_count: inscritos } : null;
     console.log('Returned Experiencia object:', returnedExperiencia);
     return returnedExperiencia;
   },
@@ -95,13 +95,13 @@ export const Experiencia = {
 // Modelo para la tabla 'talleres'
 export const Taller = {
   find: async () => {
-    const [rows] = await pool.query('SELECT *, fecha AS Fecha, hora_Inicio AS Hora_Inicio, hora_Fin AS Hora_Fin FROM Talleres');
+    const [rows] = await pool.query('SELECT *, fecha AS Fecha, Hora_Inicio, Hora_Fin FROM Talleres');
     // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
     return rows.map(row => ({ ...row, tipo: 'taller' }));
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT *, fecha AS Fecha, hora_Inicio AS hora_inicio, hora_Fin AS hora_fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Talleres.Id_Taller AND Tipo_Evento = \'taller\') AS Inscritos FROM Talleres WHERE Id_Taller = ?', [id]);
+    const [rows] = await pool.query('SELECT *, fecha AS Fecha, Hora_Inicio, Hora_Fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Talleres.Id_Taller AND Tipo_Evento = \'taller\') AS Inscritos FROM Talleres WHERE Id_Taller = ?', [id]);
     const inscritos = rows[0] ? rows[0].Inscritos : 0;
     const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
     let estado = 'Disponible';
@@ -111,7 +111,7 @@ export const Taller = {
       estado = 'Completo';
     }
     console.log(`Taller ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
-    const returnedTaller = rows[0] ? { ...rows[0], tipo: 'taller', capacidad: capacidad, Estado: estado, inscritos_count: inscritos, hora_inicio: rows[0].hora_Inicio } : null;
+    const returnedTaller = rows[0] ? { ...rows[0], tipo: 'taller', capacidad: capacidad, Estado: estado, inscritos_count: inscritos } : null;
     console.log('Returned Taller object:', returnedTaller);
     return returnedTaller;
   },
@@ -120,7 +120,7 @@ export const Taller = {
     const query = `
       INSERT INTO Talleres (
         nombre_Taller, fecha,
-        hora_Inicio, hora_Fin, Valor, cant_Personas
+        Hora_Inicio, Hora_Fin, Valor, cant_Personas
       )
       VALUES (?, ?, ?, ?, ?, ?)
     `;
@@ -128,8 +128,8 @@ export const Taller = {
       // data.Id_Reserva, // Omitido
       data.nombre_Taller, // Usando 'nombre_Taller'
       data.fecha,
-      data.hora_Inicio || '12:00',
-      data.hora_Fin,
+      data.Hora_Inicio,
+      data.Hora_Fin,
       data.Valor,
       data.cant_Personas
     ]);

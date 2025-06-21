@@ -78,7 +78,6 @@ function Header() {
                     <div className="hamburger"></div>
                 </div>
                 <nav className={`main-nav ${scrolled ? 'scrolled-text' : ''} ${isMenuOpen ? 'open' : ''}`}>
-                    <Link to="/about-us"  id="dropbtn" className={location.pathname === '/about-us' ? 'active mx-2' : 'mx-2'}>● Quienes Somos</Link>
                     <div className="dropdown">
                         <span className="dropbtn">● Servicios <i className="arrow down"></i></span>
                         <div className="dropdown-content">

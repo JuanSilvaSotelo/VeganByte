@@ -109,49 +109,6 @@ const Admin = () => {
     }
   };
 
-  const handleEventoChange = (e) => {
-    const { name, value } = e.target;
-    setNuevoEvento(prev => ({
-      ...prev,
-      [name]: value
-    }));
-  };
-
-  const crearEvento = async (e) => {
-    e.preventDefault();
-    try {
-      // Asegurarse de que la capacidad sea un número
-      const eventoData = {
-        ...nuevoEvento,
-        capacidad: parseInt(nuevoEvento.capacidad),
-        hora: nuevoEvento.fecha ? new Date(nuevoEvento.fecha).toTimeString().split(' ')[0].substring(0, 5) : '12:00'
-      };
-      
-      console.log('Enviando datos de evento:', eventoData);
-      
-      await axios.post(`${API_URL}/admin/eventos`, eventoData, {
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('adminToken')}`
-        }
-      });
-      
-      setNuevoEvento({
-        titulo: '',
-        descripcion: '',
-        fecha: '',
-        capacidad: 0,
-        estado: 'Disponible',
-        tipo: 'experiencia'
-      });
-      
-      alert('Evento creado exitosamente');
-      cargarEventos();
-    } catch (error) {
-      console.error('Error al crear evento:', error.response?.data || error.message);
-      alert('Error al crear evento: ' + (error.response?.data?.message || error.message));
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem('adminToken');
     window.location.href = '/admin/login';
@@ -227,15 +184,17 @@ const Admin = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {eventos.map(event => (
+                  {eventos.map(event => {
+                    console.log('Evento en Admin.jsx:', event);
+                    return (
                     <tr key={event.Id_Experiencias || event.Id_Taller}>
-                      <td>{event.Tipo || event.nombre_Taller || event.titulo}</td>
+                      <td>{event.Tipo || event.nombre_Taller}</td>
                       <td>{event.Descripcion || event.descripcion}</td>
                       <td>{new Date(event.Fecha || event.fecha).toLocaleDateString()}</td>
-                      <td>{event.Hora_Inicio || event.hora_Inicio}</td>
-                      <td>{event.Hora_Fin || event.hora_Fin}</td>
+                      <td>{event.Hora_Inicio}</td>
+                      <td>{event.Hora_Fin}</td>
                       <td>{event.Valor || event.valor}</td>
-                      <td>{event.cant_Personas || event.capacidad}</td>
+                      <td>{event.cant_Personas || event.cant_Personas}</td>
                       <td>{event.tipo}</td>
                       <td>
                         <button onClick={() => handleOpenEditEventModal(event)} className="edit-button">Editar</button>
@@ -245,7 +204,8 @@ const Admin = () => {
                         }} className="delete-button">Eliminar</button>
                       </td>
                     </tr>
-                  ))}
+                  );})
+                  }
                 </tbody>
               </table>
             ) : (

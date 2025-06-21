@@ -25,20 +25,36 @@ function Register() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [fieldErrors, setFieldErrors] = useState({});
+  const [success, setSuccess] = useState(''); // Added for testing fieldErrors issue
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setFieldErrors({});
 
+    const newFieldErrors = {};
+
+    if (!formData.Nombre) newFieldErrors.Nombre = 'El nombre es requerido.';
+    if (!formData.Apellido) newFieldErrors.Apellido = 'El apellido es requerido.';
+    if (!formData.Numero_documento) newFieldErrors.Numero_documento = 'El número de documento es requerido.';
+    if (!formData.Correo) newFieldErrors.Correo = 'El correo electrónico es requerido.';
     if (formData.Correo !== formData.ConfirmarCorreo) {
-      return setError('Los correos no coinciden');
+      newFieldErrors.ConfirmarCorreo = 'Los correos no coinciden.';
+    }
+    if (!formData.Contacto) newFieldErrors.Contacto = 'El teléfono es requerido.';
+    if (!formData.fecha_Nacimiento) newFieldErrors.fecha_Nacimiento = 'La fecha de nacimiento es requerida.';
+    if (!formData.Direccion) newFieldErrors.Direccion = 'La dirección es requerida.';
+    if (!formData.Contraseña) newFieldErrors.Contraseña = 'La contraseña es requerida.';
+    if (formData.Contraseña !== formData.ConfirmarContraseña) {
+      newFieldErrors.ConfirmarContraseña = 'Las contraseñas no coinciden.';
     }
 
-    if (formData.Contraseña !== formData.ConfirmarContraseña) {
-      return setError('Las contraseñas no coinciden');
+    if (Object.keys(newFieldErrors).length > 0) {
+      setFieldErrors(newFieldErrors);
+      return;
     }
 
     try {
@@ -80,7 +96,7 @@ function Register() {
         <div className="register-container">
           <h2 className='register'>REGISTRARSE</h2>
           
-          {error && (<div className="error-message">{error} {}</div>)}
+          {error && (<div className="error-message">{error}</div>)}
           {success && <div className="success-message">{success}</div>}
 
           <form onSubmit={handleSubmit}>
@@ -91,7 +107,7 @@ function Register() {
                 type="text"
                 value={formData.Nombre}
                 onChange={handleChange}
-                required
+                error={fieldErrors.Nombre}
               />
               <Input
                 label="Apellidos"
@@ -99,7 +115,7 @@ function Register() {
                 type="text"
                 value={formData.Apellido}
                 onChange={handleChange}
-                required
+                error={fieldErrors.Apellido}
               />
             </div>
 
@@ -110,7 +126,7 @@ function Register() {
                 type="email"
                 value={formData.Correo}
                 onChange={handleChange}
-                required
+                error={fieldErrors.Correo}
               />
               <Input
                 label="Confirmar Correo"
@@ -118,7 +134,7 @@ function Register() {
                 type="email"
                 value={formData.ConfirmarCorreo}
                 onChange={handleChange}
-                required
+                error={fieldErrors.ConfirmarCorreo}
               />
             </div>
 
@@ -145,7 +161,7 @@ function Register() {
                     onChange={handleChange}
                     min="100000"
                     max="9999999999"
-                    required
+                    error={fieldErrors.Numero_documento}
                 />
             </div>
 
@@ -170,7 +186,7 @@ function Register() {
                 type="date"
                 value={formData.fecha_Nacimiento}
                 onChange={handleChange}
-                required
+                error={fieldErrors.fecha_Nacimiento}
               />
             </div>
 
@@ -183,7 +199,7 @@ function Register() {
                 onChange={handleChange}
                 pattern="[0-9]{10}" // Assuming a 10-digit phone number format
                 maxLength="10" // Limiting to 10 digits
-                required
+                error={fieldErrors.Contacto}
               />
               <Input
                 label="Dirección"
@@ -191,7 +207,7 @@ function Register() {
                 type="text"
                 value={formData.Direccion}
                 onChange={handleChange}
-                required
+                error={fieldErrors.Direccion}
               />
             </div>
 
@@ -202,7 +218,6 @@ function Register() {
                 type="password"
                 value={formData.Contraseña}
                 onChange={handleChange}
-                required
               />
               <Input
                 label="Confirmar Contraseña"
@@ -210,7 +225,6 @@ function Register() {
                 type="password"
                 value={formData.ConfirmarContraseña}
                 onChange={handleChange}
-                required
               />
             </div>
 

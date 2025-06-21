@@ -128,7 +128,7 @@
   font-weight: 900; /* Grosor de la fuente */
   transform: translate(-50%, 50%);
   left: 50%;
-  bottom: 50%;
+  bottom: 30%;
   position: relative;
 }
 
@@ -324,7 +324,7 @@
   justify-content: center; /* Centra horizontalmente */
   opacity: 0; /* Opacidad inicial */
   transition: opacity 0.3s; /* Transición suave para la opacidad */
-  font-size: 2.6rem; /* Tamaño de fuente */
+  font-size: 5rem; /* Tamaño de fuente */
   font-family: 'Palmer Lake Print', cursive; /* Fuente */
   font-style: italic; /* Estilo de fuente itálica */
   font-weight: 900; /* Grosor de la fuente */
@@ -453,7 +453,7 @@
 
 /* Párrafo de la leyenda de la imagen */
 .image-caption p {
-  font-size: 1.5rem; /* Tamaño de fuente */
+  font-size: 2rem; /* Tamaño de fuente */
   line-height: 1.4; /* Altura de línea */
   font-style: italic; /* Estilo de fuente itálica */
   color: #666; /* Color del texto */
@@ -531,11 +531,6 @@
   gap: 25px; /* Espacio entre el icono y el texto */
 }
 
-/* Icono de estadística */
-.stat-icon {
-  font-size: 3rem; /* Tamaño del icono */
-}
-
 /* Contenedor de texto de estadística */
 .stat-text {
   display: flex; /* Usa Flexbox para el diseño */
@@ -552,7 +547,7 @@
 
 /* Número de estadística */
 .stat-number {
-  font-size: 2.5rem; /* Tamaño de fuente */
+  font-size: 4rem; /* Tamaño de fuente */
   font-weight: bold; /* Grosor de la fuente */
   color: #333; /* Color del texto */
 }
@@ -566,7 +561,7 @@
 
 /* Descripción de estadística */
 .stat-description {
-  font-size: 1rem; /* Tamaño de fuente */
+  font-size: 2rem; /* Tamaño de fuente */
   color: #666; /* Color del texto */
   text-transform: uppercase; /* Transforma el texto a mayúsculas */
   letter-spacing: 1px; /* Espaciado entre letras */
@@ -655,11 +650,12 @@
   }
   
   .hero-title {
-    font-size: 2rem; /* Tamaño de fuente ajustado */
+    font-size: 4rem; /* Tamaño de fuente ajustado */
+    bottom: 10vh;
   }
   
   .section-title {
-    font-size: 2rem; /* Tamaño de fuente ajustado */
+    font-size: 4rem; /* Tamaño de fuente ajustado */
   }
   .experience-bg-icons {
     position: absolute; /* Posicionamiento absoluto */

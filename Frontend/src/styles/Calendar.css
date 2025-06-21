@@ -1,8 +1,22 @@
+@font-face {
+  font-family: 'Palmer Lake Print';
+  src: url('PalmerLakePrint-Regular.eot');
+  src: local('Palmer Lake Print'), local('PalmerLakePrint-Regular'),
+      url('PalmerLakePrint-Regular.eot?#iefix') format('embedded-opentype'),
+      url('PalmerLakePrint-Regular.woff2') format('woff2'),
+      url('PalmerLakePrint-Regular.woff') format('woff'),
+      url('PalmerLakePrint-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 .calendar-page {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
   padding-top: 10vh;
+  background-color: #EDE1E1;
 }
 
 .calendar-content {
@@ -21,10 +35,10 @@
 
 .agendamiento-title {
   text-align: center;
-  font-size: 2.5em;
+  font-size: 5em;
   color: #333;
   margin-bottom: 30px;
-  font-family: 'Arial Black', Gadget, sans-serif; /* Example font, adjust as needed */
+  font-family: 'Palmer Lake Print', cursive;
 }
 
 .calendar-header-section {
@@ -396,9 +410,9 @@
 
 /* Botón para crear eventos */
 .create-event-button {
-  position: absolute;
-  top: 10px; /* Adjust top position */
-  right: 10px; /* Adjust right position */
+  position: relative;
+  bottom: 12.5vh; /* Adjust top position */
+  right: 0vw; /* Adjust right position */
   background-color: #4a7c59;
   color: white;
   border: none;
@@ -412,6 +426,8 @@
   z-index: 100;
   transition: background-color 0.3s ease, transform 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 10vw;
+  height: 5vh;
 }
 
 .create-event-button:hover {
@@ -551,9 +567,26 @@
   }
 }
 
-.book-event-container h2, .book-event-container p {
+.book-event-container  {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: white;
+  color: rgb(3, 3, 3);
+  width: 30vw;
+  height: 50vh;
+  background-color: #EDE1E1;
+  border-radius: 2em;
+  font-family: "Palmer Lake Print", cursive;
+  font-size: 2.5em;
+}
+
+
+.submit-button button{
+  width: 10vw;
+  height: 10vh;
+}
+
+.cancel-button button{
+  width: 10vw;
+  height: 10vh;
 }
