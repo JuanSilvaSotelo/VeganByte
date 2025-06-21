@@ -1,4 +1,4 @@
-const Input = ({ label, type = "text", value, onChange, name, ...props }) => {
+const Input = ({ label, name, type, value, onChange, error, ...props }) => {
   const handleInputChange = (e) => {
     let newValue = e.target.value;
 
@@ -27,12 +27,13 @@ const Input = ({ label, type = "text", value, onChange, name, ...props }) => {
       <label>{label}</label>
       <input
         type={type}
-        className="input-field"
+        className={`input-field ${error ? 'input-error' : ''}`}
         value={safeValue}
         onChange={handleInputChange}
         name={name}
         {...props}
       />
+       {error && <div className="error-text">{error}</div>}
     </div>
   );
 };

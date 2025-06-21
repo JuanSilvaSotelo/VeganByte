@@ -97,7 +97,7 @@ const BookEventForm = () => {
         <p>Tipo de Evento: {evento.tipo === 'experiencia' ? 'Experiencia' : 'Taller'}</p>
         <p>{evento.descripcion}</p>
         <p>Fecha: {new Date(evento.fecha).toLocaleDateString()}</p>
-        <p>Hora: {evento.hora_inicio || 'No especificada'}</p>
+        <p>Hora: {evento.Hora_Inicio || 'No especificada'}</p>
         <p>Cupos disponibles: {evento.capacidad - evento.inscritos_count}</p>
       </div>
 

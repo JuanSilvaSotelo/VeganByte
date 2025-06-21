@@ -12,6 +12,9 @@ import CreateEventForm from '../components/CreateEventForm'; // Importar el comp
 import Footer from '../components/Footer';
 import { BottomNavigation } from '../components/BottomNavigation';
 
+import CalendarIcon from "../assets/Icons/calendario.png"
+import Carro from "../assets/Icons/carro-familiar.png"
+
 moment.locale('es');
 const localizer = momentLocalizer(moment);
 
@@ -204,21 +207,21 @@ const Calendar = () => {
     <div className="calendar-page">
       <Header />
       <div className="calendar-content">
-        {console.log('Rendering Calendar. isAdmin:', isAdmin)}
-        {isAdmin && (
-          <>
-            <h1 className="agendamiento-title">* AGENDAMIENTO *</h1>
+      <h1 className="agendamiento-title">AGENDAMIENTO DE EVENTOS</h1>
             <div className="calendar-header-section">
               <div className="programate-section">
-                <img src="/Frontend/src/assets/Icons/calculator-icon.png" alt="Calculator Icon" className="header-icon" />
+                <img src={CalendarIcon} alt="Calendar Icon" className="header-icon" />
                 <span>Prográmate</span>
               </div>
               <div className="icons-section">
                 <img src="/Frontend/src/assets/Icons/people-icon.png" alt="People Icon" className="header-icon" />
-                <img src="/Frontend/src/assets/Icons/car-icon.png" alt="Car Icon" className="header-icon" />
+                <img src={Carro} alt="Car Icon" className="header-icon" />
                 <img src="/Frontend/src/assets/Icons/check-icon.png" alt="Check Icon" className="header-icon" />
               </div>
             </div>
+        {console.log('Rendering Calendar. isAdmin:', isAdmin)}
+        {isAdmin && (
+          <>
           </>
         )}
 

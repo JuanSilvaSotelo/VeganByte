@@ -12,11 +12,12 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
     titulo: eventToEdit?.Titulo || eventToEdit?.nombre_Taller || '',
     descripcion: eventToEdit?.Descripcion || '',
     fecha: eventToEdit?.Fecha ? moment(eventToEdit.Fecha).format('YYYY-MM-DD') : (selectedDate ? moment(selectedDate).format('YYYY-MM-DD') : ''),
-    hora_inicio: eventToEdit?.Hora_Inicio || (selectedDate ? moment(selectedDate).format('HH:mm') : ''),
-    hora_fin: eventToEdit?.Hora_Fin || '',
+    Hora_Inicio: eventToEdit?.Hora_Inicio || (selectedDate ? moment(selectedDate).format('HH:mm') : ''),
+    Hora_Fin: eventToEdit?.Hora_Fin || '',
     valor: eventToEdit?.Valor || '',
     capacidad: eventToEdit?.cant_Personas || '',
     tipo: eventToEdit?.tipo || tipoEvento,
+    tipo_experiencia_detalle: eventToEdit?.Tipo_Experiencia || '',
     categoria: eventToEdit?.Categoria || '1',
     nivel_running: eventToEdit?.Nivel_Running || 1,
     duracion_desplazamiento: eventToEdit?.Duracion_Desplazamiento || '',
@@ -34,11 +35,12 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         titulo: eventToEdit.Titulo || eventToEdit.nombre_Taller || '',
         descripcion: eventToEdit.Descripcion || '',
         fecha: moment(eventToEdit.Fecha).format('YYYY-MM-DD'),
-        hora_inicio: eventToEdit.Hora_Inicio || '',
-        hora_fin: eventToEdit.Hora_Fin || '',
+        Hora_Inicio: eventToEdit.Hora_Inicio || '',
+        Hora_Fin: eventToEdit.Hora_Fin || '',
         valor: eventToEdit.Valor || '',
         capacidad: eventToEdit.cant_Personas || '',
         tipo: eventToEdit.tipo,
+        tipo_experiencia_detalle: eventToEdit.Tipo_Experiencia || '',
         categoria: eventToEdit.Categoria || '1',
         nivel_running: eventToEdit.Nivel_Running || 1,
         duracion_desplazamiento: eventToEdit.Duracion_Desplazamiento || '',
@@ -51,13 +53,14 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
       setFormData(prev => ({
         ...prev,
         fecha: moment(selectedDate).format('YYYY-MM-DD'),
-        hora_inicio: moment(selectedDate).format('HH:mm')
+        Hora_Inicio: moment(selectedDate).format('HH:mm')
       }));
     }
   }, [eventToEdit, selectedDate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     console.log(`handleChange: name=${name}, value=${value}`);
     setFormData(prevState => ({
       ...prevState,
@@ -74,23 +77,23 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
         titulo: formData.titulo,
         descripcion: formData.descripcion,
         fecha: formData.fecha,
-        hora_inicio: formData.hora_inicio,
-        hora_fin: formData.hora_fin,
+        Hora_Inicio: formData.Hora_Inicio,
+        Hora_Fin: formData.Hora_Fin,
         valor: parseFloat(formData.valor),
         capacidad: parseInt(formData.capacidad, 10),
         tipo: tipoEvento,
-        estado: formData.estado,
-        ...(tipoEvento === 'taller' && {
-          nombre_taller: formData.titulo
-        }),
-        ...(tipoEvento === 'experiencia' && {
-          tipo_experiencia: formData.tipo || formData.titulo,
-          categoria: formData.categoria,
-          nivel_running: parseInt(formData.nivel_running, 10),
-          duracion_desplazamiento: formData.duracion_desplazamiento,
-          duracion_caminata: formData.duracion_caminata,
-          servicios_termales: formData.servicios_termales,
-          ubicacion: formData.ubicacion
+          ...(tipoEvento === 'taller' && {
+            nombre_taller: formData.titulo
+          }),
+          ...(tipoEvento === 'experiencia' && {
+            tipo_experiencia: formData.titulo,
+            categoria: formData.categoria,
+            nivel_running: parseInt(formData.nivel_running, 10),
+            duracion_desplazamiento: formData.duracion_desplazamiento,
+            duracion_caminata: formData.duracion_caminata,
+            servicios_termales: formData.servicios_termales,
+            ubicacion: formData.ubicacion,
+            cant_Personas: parseInt(formData.capacidad, 10)
         })
       };
 
@@ -172,8 +175,8 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
           <input
             type="time"
             id="hora_inicio"
-            name="hora_inicio"
-            value={formData.hora_inicio}
+            name="Hora_Inicio"
+            value={formData.Hora_Inicio}
             onChange={handleChange}
             required
           />
@@ -183,8 +186,8 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
           <input
             type="time"
             id="hora_fin"
-            name="hora_fin"
-            value={formData.hora_fin}
+            name="Hora_Fin"
+            value={formData.Hora_Fin}
             onChange={handleChange}
             required
           />
@@ -232,8 +235,8 @@ const CreateEventForm = ({ closeModal, selectedDate, fetchEvents, eventToEdit })
               <input
                 type="text"
                 id="tipo_experiencia"
-                name="tipo_experiencia" // Cambiado de 'tipo' a 'tipo_experiencia'
-                value={formData.tipo} // El estado interno puede seguir siendo 'tipo' si se prefiere, pero el 'name' debe coincidir
+                name="tipo_experiencia_detalle"
+                value={formData.tipo_experiencia_detalle}
                 onChange={handleChange}
                 placeholder="Ej: Senderismo, Ciclismo, etc."
                 required

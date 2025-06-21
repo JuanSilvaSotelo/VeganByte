@@ -1,7 +1,8 @@
 import React from 'react';
-import logo from '../assets/Icons/LOGO CMR.png'; // Asegúrate que esta es la ruta correcta al logo principal
-import whatsappIcon from '../assets/Icons/whatsapp.png'; // Asegúrate que esta es la ruta correcta al icono de WhatsApp
-import instagramIcon from '../assets/Icons/instagram.png'; // Asegúrate que esta es la ruta correcta al icono de Instagram
+import { Link, useLocation } from 'react-router-dom';
+import logo from '../assets/Icons/LOGO CMR.png';
+import whatsappIcon from '../assets/Icons/whatsapp.png'; 
+import instagramIcon from '../assets/Icons/instagram.png'; 
 import '../styles/Footer.css';
 
 function Footer() {
@@ -12,6 +13,7 @@ function Footer() {
                 <div className="footer-left">
                     <img src={logo} alt="Casa Madre Raiz Logo" className="footer-logo" />
                 </div>
+                <Link to="/about-us"  id="dropbtn" className={location.pathname === '/about-us' ? 'active mx-2' : 'mx-2'}>● Nosotros</Link>
                 <div className="footer-right">
                     <span className="help-text">¿Necesitas ayuda?</span>
                     <div className="contact-info">

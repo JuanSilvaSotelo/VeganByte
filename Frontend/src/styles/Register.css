@@ -1,6 +1,8 @@
 .register-main {
   padding-top: 650px; /* Adjust based on header height */
   padding-bottom: 650px; /* Adjust based on footer height */
+  background-image: url("../assets/images/Fondo.png");
+  width: 100vw;
 }
 
 .register-container {
@@ -11,7 +13,6 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   text-align: center;
-  background-color: transparent;
   box-shadow: none;
   border: none;
 }
@@ -61,9 +62,15 @@
   outline: none;
 }
 
-.error-message {
+.error-text {
   color: #dc3545;
-  margin: 1rem 0;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  text-align: left;
+}
+
+.input-error {
+  border-color: #dc3545; /* Red border for error */
 }
 
 .success-message {

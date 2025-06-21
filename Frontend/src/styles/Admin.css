@@ -70,9 +70,12 @@
 
 /* Contenido principal */
 .admin-content {
+  display: flex;
+  flex-direction: column;
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  gap: 6vh;
 }
 
 /* Tabla de usuarios */
@@ -145,7 +148,7 @@
     font-size: 0.9rem;
   }
 
-  .event-management button {
+  .event-management-button {
     padding: 8px 12px;
     font-size: 0.9rem;
   }
@@ -210,7 +213,9 @@
   resize: vertical;
 }
 
-.event-management button {
+.event-management-button {
+  position: absolute;
+  bottom: 10vh;
   padding: 10px 15px;
   background-color: #28a745;
   color: white;
@@ -218,10 +223,13 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-  align-self: flex-start;
+  width: 50vw;
+  height: 5vh;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.event-management button:hover {
+.event-management-button:hover {
   background-color: #218838;
 }
 
@@ -278,4 +286,8 @@
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+table {
+  border-collapse: separate;
+  border-spacing: 4vw;
 }
