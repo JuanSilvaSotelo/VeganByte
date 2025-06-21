@@ -50,12 +50,12 @@
   font-family: 'Palmer Lake Print', cursive;
   font-style: oblique;
   font-weight: 900;
-  font-size: 2em;
+  font-size: 4vw;
   margin-bottom: 20px;
   color: #000000;
   text-transform: uppercase;
   padding: 15px;
-  top: 4.5vh;
+  top: 5.8vh;
   position: relative;
 }
 
@@ -78,10 +78,9 @@
   background-color: #B1BFB0;
   align-items: center;
   justify-content: center;
-  font-family: 'Palmer Lake Print', cursive;
-  font-style: oblique;
+  font-family: 'Palmer Lake Print', sans-serif;
   font-weight: 900;
-  font-size: 1vw;
+  font-size: 1.3vw;
   color: #000000;
   padding: 0 3vw 0 3vw;
 }
@@ -135,7 +134,7 @@
   display: flex;
   justify-content: space-around;
   align-items: flex-start;
-  gap: 17vw;
+  gap: 12vh 17vw;
   flex-wrap: wrap; /* For responsiveness */
 }
 
@@ -146,7 +145,7 @@
   max-width: 15vw; /* Adjust width */
 }
 
-.principiantes:hover, .intermedios:hover, .expertos:hover {
+.CascadaChontales:hover, .CascadaJungla:hover, .LagunaSeca:hover {
   background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
 }
 
@@ -185,10 +184,9 @@
 
 .media-text {
   color: #f3d1d1;
-  font-family: 'Palmer Lake Print', cursive;
-  font-style: oblique;
+  font-family: 'Palmer Lake Print', sans-serif;
   font-weight: 900;
-  font-size: 1.2em;
+  font-size: 1.7vw;
   width: 25vw;
   padding: 5vh 0 5vh 0;
 }
@@ -207,9 +205,9 @@
   padding: 10px;
   box-sizing: border-box;
   text-transform: uppercase;
-  font-size: 3em;
+  font-size: 5vw;
   font-weight: 900;
-  font-family: 'Palmer Lake Print', cursive;
+  font-family: 'Palmer Lake Print', sans-serif;
   font-style: italic;
 }
 
@@ -229,7 +227,7 @@
   padding: 12px 25px;
   border: none;
   border-radius: 20px;
-  font-size: 16px;
+  font-size: 1.5vw;
   cursor: pointer;
   text-transform: uppercase;
   width: 100%;
@@ -240,68 +238,108 @@
   background-color: #0F280D;
 }
 
-/* Testimonials Section (Tavo Buitrago, Annie Pineda) */
-.senderismo-testimonials-section {
-  padding: 30px 20px;
+/* Altaa montaña Section */
+.senderismo-altaMontana {
+  padding: 5vh 10vw;
+  text-align: center;
+  color: #000000;
+  margin-bottom: 30px;
+  height: 220vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
   background-color: #EDE1E1;
 }
 
-.senderismo-testimonial-item {
-  display: flex;
-  align-items: center;
-  gap: 25px;
-  margin-bottom: 30px;
-  padding: 3vh 6vw 3vh 6vw;
-  border-radius: 8px;
-  text-align: center;
-  justify-content: space-between
-}
-
-/* Alternating layout for testimonials */
-.senderismo-testimonial-text:nth-child(even) {
-  flex-direction: row-reverse;
-}
-
-.senderismo-testimonial-item img {
-  width: 25vw; /* Adjust size */
-  height: 50vh;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.senderismo-testimonial-text h3 {
-  font-size: 3em; /* Adjust size */
-  color: #11490C; /* Dark green name */
-  margin-bottom: 10px;
+.senderismo-altaMontana h2 {
   font-family: 'Palmer Lake Print', cursive;
   font-style: italic;
   font-weight: 900;
-}
-
-.senderismo-testimonial-text p {
-  max-width: 53vw;
-  line-height: 1.7;
+  font-size: 5vw; /* Adjust size */
+  margin-bottom: 30px;
   color: #000000;
-  font-family: 'Palmer Lake Print', cursive;
-  font-style: oblique;
-  font-weight: 500;
-  font-size: 2em;
 }
 
-/* Footer Styles (re-using from previous, adjust if needed) */
-.senderismo-footer {
-  padding: 30px 20px;
-  background-color: #2A5A2A; /* Dark green background */
-  color: #FFFFFF;
-  text-align: center;
-}
-
-.senderismo-footer-content {
+.senderismo-item {
   display: flex;
-  justify-content: space-around;
-  align-items: center; /* Center items vertically */
-  flex-wrap: wrap;
-  gap: 20px;
-  max-width: 900px; /* Adjust max width */
-  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+  max-width: 15vw; /* Adjust width */
+}
+
+.LagunaRica:hover, .LagunaNegra:hover, .VeredaAvendaños:hover, .CasaFrailejones:hover {
+  background: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(255, 255, 255, 0));
+}
+
+.wrapper-image {
+  position: relative;
+  width: 25vw; /* Adjust size */
+  height: 50vh;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 15px;
+  border: 2px solid #000000; /* White border for circle images */
+}
+
+.wrapper-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wrapper-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.5) 100%); /* Degradado de transparente a negro */
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.wrapper-image:hover::before {
+  opacity: 1;
+}
+
+.textMedia {
+  color: #000000;
+  font-family: 'Palmer Lake Print', sans-serif;
+  font-weight: 900;
+  font-size: 1.7vw;
+  width: 25vw;
+  padding: 5vh 0 5vh 0;
+}
+
+.overlayText {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #000000;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 2;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  font-size: 5vw;
+  font-weight: 900;
+  font-family: 'Palmer Lake Print', sans-serif;
+  font-style: italic;
+}
+
+.wrapper-image:hover .overlayText {
+  opacity: 1;
+}
+
+.senderismo-altaMontana .info-text {
+  font-size: 1.4em;
+  margin-top: 20px;
+  margin-bottom: 25px;
 }

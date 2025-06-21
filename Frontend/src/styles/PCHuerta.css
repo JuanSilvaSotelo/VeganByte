@@ -1,26 +1,57 @@
-@import url('https://fonts.googleapis.com/css2?family=Homemade+Apple&display=swap');
+@font-face {
+  font-family: 'Palmer Lake Print';
+  src: url('PalmerLakePrint-Regular.eot');
+  src: local('Palmer Lake Print'), local('PalmerLakePrint-Regular'),
+      url('PalmerLakePrint-Regular.eot?#iefix') format('embedded-opentype'),
+      url('PalmerLakePrint-Regular.woff2') format('woff2'),
+      url('PalmerLakePrint-Regular.woff') format('woff'),
+      url('PalmerLakePrint-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
 
 .pc-huerta-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  background-color: #EDE1E1;
 }
 
-main {
-  flex: 1;
-  padding-top: 100px; /* Adjust based on header height */
+.huerta-section {
+  max-width: 800px;
+  padding: 25vh 0 1vh 0;
+  border-radius: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  bottom: 2vw;
+  left: 16%;
+  flex-direction: column;
 }
+
 
 .hero-huerta {
-  background-color: #f8f8f8;
-  padding: 50px 20px;
-  text-align: center;
+  max-width: 800px;
+  padding: 20px;
+  border-radius: 10px;
+  align-items: flex-end;
+  justify-content: center;
+  display: flex;
+  position: relative;
+  bottom: 3.5vw;
+  left: 0%;
+  gap: 10px;
 }
 
 .hero-huerta h1 {
-  font-family: 'Homemade Apple', cursive;
-  font-size: 3em;
+  position: relative;
+  display: flex;
+  font-family: 'Palmer Lake Print', cursive;
+  font-style: oblique;
+  font-size: 5em;
   color: #333;
+  top: 2.5vh;
 }
 
 .huerta-intro-section {
@@ -30,7 +61,6 @@ main {
   align-items: center;
   padding: 50px 20px;
   gap: 40px;
-  background-color: #fff;
 }
 
 .huerta-image-wrapper {
@@ -83,9 +113,9 @@ main {
 }
 
 .huerta-basics-section {
-  background-color: #f8f8f8;
   padding: 50px 20px;
   text-align: center;
+  padding-bottom: 30vh;
 }
 
 .huerta-basics-section h2 {

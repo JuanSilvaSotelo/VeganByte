@@ -9,7 +9,7 @@ export const Experiencia = {
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT *, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Experiencias.Id_Experiencias AND Tipo_Evento = \'experiencia\') AS Inscritos FROM Experiencias WHERE Id_Experiencias = ?', [id]);
+    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio AS hora_inicio, Hora_Fin AS hora_fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Experiencias.Id_Experiencias AND Tipo_Evento = \'experiencia\') AS Inscritos FROM Experiencias WHERE Id_Experiencias = ?', [id]);
     const inscritos = rows[0] ? rows[0].Inscritos : 0;
     const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
     let estado = 'Disponible';
@@ -19,7 +19,7 @@ export const Experiencia = {
       estado = 'Completo';
     }
     console.log(`Experiencia ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
-    const returnedExperiencia = rows[0] ? { ...rows[0], tipo: 'experiencia', Capacidad: capacidad, Estado: estado } : null;
+    const returnedExperiencia = rows[0] ? { ...rows[0], tipo: 'experiencia', capacidad: capacidad, Estado: estado, inscritos_count: inscritos, hora_inicio: rows[0].Hora_Inicio } : null;
     console.log('Returned Experiencia object:', returnedExperiencia);
     return returnedExperiencia;
   },
@@ -101,7 +101,7 @@ export const Taller = {
   },
 
   findById: async (id) => {
-    const [rows] = await pool.query('SELECT *, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Talleres.Id_Taller AND Tipo_Evento = \'taller\') AS Inscritos FROM Talleres WHERE Id_Taller = ?', [id]);
+    const [rows] = await pool.query('SELECT *, fecha AS Fecha, hora_Inicio AS hora_inicio, hora_Fin AS hora_fin, (SELECT COUNT(*) FROM InscripcionesEventos WHERE Id_Evento = Talleres.Id_Taller AND Tipo_Evento = \'taller\') AS Inscritos FROM Talleres WHERE Id_Taller = ?', [id]);
     const inscritos = rows[0] ? rows[0].Inscritos : 0;
     const capacidad = rows[0] && rows[0].cant_Personas !== null ? rows[0].cant_Personas : Number.MAX_SAFE_INTEGER;
     let estado = 'Disponible';
@@ -111,14 +111,12 @@ export const Taller = {
       estado = 'Completo';
     }
     console.log(`Taller ${id}: inscritos=${inscritos}, capacidad=${capacidad}, calculado estado=${estado}`);
-    const returnedTaller = rows[0] ? { ...rows[0], tipo: 'taller', Capacidad: capacidad, Estado: estado } : null;
+    const returnedTaller = rows[0] ? { ...rows[0], tipo: 'taller', capacidad: capacidad, Estado: estado, inscritos_count: inscritos, hora_inicio: rows[0].hora_Inicio } : null;
     console.log('Returned Taller object:', returnedTaller);
     return returnedTaller;
   },
 
   create: async (data) => {
-    // Id_Reserva se omite aquí, ya que no se proporciona al crear un taller directamente
-    // Capacidad también se omite ya que no existe en la tabla Talleres
     const query = `
       INSERT INTO Talleres (
         nombre_Taller, fecha,
@@ -129,8 +127,6 @@ export const Taller = {
     const [result] = await pool.query(query, [
       // data.Id_Reserva, // Omitido
       data.nombre_Taller, // Usando 'nombre_Taller'
-      // data.Descripcion, // Omitido, no existe en la tabla
-      // data.Capacidad, // Omitido
       data.fecha,
       data.hora_Inicio || '12:00',
       data.hora_Fin,

@@ -31,6 +31,62 @@ export const eventosController = {
     }
   },
 
+  getEventoById: async (req, res) => {
+    try {
+      const { eventoId } = req.params;
+      const { tipo } = req.query;
+
+      if (!eventoId || !tipo) {
+        return res.status(400).json({ message: 'ID de evento y tipo son requeridos' });
+      }
+
+      let evento;
+      if (tipo === 'taller') {
+        evento = await Taller.findById(eventoId);
+      } else if (tipo === 'experiencia') {
+        evento = await Experiencia.findById(eventoId);
+      } else {
+        return res.status(400).json({ message: 'Tipo de evento inválido' });
+      }
+
+      if (!evento) {
+        return res.status(404).json({ message: 'Evento no encontrado' });
+      }
+      console.log('Evento fetched by ID:', evento);
+      res.json(evento);
+    } catch (error) {
+      console.error('Error al obtener evento por ID:', error);
+      res.status(500).json({ message: 'Error al obtener evento', error: error.message });
+    }
+  },
+
+  // Crear un nuevo evento (solo administradores)
+  createEvento: async (req, res) => {
+    console.log('Intentando obtener todos los eventos...'); // Log inicial
+    try {
+      // Consultar todas las experiencias
+      console.log('Consultando experiencias...');
+      const experiencias = await Experiencia.find();
+      console.log(`Experiencias encontradas: ${experiencias.length}`);
+
+      // Consultar todos los talleres
+      console.log('Consultando talleres...');
+      const talleres = await Taller.find();
+      console.log(`Talleres encontrados: ${talleres.length}`);
+
+      // Combinar ambos tipos de eventos y agregar el campo 'tipo'
+      const eventos = [
+        ...experiencias.map(e => ({ ...e, tipo: 'experiencia' })),
+        ...talleres.map(t => ({ ...t, tipo: 'taller' }))
+      ];
+      console.log(`Total de eventos combinados: ${eventos.length}`);
+      res.json(eventos);
+    } catch (error) {
+      console.error('Error detallado al obtener eventos:', error);
+      res.status(500).json({ message: 'Error al obtener eventos', error: error.message });
+    }
+  },
+
   // Crear un nuevo evento (solo administradores)
   createEvento: async (req, res) => {
     console.log('*** Entrando a createEvento en eventos.controller.js ***');

@@ -78,7 +78,7 @@ function Header() {
                     <div className="hamburger"></div>
                 </div>
                 <nav className={`main-nav ${scrolled ? 'scrolled-text' : ''} ${isMenuOpen ? 'open' : ''}`}>
-                    <Link to="/about-us" className={location.pathname === '/about-us' ? 'active mx-2' : 'mx-2'}>● Quienes Somos</Link>
+                    <Link to="/about-us"  id="dropbtn" className={location.pathname === '/about-us' ? 'active mx-2' : 'mx-2'}>● Quienes Somos</Link>
                     <div className="dropdown">
                         <span className="dropbtn">● Servicios <i className="arrow down"></i></span>
                         <div className="dropdown-content">
@@ -95,7 +95,7 @@ function Header() {
                             <Link to="/social/blog"><img src={star} alt="Logo" className='star'></img> Blog</Link>
                         </div>
                     </div>
-                    <Link to="/calendar" className={location.pathname === '/calendar' ? 'active mx-2' : 'mx-2'}> ● Calendario</Link>
+                    <Link to="/calendar"  id="dropbtn" className={location.pathname === '/calendar' ? 'active mx-2' : 'mx-2'}> ● Calendario</Link>
                 </nav>
             </div>
         </header>

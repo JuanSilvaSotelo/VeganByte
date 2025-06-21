@@ -48,7 +48,6 @@ const AdminDashboard = () => {
           <p>Bienvenido, {adminName}</p>
         </div>
         <ul>
-          <li><Link to="/admin/usuarios">Usuarios Activos</Link></li>
           <li><Link to="/admin/user-management">Gestión de Usuarios</Link></li>
           <li><Link to="/admin/eventos">Gestión de Eventos</Link></li>
           <li><Link to="/admin/estadisticas">Estadísticas</Link></li>

@@ -52,7 +52,7 @@
 .title-section h1 {
   font-family: 'Palmer Lake Print', cursive;
   font-style: oblique; /* Example font */
-  font-size: 2.5em;
+  font-size: 5em;
   margin: 0 20px;
   color: #000000;
   font-weight: bolder;
@@ -65,8 +65,9 @@
 
 .text-block-1,
 .text-block-2 {
-  font-family: 'inter', sans-serif; /* Example font */
-  font-size: 1.3rem;
+  font-family: 'Palmer Lake Print', sans-serif; /* Example font */
+  font-style: normal;
+  font-size: 2rem;
   line-height: 1.6;
   margin-bottom: 20px;
   text-align: justify;

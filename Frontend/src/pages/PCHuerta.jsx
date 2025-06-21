@@ -4,15 +4,17 @@ import Footer from '../components/Footer';
 import '../styles/PCHuerta.css';
 
 import PrincipalHuerta from '../assets/huerta/PRINCIPAL_HUERTA.jpg';
+import StarBlack from '../assets/Icons/StarBlack.png';
 
 function PCHuerta() {
   return (
     <div className="pc-huerta-container">
       <Header />
-      <main>
-        <section className="hero-huerta">
-          <div className="hero-content">
-            <h1>* HUERTA ORGÁNICA *</h1>
+        <section className="huerta-section">
+          <div className="hero-huerta">
+            <img src={StarBlack} alt="estrella" className="star" />
+            <h1>HUERTA ORGÁNICA</h1>
+            <img src={StarBlack} alt="estrella" className="star" />
           </div>
         </section>
 
@@ -52,7 +54,6 @@ function PCHuerta() {
           </div>
           <button className="contact-button">Contáctanos</button>
         </section>
-      </main>
       <Footer />
     </div>
   );

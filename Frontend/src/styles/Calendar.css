@@ -550,3 +550,10 @@
     width: 100%;
   }
 }
+
+.book-event-container h2, .book-event-container p {
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}

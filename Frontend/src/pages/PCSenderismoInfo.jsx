@@ -51,7 +51,7 @@ function PCSenderismo() {
           <div className="senderismo-niveles-container">
             <div className="senderismo-nivel-item">
               <div className="image-wrapper">
-                <img src={CascadaChontales} alt="Principiantes" className='principiantes'/>
+               <img src={CascadaChontales} alt="Principiantes" className='CascadaChontales'/>
                 <div className="overlay-text">
                   <p>Cascada Chontales</p>
                 </div>
@@ -67,7 +67,7 @@ function PCSenderismo() {
             </div>
             <div className="senderismo-nivel-item">
               <div className="image-wrapper">
-                <img src={CascadaJungla} alt="Intermedio" className='intermedios' />
+              <img src={CascadaJungla} alt="Intermedio" className='CascadaJungla' />
                 <div className="overlay-text">
                   <p>Cascada + Jungla</p>
                 </div>
@@ -83,7 +83,7 @@ function PCSenderismo() {
             </div>
             <div className="senderismo-nivel-item">
               <div className="image-wrapper">
-                <img src={LagunaSeca} alt="Expertos" className='expertos' />
+                <img src={LagunaSeca} alt="Expertos" className='LagunaSeca' />
                 <div className="overlay-text">
                   <p>Laguna Seca</p>
                 </div>
@@ -100,32 +100,74 @@ function PCSenderismo() {
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section className="senderismo-testimonials-section">
-          <div className="senderismo-testimonial-item tavo-testimonial">
-            <img src={"Tavo"} alt="Tavo Buitrago" />
-            <div className="senderismo-testimonial-text">
-              <h3>TAVO BUITRAGO</h3>
-              <p>
-              Compartiremos rutas en Sotaquirá, probablemente uno de los pueblos más aptos en Colombia
-              para la práctica del atletismo en montaña, cuenta con todos los ingredientes para vivir
-              senderismos a todos los niveles. Justo detrás del pueblo está gran parte de la cordillera oriental
-              de los Andes Colombianos, toda su cresta limita con las montañas boyacenses y santandereanas.
-              </p>
-            </div>
-          </div>
+        {/* Alta montaña Section */}
+        <section className="senderismo-altaMontana">
+          <h2>Alta Montaña</h2>
+          <div className="senderismo-niveles-container">
+            <div className="senderismo-item">
+              <div className="wrapper-image">
+                <img src={LagunaRica} alt="Principiantes" className='LagunaRica'/>
+                <div className="overlayText">
+                  <p>Laguna Rica</p>
+                </div>
+              </div>
+              <div className='textMedia'>
+                <p>Ida y vuelta (2hr en carro)<br />
+                    Caminata (7hr aprox)<br /><br />
 
-          <div className="senderismo-testimonial-item annie-testimonial">
-            <div className="senderismo-testimonial-text">
-              <h3>ANNIE PINEDA</h3>
-              <p>
-              Podremos recorrer todo tipo de senderos, inclinaciones, tipos de terrenos técnicos y altitudes entre
-              los 2500 y 3900 msnm. También es realmente especial entrenar aquí, por las instalaciones de Casa
-              Madre Raíz, por la seguridad constante y la poca frecuencia del ser humano por sus caminos
-              mientras disfrutamos de paisajes paradisíacos.
-              </p>
+                    $280.000 por 1 o 2 personas<br />
+                    (Persona adicional: $140.000)</p>
+                </div>
+                <a href="https://wa.link/v6qfvb" className="senderismo-contactanos-btn">Mas detalles</a>
             </div>
-            <img src={"Anna"} alt="Anna Pineda" />
+            <div className="senderismo-item">
+              <div className="wrapper-image">
+                <img src={LagunaNegra} alt="Intermedio" className='LagunaNegra' />
+                <div className="overlayText">
+                  <p>Laguna Negra</p>
+                </div>
+              </div>
+              <div className='textMedia'>
+                <p>Ida y vuelta (2hr en carro)<br />
+                  Caminata (8hr 30 min aprox)<br /><br />
+
+                  $280.000 por 1 o 2 personas<br />
+                  (Persona adicional: $140.000)</p>
+                </div>
+                <a href="https://wa.link/v6qfvb" className="senderismo-contactanos-btn">Mas detalles</a>
+            </div>
+            <div className="senderismo-item">
+              <div className="wrapper-image">
+                <img src={VeredaAvendaños} alt="Expertos" className='VeredaAvendaños' />
+                <div className="overlayText">
+                  <p>Vereda Avendaños</p>
+                </div>
+              </div>
+              <div className='textMedia'>
+                <p>Ida y vuelta (2hr en carro)<br />
+                  Caminata (10hr aprox)<br /><br />
+
+                  $300.000 por 1 o 2 personas<br />
+                  (Persona adicional: $150.000)</p>
+                </div>
+                <a href="https://wa.link/v6qfvb" className="senderismo-contactanos-btn">Mas detalles</a>
+            </div>
+            <div className="senderismo-item">
+              <div className="wrapper-image">
+                <img src={CasaFrailejones} alt="Intermedio" className='CasaFrailejones' />
+                <div className="overlayText">
+                  <p>Casa Frailejones</p>
+                </div>
+              </div>
+              <div className='textMedia'>
+                <p>Ida y vuelta (2hr en carro)<br />
+                  Caminata (4hr 30 min aprox)<br /><br />
+
+                  $190.000 por 1 o 2 personas<br />
+                  (Persona adicional: $95.000)</p>
+                </div>
+                <a href="https://wa.link/v6qfvb" className="senderismo-contactanos-btn">Mas detalles</a>
+            </div>
           </div>
         </section>
 

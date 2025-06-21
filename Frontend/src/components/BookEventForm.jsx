@@ -94,10 +94,11 @@ const BookEventForm = () => {
       <h2>Agendar Evento</h2>
       <div className="event-details">
         <h3>{evento.titulo}</h3>
+        <p>Tipo de Evento: {evento.tipo === 'experiencia' ? 'Experiencia' : 'Taller'}</p>
         <p>{evento.descripcion}</p>
         <p>Fecha: {new Date(evento.fecha).toLocaleDateString()}</p>
-        <p>Hora: {evento.hora}</p>
-        <p>Cupos disponibles: {evento.capacidad - (evento.participantes ? evento.participantes.length : 0)}</p>
+        <p>Hora: {evento.hora_inicio || 'No especificada'}</p>
+        <p>Cupos disponibles: {evento.capacidad - evento.inscritos_count}</p>
       </div>
 
       <form onSubmit={handleSubmit} className="booking-form">
