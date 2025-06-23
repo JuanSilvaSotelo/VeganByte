@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import '../styles/Calendar.css';
+import { isAdminAuthenticated } from '../services/authService';
 
 const BookEventForm = () => {
   const { eventId } = useParams();
@@ -14,7 +15,7 @@ const BookEventForm = () => {
 
   console.log('VITE_BACKEND_URL:', import.meta.env.VITE_BACKEND_URL);
 
-  useEffect(() => {
+  const fetchEvento = useCallback(async () => {
     const token = localStorage.getItem('userToken');
     console.log('Token en BookEventForm:', token);
     if (!token) {
@@ -22,25 +23,35 @@ const BookEventForm = () => {
       return;
     }
 
-    const fetchEvento = async () => {
-      try {
-        const fetchUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/eventos/${eventId}?tipo=${tipo}`;
-        console.log('Fetching event data from:', fetchUrl);
-        const response = await fetch(fetchUrl);
-        if (!response.ok) {
-          throw new Error('Evento no encontrado');
-        }
-        const data = await response.json();
-        setEvento(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
+    try {
+      const fetchUrl = `${import.meta.env.VITE_BACKEND_URL}/api/v1/eventos/${eventId}?tipo=${tipo}`;
+      console.log('Fetching event data from:', fetchUrl);
+      const response = await fetch(fetchUrl);
+      if (!response.ok) {
+        throw new Error('Evento no encontrado');
       }
+      const data = await response.json();
+      setEvento(data);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [eventId, tipo, navigate]);
+
+  useEffect(() => {
+    fetchEvento();
+
+    const handleFocus = () => {
+      fetchEvento();
     };
 
-    fetchEvento();
-  }, [eventId, tipo]);
+    window.addEventListener('focus', handleFocus);
+
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, [fetchEvento]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,6 +98,19 @@ const BookEventForm = () => {
   console.log('Evento estado:', evento?.Estado);
   if (!evento) {
     return <div className="error-message">Evento no encontrado</div>;
+  }
+
+  // Assuming user role can be determined (e.g., from localStorage or context)
+  const isAdmin = isAdminAuthenticated();
+
+  if (evento.Estado !== 'Disponible' && !isAdmin) {
+    // Redirect to calendar or show a message and hide details
+    return (
+      <div className="book-event-container">
+        <p className="event-full">Este evento está completo y no puedes ver sus detalles.</p>
+        <button onClick={() => navigate('/calendar')} className="submit-button">Volver al Calendario</button>
+      </div>
+    );
   }
 
   return (

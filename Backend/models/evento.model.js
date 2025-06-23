@@ -2,10 +2,14 @@ import { pool } from '../config/database.js';
 
 // Modelo para la tabla 'experiencias'
 export const Experiencia = {
-  find: async () => {
-    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin FROM Experiencias');
-    // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
+  find: async (skip = 0, limit = 10) => {
+    const [rows] = await pool.query('SELECT *, Fecha, Hora_Inicio, Hora_Fin FROM Experiencias LIMIT ?, ?', [skip, limit]);
     return rows.map(row => ({ ...row, tipo: 'experiencia' }));
+  },
+
+  countDocuments: async () => {
+    const [rows] = await pool.query('SELECT COUNT(*) AS count FROM Experiencias');
+    return rows[0].count;
   },
 
   findById: async (id) => {
@@ -94,10 +98,14 @@ export const Experiencia = {
 
 // Modelo para la tabla 'talleres'
 export const Taller = {
-  find: async () => {
-    const [rows] = await pool.query('SELECT *, fecha AS Fecha, Hora_Inicio, Hora_Fin FROM Talleres');
-    // Añadir un campo 'tipo' para identificarlo en el controlador si es necesario
+  find: async (skip = 0, limit = 10) => {
+    const [rows] = await pool.query('SELECT *, fecha AS Fecha, Hora_Inicio, Hora_Fin FROM Talleres LIMIT ?, ?', [skip, limit]);
     return rows.map(row => ({ ...row, tipo: 'taller' }));
+  },
+
+  countDocuments: async () => {
+    const [rows] = await pool.query('SELECT COUNT(*) AS count FROM Talleres');
+    return rows[0].count;
   },
 
   findById: async (id) => {
