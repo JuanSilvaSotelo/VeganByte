@@ -6,25 +6,36 @@ import { InscripcionEvento } from '../models/inscripcionEvento.model.js';
 export const eventosController = {
   // Obtener todos los eventos (experiencias y talleres)
   getAllEventos: async (req, res) => {
-    console.log('Intentando obtener todos los eventos...'); // Log inicial
+    console.log('Intentando obtener todos los eventos con paginación...');
     try {
-      // Consultar todas las experiencias
-      console.log('Consultando experiencias...');
-      const experiencias = await Experiencia.find();
-      console.log(`Experiencias encontradas: ${experiencias.length}`);
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 10;
+      const skip = (page - 1) * limit;
 
-      // Consultar todos los talleres
-      console.log('Consultando talleres...');
-      const talleres = await Taller.find();
-      console.log(`Talleres encontrados: ${talleres.length}`);
+      // Consultar experiencias con paginación
+      console.log('Consultando experiencias con paginación...');
+      const experiencias = await Experiencia.find(skip, limit);
+      const totalExperiencias = await Experiencia.countDocuments();
+
+      // Consultar talleres con paginación
+      console.log('Consultando talleres con paginación...');
+      const talleres = await Taller.find(skip, limit);
+      const totalTalleres = await Taller.countDocuments();
 
       // Combinar ambos tipos de eventos y agregar el campo 'tipo'
       const eventos = [
         ...experiencias.map(e => ({ ...e, tipo: 'experiencia' })),
         ...talleres.map(t => ({ ...t, tipo: 'taller' }))
       ];
-      console.log(`Total de eventos combinados: ${eventos.length}`);
-      res.json(eventos);
+
+      // Ordenar los eventos combinados por fecha (opcional, pero útil para paginación consistente)
+      eventos.sort((a, b) => new Date(a.Fecha || a.fecha) - new Date(b.Fecha || b.fecha));
+
+      const totalEvents = totalExperiencias + totalTalleres;
+      const totalPages = Math.ceil(totalEvents / limit);
+
+      console.log(`Total de eventos combinados: ${eventos.length}, Total de páginas: ${totalPages}`);
+      res.json({ events: eventos, totalPages: totalPages });
     } catch (error) {
       console.error('Error detallado al obtener eventos:', error);
       res.status(500).json({ message: 'Error al obtener eventos', error: error.message });

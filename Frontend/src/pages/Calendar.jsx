@@ -60,7 +60,7 @@ const Calendar = () => {
   const fetchEvents = async () => {
     try {
       const response = await axios.get(`${API_URL}/eventos`); // Usar axios y la URL base
-      const data = response.data; // Acceder a los datos desde axios
+      const data = response.data.events; // Acceder a los datos desde axios
       console.log('Datos crudos de eventos recibidos:', data); // Log para inspeccionar datos crudos
       const formattedEvents = data.map(event => {
         console.log('Procesando evento individual:', event); // Log para cada evento
@@ -149,6 +149,12 @@ const Calendar = () => {
       return;
     }
 
+    // Prevent navigation if the event is full and the user is not an admin
+    if (event.estado === 'Completo' && !isAdmin) {
+      alert('Este evento ya está completo y no se puede acceder a su información.');
+      return;
+    }
+
     // If the user is authenticated but not an admin, they should only be able to view event details
     // and potentially register, not edit or create events.
     // The current logic already navigates to /evento/:id, which is appropriate for viewing details.
@@ -161,6 +167,16 @@ const Calendar = () => {
       return; // Evitar la navegación si el ID no es válido
     }
     navigate(`/calendar/book/${event.id}?tipo=${event.tipo}`);
+  };
+
+  const eventPropGetter = (event) => {
+    const isFull = event.estado === 'Completo';
+    return {
+      className: isFull ? 'event-full' : '',
+      style: {
+        backgroundColor: isFull ? '#ffcccc' : '', // Light red for full events
+      },
+    };
   };
 
   const handleEventChange = (e) => {

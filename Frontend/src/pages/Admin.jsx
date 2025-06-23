@@ -8,6 +8,9 @@ import '../styles/Admin.css';
 const Admin = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [eventos, setEventos] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [eventsPerPage] = useState(10);
+  const [totalPages, setTotalPages] = useState(0);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [nuevoEvento, setNuevoEvento] = useState({
@@ -44,8 +47,8 @@ const Admin = () => {
 
   useEffect(() => {
     cargarUsuarios();
-    cargarEventos();
-  }, []);
+    cargarEventos(currentPage, eventsPerPage);
+  }, [currentPage, eventsPerPage]);
 
   const cargarUsuarios = async () => {
     try {
@@ -66,27 +69,18 @@ const Admin = () => {
     }
   };
 
-  const cargarEventos = useCallback(async () => {
+  const cargarEventos = useCallback(async (page, limit) => {
     try {
-      console.log('Requesting events from:', `${API_URL}/eventos`);
-      const response = await axios.get(`${API_URL}/eventos`, getAuthHeaders());
-      console.log('Eventos cargados (raw):', response.data);
-      // Asegurarse de que los IDs sean correctos
-      const processedEvents = response.data.map(event => {
-        if (event.tipo === 'experiencia' && event.Id_Experiencias === undefined) {
-          console.warn('Experiencia sin Id_Experiencias:', event);
-        }
-        if (event.tipo === 'taller' && event.Id_Taller === undefined) {
-          console.warn('Taller sin Id_Taller:', event);
-        }
-        return event;
-      });
-      setEventos(processedEvents);
+      console.log('Requesting events from:', `${API_URL}/eventos?page=${page}&limit=${limit}`);
+      const response = await axios.get(`${API_URL}/eventos?page=${page}&limit=${limit}`, getAuthHeaders());
+      console.log('Eventos cargados (raw):', response.data.events);
+      setTotalPages(response.data.totalPages);
+      setEventos(response.data.events || []);
 
     } catch (error) {
       console.error('Error al cargar eventos:', error.response?.data || error.message);
     }
-  }, [setEventos]);
+  }, []);
 
   const handleDeleteEvent = async (id, tipo) => {
     console.log('handleDeleteEvent called with ID:', id, 'and Type:', tipo);
@@ -101,7 +95,7 @@ const Admin = () => {
         body: JSON.stringify({ tipo })
       });
         alert(`${tipo} eliminado exitosamente`);
-        cargarEventos(); // Recargar eventos después de la eliminación
+        cargarEventos(currentPage, eventsPerPage); // Recargar eventos después de la eliminación
       } catch (error) {
         console.error(`Error al eliminar ${tipo}:`, error.response?.data || error.message);
         alert(`Error al eliminar ${tipo}: ` + (error.response?.data?.message || error.message));
@@ -168,6 +162,7 @@ const Admin = () => {
           <button onClick={handleOpenCreateEventModal} className="create-event-button">Crear Nuevo Evento</button>
 
           <div className="event-list">
+            {console.log('Total Pages:', totalPages)}
             {eventos.length > 0 ? (
               <table>
                 <thead>
@@ -211,6 +206,22 @@ const Admin = () => {
             ) : (
               <p>No hay eventos disponibles.</p>
             )}
+          </div>
+
+          <div className="pagination-controls">
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              Anterior
+            </button>
+            <span>Página {currentPage} de {totalPages}</span>
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              Siguiente
+            </button>
           </div>
 
 
