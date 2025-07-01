@@ -1,4 +1,4 @@
-create database veganByte;
+/*create database veganByte;
 use veganByte;
 
 select * from Cliente;
@@ -15,7 +15,7 @@ INSERT INTO Cliente (
 VALUES (
     'Test', 'User', 'Cedula de ciudadania', '1234567892', 'Masculino', 'test.user@example.com', '3001234567',
     '1990-01-01', 'Test Address 123', '$2b$10$/wJVzhyNYqSvkW3vzPKKrujV5CtndKYd7gYzP9pRubtvNJAt1XRGK', TRUE, NULL
-);
+);*/
 
 /*CREACIÓN DE TABLAS  PRIMARY/FOREIGN  KEYS*/
 
@@ -358,7 +358,7 @@ CALL AgendarReserva(
 
 SELECT * FROM Reserva;
 SELECT * FROM Talleres;
-SELECT * FROM Hospedaje;
+SELECT * FROM Hospedaje;*/
  
 /*PROCEDIMIENTO PARA ELIMINAR EXPERIENCIA*/
 DELIMITER $$ 
@@ -377,7 +377,8 @@ CREATE PROCEDURE eliminarExperiencia(
 	
 END$$
 DELIMITER ;
-
+/*
 call eliminarExperiencia(2,"Ascenso a la cima");
 
 select C.Nombre , C.Apellido, E.Descripcion, E.Id_Reserva As NumeroReserva  from Cliente C inner join Reserva R on C.Id_Cliente = R.Id_Cliente inner join Experiencias E on R.Id_Reserva = E.Id_Reserva;
+*/
