@@ -19,8 +19,8 @@ function Register() {
     Contacto: '',
     fecha_Nacimiento: '',
     Direccion: '',
-    Contraseña: '',
-    ConfirmarContraseña: ''
+    Contrasena: '',
+    ConfirmarContrasena: ''
   });
 
   const [loading, setLoading] = useState(false);
@@ -47,9 +47,9 @@ function Register() {
     if (!formData.Contacto) newFieldErrors.Contacto = 'El teléfono es requerido.';
     if (!formData.fecha_Nacimiento) newFieldErrors.fecha_Nacimiento = 'La fecha de nacimiento es requerida.';
     if (!formData.Direccion) newFieldErrors.Direccion = 'La dirección es requerida.';
-    if (!formData.Contraseña) newFieldErrors.Contraseña = 'La contraseña es requerida.';
-    if (formData.Contraseña !== formData.ConfirmarContraseña) {
-      newFieldErrors.ConfirmarContraseña = 'Las contraseñas no coinciden.';
+    if (!formData.Contrasena) newFieldErrors.Contrasena = 'La contrasena es requerida.';
+    if (formData.Contrasena !== formData.ConfirmarContrasena) {
+      newFieldErrors.ConfirmarContrasena = 'Las contrasenas no coinciden.';
     }
 
     if (Object.keys(newFieldErrors).length > 0) {
@@ -59,8 +59,8 @@ function Register() {
 
     try {
       setLoading(true);
-      const { ConfirmarCorreo, ConfirmarContraseña, Contraseña, ...dataToSend } = formData;
-       dataToSend.Contraseña = String(Contraseña);
+      const { ConfirmarCorreo, ConfirmarContrasena, Contrasena, ...dataToSend } = formData;
+       dataToSend.Contrasena = String(Contrasena);
       
       const response = await registerUser(dataToSend);
       
@@ -213,17 +213,17 @@ function Register() {
 
             <div className="row">
               <Input
-                label="Contraseña"
-                name="Contraseña"
+                label="Contrasena"
+                name="Contrasena"
                 type="password"
-                value={formData.Contraseña}
+                value={formData.Contrasena}
                 onChange={handleChange}
               />
               <Input
-                label="Confirmar Contraseña"
-                name="ConfirmarContraseña"
+                label="Confirmar Contrasena"
+                name="ConfirmarContrasena"
                 type="password"
-                value={formData.ConfirmarContraseña}
+                value={formData.ConfirmarContrasena}
                 onChange={handleChange}
               />
             </div>

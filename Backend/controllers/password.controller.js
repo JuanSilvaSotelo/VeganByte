@@ -1,4 +1,4 @@
-// Controlador para la gestión de restablecimiento de contraseñas
+// Controlador para la gestion de restablecimiento de contrasenas
 import Cliente from '../models/cliente.model.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -14,7 +14,7 @@ const transporter = nodemailer.createTransport({
 });
 
 const PasswordController = {
-  // Solicitar restablecimiento de contraseña
+  // Solicitar restablecimiento de contrasena
   requestReset: async (req, res) => {
     try {
       const { email } = req.body;
@@ -42,12 +42,12 @@ const PasswordController = {
       const mailOptions = {
         from: process.env.EMAIL_USER,
         to: email,
-        subject: 'Restablecimiento de Contraseña - VeganByte',
+        subject: 'Restablecimiento de Contrasena - VeganByte',
         html: `
-          <h1>Restablecimiento de Contraseña</h1>
-          <p>Has solicitado restablecer tu contraseña.</p>
+          <h1>Restablecimiento de Contrasena</h1>
+          <p>Has solicitado restablecer tu contrasena.</p>
           <p>Haz clic en el siguiente enlace para continuar:</p>
-          <a href="${resetUrl}">Restablecer Contraseña</a>
+          <a href="${resetUrl}">Restablecer Contrasena</a>
           <p>Este enlace expirará en 1 hora.</p>
           <p>Si no solicitaste este cambio, ignora este correo.</p>
         `
@@ -58,12 +58,12 @@ const PasswordController = {
 
       res.json({ message: 'Se ha enviado un enlace de restablecimiento a tu correo electrónico' });
     } catch (error) {
-      console.error('Error al solicitar restablecimiento de contraseña:', error);
+      console.error('Error al solicitar restablecimiento de contrasena:', error);
       res.status(500).json({ error: 'Error al procesar la solicitud' });
     }
   },
 
-  // Restablecer la contraseña usando el token recibido
+  // Restablecer la contrasena usando el token recibido
   resetPassword: async (req, res) => {
     try {
       const { token, newPassword } = req.body;
@@ -77,19 +77,19 @@ const PasswordController = {
         return res.status(404).json({ error: 'Usuario no encontrado' });
       }
 
-      // Hashear la nueva contraseña
+      // Hashear la nueva contrasena
       const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-      // Actualizar la contraseña en la base de datos
+      // Actualizar la contrasena en la base de datos
       await Cliente.updatePassword(user.Id_Cliente, hashedPassword);
 
-      res.json({ message: 'Contraseña actualizada exitosamente' });
+      res.json({ message: 'Contrasena actualizada exitosamente' });
     } catch (error) {
       if (error.name === 'TokenExpiredError') {
         return res.status(401).json({ error: 'El enlace ha expirado' });
       }
-      console.error('Error al restablecer contraseña:', error);
-      res.status(500).json({ error: 'Error al restablecer la contraseña' });
+      console.error('Error al restablecer contrasena:', error);
+      res.status(500).json({ error: 'Error al restablecer la contrasena' });
     }
   }
 };

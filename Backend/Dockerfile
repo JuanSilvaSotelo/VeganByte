@@ -10,10 +10,9 @@ COPY package*.json ./
 # Instala las dependencias del proyecto
 RUN npm install
 
-RUN npm install -g nodemon
-
 # Copia el resto de los archivos de la aplicación al directorio de trabajo
 COPY . .
+COPY .env ./.env
 
 # Expone el puerto en el que corre tu aplicación backend (según tu .env es 5000)
 EXPOSE 5000

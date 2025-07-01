@@ -29,6 +29,7 @@ const AuthController = {
       // Crea un nuevo usuario en la base de datos con el token de verificación
       const newUserId = await Cliente.create({
         ...req.body,
+        Contrasena: req.body.Contrasena, // Asegúrate de que la contraseña se pase explícitamente
         is_verified: false,
         verification_token: verificationToken
       });
@@ -37,7 +38,7 @@ const AuthController = {
       // Envía el correo electrónico de verificación de forma asíncrona
       emailService.sendVerificationEmail(req.body.Correo, verificationToken).catch(error => {
         console.error('Error al enviar correo de verificación:', error);
-        // Aquí podrías añadir lógica para reintentar o notificar al administrador
+        // Aqui podrias anadir logica para reintentar o notificar al administrador
       });
       
       res.status(201).json({
@@ -57,7 +58,7 @@ const AuthController = {
   // Inicio de sesión de cliente
   login: async (req, res) => {
     try {
-      const { Usuario, Contraseña } = req.body;
+      const { Usuario, Contrasena } = req.body;
 
       // Busca usuario por correo electrónico
       let user = await Cliente.findByEmail(Usuario);
@@ -69,13 +70,13 @@ const AuthController = {
 
       // Si no se encuentra el usuario
       if (!user) {
-        return res.status(401).json({ error: 'Usuario o contraseña incorrectos' });
+        return res.status(401).json({ error: 'Usuario o contrasena incorrectos' });
       }
 
-      // Verifica la contraseña
-      const isPasswordValid = await bcrypt.compare(Contraseña, user.Contraseña);
+      // Verifica la contrasena
+      const isPasswordValid = await bcrypt.compare(Contrasena, user.Contrasena);
       if (!isPasswordValid) {
-        return res.status(401).json({ error: 'Usuario o contraseña incorrectos' });
+        return res.status(401).json({ error: 'Usuario o contrasena incorrectos' });
       }
 
       // Verifica si el usuario ha verificado su correo electrónico

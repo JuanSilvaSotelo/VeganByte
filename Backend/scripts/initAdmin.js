@@ -10,7 +10,7 @@ const defaultAdmin = {
   Nombre: 'Admin',
   Apellido: 'Sistema',
   Usuario: 'admin',
-  Contraseña: 'admin123', // Esta contraseña se hasheará antes de guardarla
+  Contrasena: 'admin123', // Esta contraseña se hasheará antes de guardarla
   Correo: 'admin@veganbyte.com',
   tipo_Documento: 'Cedula de ciudadania',
   Numero_documento: 123456789,
@@ -45,12 +45,12 @@ async function initializeAdmin() {
     
     // Hashear la contraseña antes de guardarla
     const saltRounds = parseInt(process.env.BCRYPT_SALT_ROUNDS) || 10;
-    const hashedPassword = await bcrypt.hash(defaultAdmin.Contraseña, saltRounds);
+    const hashedPassword = await bcrypt.hash(defaultAdmin.Contrasena, saltRounds);
     
     // Consulta SQL para insertar el administrador
     const query = `
       INSERT INTO Administradores 
-      (Nombre, Apellido, Usuario, Contraseña, Correo, tipo_Documento, 
+      (Nombre, Apellido, Usuario, Contrasena, Correo, tipo_Documento, 
       Numero_documento, Sexo, Contacto, Direccion, fecha_Nacimiento, Rol)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
@@ -73,7 +73,7 @@ async function initializeAdmin() {
     
     console.log('✅ Administrador por defecto creado exitosamente!');
     console.log(`Usuario: ${defaultAdmin.Usuario}`);
-    console.log(`Contraseña: ${defaultAdmin.Contraseña}`);
+    console.log(`Contraseña: ${defaultAdmin.Contrasena}`);
     console.log('Por favor, cambie esta contraseña después de iniciar sesión por primera vez.');
   } catch (error) {
     // Manejo de errores durante la inicialización

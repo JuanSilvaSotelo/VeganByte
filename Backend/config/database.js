@@ -16,14 +16,14 @@ console.log("[DEBUG DB] Credenciales:", {
   host: process.env.DB_HOST, // Mostrar el host de la base de datos
   user: process.env.DB_USER, // Mostrar el usuario de la base de datos
   database: process.env.DB_DATABASE, // Mostrar el nombre de la base de datos
-  password: process.env.DB_PASSWORD ? '***' : 'vacía', // Ocultar la contraseña por seguridad
+  password: process.env.DB_PASSWORD ? '***' : 'vacia', // Ocultar la contrasena por seguridad
 });
 
 // Crear el pool de conexiones a la base de datos
 const pool = createPool({
   host: process.env.DB_HOST, // Host de la base de datos
   user: process.env.DB_USER, // Usuario de la base de datos
-  password: process.env.DB_PASSWORD || null, // Si no hay contraseña, usar null
+  password: process.env.DB_PASSWORD || null, // Si no hay contrasena, usar null
   database: process.env.DB_DATABASE, // Nombre de la base de datos
   port: 3306, // Puerto de conexión (por defecto para MySQL)
   waitForConnections: true, // Esperar conexiones si el pool está lleno

@@ -1,5 +1,5 @@
 // Importar las dependencias necesarias
-import bcrypt from 'bcryptjs'; // Para encriptar contraseñas
+import bcrypt from 'bcryptjs'; // Para encriptar contrasenas
 import { Administradores } from '../models/index.js'; // Modelo de base de datos para administradores
 
 /**
@@ -14,13 +14,13 @@ const createAdmin = async (req, res) => {
 
     // Desestructurar el cuerpo de la solicitud para obtener los datos del nuevo administrador
     const {
-      nombre, apellido, usuario, contraseña, correo, 
+      nombre, apellido, usuario, contrasena, correo, 
       tipoDocumento, numeroDocumento, sexo, contacto, 
       direccion, fechaNacimiento, rol
     } = req.body;
 
     // Validar campos obligatorios
-    if (!nombre || !apellido || !usuario || !contraseña || !correo || 
+    if (!nombre || !apellido || !usuario || !contrasena || !correo || 
         !tipoDocumento || !numeroDocumento || !sexo || !contacto || 
         !direccion || !fechaNacimiento) {
       return res.status(400).json({ error: 'Todos los campos son obligatorios' });
@@ -37,7 +37,7 @@ const createAdmin = async (req, res) => {
       Nombre: nombre,
       Apellido: apellido,
       Usuario: usuario,
-      Contraseña: contraseña, // Se hasheará en el modelo
+      Contrasena: contrasena, // Se hasheara en el modelo
       Correo: correo,
       tipo_Documento: tipoDocumento,
       Numero_documento: numeroDocumento,
@@ -100,7 +100,7 @@ const updateAdmin = async (req, res) => {
     // Obtener datos a actualizar
     const updateData = {};
     const allowedFields = [
-      'Nombre', 'Apellido', 'Correo', 'Contraseña', 
+      'Nombre', 'Apellido', 'Correo', 'Contrasena', 
       'tipo_Documento', 'Numero_documento', 'Sexo', 
       'Contacto', 'Direccion', 'fecha_Nacimiento'
     ];
@@ -115,7 +115,7 @@ const updateAdmin = async (req, res) => {
       nombre: 'Nombre',
       apellido: 'Apellido',
       correo: 'Correo',
-      contraseña: 'Contraseña',
+      contrasena: 'Contrasena',
       tipoDocumento: 'tipo_Documento',
       numeroDocumento: 'Numero_documento',
       sexo: 'Sexo',

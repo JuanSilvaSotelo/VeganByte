@@ -10,5 +10,5 @@ export const validateRegister = [
   body('Contacto').isMobilePhone('any'),
   body('fecha_Nacimiento').isDate(),
   body('Direccion').trim().notEmpty(),
-  body('Contraseña').isLength({ min: 8 })
+  body('Contrasena').isLength({ min: 8 })
 ];

@@ -3,13 +3,13 @@ import bcrypt from 'bcryptjs';
 import { pool } from '../config/database.js';
 
 const Administradores = {
-  // Crear un nuevo administrador con contraseña encriptada
+  // Crear un nuevo administrador con contrasena encriptada
   create: async (adminData) => {
-    const hashedPassword = await bcrypt.hash(adminData.Contraseña, 10);
+    const hashedPassword = await bcrypt.hash(adminData.Contrasena, 10);
     
     const query = `
       INSERT INTO Administradores 
-      (Nombre, Apellido, Usuario, Contraseña, Correo, tipo_Documento, 
+      (Nombre, Apellido, Usuario, Contrasena, Correo, tipo_Documento, 
       Numero_documento, Sexo, Contacto, Direccion, fecha_Nacimiento, Rol)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
@@ -61,17 +61,17 @@ const Administradores = {
   // Actualizar los datos de un administrador
   update: async (id, data) => {
     // Construir dinámicamente la consulta de actualización
-    const fields = Object.keys(data).filter(key => key !== 'Contraseña');
+    const fields = Object.keys(data).filter(key => key !== 'Contrasena');
     
-    if (fields.length === 0 && !data.Contraseña) {
+    if (fields.length === 0 && !data.Contrasena) {
       return false; // No hay nada que actualizar
     }
     
-    // Manejar la contraseña por separado si está presente
-    if (data.Contraseña) {
-      const hashedPassword = await bcrypt.hash(data.Contraseña, 10);
-      fields.push('Contraseña');
-      data.Contraseña = hashedPassword;
+    // Manejar la contrasena por separado si esta presente
+    if (data.Contrasena) {
+      const hashedPassword = await bcrypt.hash(data.Contrasena, 10);
+      fields.push('Contrasena');
+      data.Contrasena = hashedPassword;
     }
     
     const setClause = fields.map(field => `${field} = ?`).join(', ');

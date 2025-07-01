@@ -63,6 +63,37 @@ Además de sus aspectos funcionales, VeganByte sirve como una herramienta de apr
 - [Node.js](https://nodejs.org/) (para desarrollo local fuera de Docker)
 - [Git](https://git-scm.com/)
 
+### Configuración del Entorno Local
+
+Antes de iniciar los servicios, es crucial configurar el archivo de entorno para el frontend. Este archivo (`.env`) contiene variables que la aplicación frontend utiliza para comunicarse con el backend y otros servicios.
+
+1.  **Crea el archivo `.env`**: En el directorio `Frontend/`, crea un nuevo archivo llamado `.env`.
+
+    ```bash
+    cd Frontend
+    copy .env.example .env
+    cd ..
+    ```
+
+    *   **¿Por qué es necesario?** El archivo `.env` es utilizado por Vite (el bundler del frontend) para cargar variables de entorno específicas del proyecto. Aunque Docker Compose maneja la comunicación interna entre servicios (por ejemplo, `http://backend:5000`), el frontend necesita saber a qué URL conectarse cuando se ejecuta en el navegador del usuario. El archivo `.env.example` proporciona una plantilla con la configuración recomendada para el desarrollo local, asegurando que el frontend pueda encontrar el backend correctamente.
+
+2.  **Verifica el contenido**: Asegúrate de que el archivo `Frontend/.env` contenga la siguiente línea (o similar, si tu configuración de backend es diferente):
+
+    ```
+    VITE_BACKEND_URL=http://backend:5000
+    ```
+
+    Esta configuración permite que el frontend, una vez dentro del contenedor Docker, se comunique con el servicio `backend` utilizando el nombre de servicio definido en `docker-compose.yml`.
+
+### Inicialización del Administrador por Defecto
+
+Al iniciar los servicios con `docker-compose up --build -d`, se ejecuta automáticamente un script (`Backend/scripts/initAdmin.js`) que verifica si ya existe un administrador en la base de datos. Si no se encuentra ningún administrador, el script crea uno por defecto con las siguientes credenciales:
+
+-   **Usuario**: `admin`
+-   **Contraseña**: `admin123`
+
+Este proceso asegura que siempre haya un usuario administrador disponible para el primer inicio de la aplicación. Se recomienda encarecidamente cambiar esta contraseña después del primer inicio de sesión por motivos de seguridad.
+
 ### Instalación
 
 Clona el repositorio del proyecto:

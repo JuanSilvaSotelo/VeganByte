@@ -6,7 +6,7 @@ import '../styles/AdminLogin.css';
 const AdminLogin = () => {
   const [credentials, setCredentials] = useState({
     usuario: '',
-    contraseña: ''
+    contrasena: ''
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -65,15 +65,15 @@ const AdminLogin = () => {
           </div>
           
           <div className="admin-form-group">
-            <label htmlFor="contraseña">Contraseña</label>
+            <label htmlFor="contrasena">Contrasena</label>
             <input
               type="password"
-              id="contraseña"
-              name="contraseña"
-              value={credentials.contraseña}
+              id="contrasena"
+              name="contrasena"
+              value={credentials.contrasena}
               onChange={handleChange}
               required
-              placeholder="Contraseña"
+              placeholder="Contrasena"
             />
           </div>
           

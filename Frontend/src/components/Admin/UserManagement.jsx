@@ -100,18 +100,18 @@ const UserManagement = () => {
     };
 
     const handleResetPassword = async (id) => {
-        const newPassword = prompt('Introduce la nueva contraseña para el usuario:');
+        const newPassword = prompt('Introduce la nueva contrasena para el usuario:');
         if (newPassword) {
             try {
                 const token = localStorage.getItem('adminToken');
-                await axios.put(`${API_BASE_URL}/admin/usuarios/${id}`, { Contraseña: newPassword }, {
+                await axios.put(`${API_BASE_URL}/admin/usuarios/${id}`, { Contrasena: newPassword }, {
                     headers: {
                         Authorization: `Bearer ${token}`
                     }
                 });
-                alert('Contraseña restablecida exitosamente.');
+                alert('Contrasena restablecida exitosamente.');
             } catch (err) {
-                alert('Error al restablecer la contraseña.');
+                alert('Error al restablecer la contrasena.');
                 console.error('Error resetting password:', err);
             }
         }
@@ -161,7 +161,7 @@ const UserManagement = () => {
                                         <td>{user.Direccion || 'N/A'}</td>
                                         <td className="actions">
                                             <button onClick={() => handleEdit(user)} className="edit-btn">Editar</button>
-                                            <button onClick={() => handleResetPassword(user.Id_Cliente)} className="reset-password-btn">Restablecer Contraseña</button>
+                                            <button onClick={() => handleResetPassword(user.Id_Cliente)} className="reset-password-btn">Restablecer Contrasena</button>
                                             <button onClick={() => handleDelete(user.Id_Cliente)} className="delete-btn">Eliminar</button>
                                         </td>
                                     </>

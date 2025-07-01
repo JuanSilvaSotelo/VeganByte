@@ -6,5 +6,5 @@ export const validateCliente = [
   body('Correo').isEmail().withMessage('Correo electrónico inválido'),
   body('Contacto').isMobilePhone().withMessage('Número de contacto inválido'),
   body('fecha_Nacimiento').isDate().withMessage('Fecha de nacimiento inválida'),
-  body('Contraseña').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres')
+  body('Contrasena').isLength({ min: 6 }).withMessage('La contrasena debe tener al menos 6 caracteres')
 ];

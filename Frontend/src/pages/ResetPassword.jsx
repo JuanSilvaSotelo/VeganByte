@@ -23,7 +23,7 @@ function ResetPassword() {
     setError('');
 
     if (password !== confirmPassword) {
-      setError('Las contraseñas no coinciden');
+      setError('Las contrasenas no coinciden');
       return;
     }
 
@@ -36,7 +36,7 @@ function ResetPassword() {
         navigate('/login');
       }, 2000);
     } catch (err) {
-      setError(err.response?.data?.error || 'Error al restablecer la contraseña');
+      setError(err.response?.data?.error || 'Error al restablecer la contrasena');
     } finally {
       setLoading(false);
     }
@@ -47,28 +47,28 @@ function ResetPassword() {
       <Header />
       <main>
         <div className="login-container">
-          <h2>RESTABLECER CONTRASEÑA</h2>
+          <h2>RESTABLECER CONTRASENA</h2>
 
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
 
           <form onSubmit={handleSubmit}>
             <Input
-              label="Nueva Contraseña"
+              label="Nueva Contrasena"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
             />
             <Input
-              label="Confirmar Contraseña"
+              label="Confirmar Contrasena"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
             <Button type="submit" disabled={loading}>
-              {loading ? 'Procesando...' : 'Restablecer Contraseña'}
+              {loading ? 'Procesando...' : 'Restablecer Contrasena'}
             </Button>
           </form>
         </div>

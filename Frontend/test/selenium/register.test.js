@@ -149,7 +149,7 @@ describe('Pruebas de registro de usuarios', function() {
         // Tomar captura de pantalla de los errores de validación
         await takeScreenshot(driver, 'register-validation-errors');
         
-        // Completar solo algunos campos y verificar validación de contraseña
+        // Completar solo algunos campos y verificar validacion de contrasena
         await waitAndSendKeys(driver, By.name('Nombre'), 'Usuario');
         await waitAndSendKeys(driver, By.name('Apellido'), 'De Prueba');
         await waitAndSendKeys(driver, By.name('Numero_documento'), '12345678');
@@ -158,13 +158,13 @@ describe('Pruebas de registro de usuarios', function() {
         await waitAndSendKeys(driver, By.name('Contacto'), '1234567890');
         await waitAndSendKeys(driver, By.name('fecha_Nacimiento'), '1990-01-01');
         await waitAndSendKeys(driver, By.name('Direccion'), 'Calle Principal 123');
-        await waitAndSendKeys(driver, By.name('Contraseña'), 'pass123');
-        await waitAndSendKeys(driver, By.name('ConfirmarContraseña'), 'pass456');
+        await waitAndSendKeys(driver, By.name('Contrasena'), 'pass123');
+        await waitAndSendKeys(driver, By.name('ConfirmarContrasena'), 'pass456');
         
         // Hacer clic en el botón de registro
         await waitAndClick(driver, By.css('button[type="submit"]'));
         
-        // Verificar mensaje de error por contraseñas que no coinciden
+        // Verificar mensaje de error por contrasenas que no coinciden
         try {
             const errorMessage = await driver.wait(
                 until.elementLocated(By.css('.error-message')),

@@ -1,20 +1,20 @@
 // Importar las dependencias necesarias
 import jwt from 'jsonwebtoken'; // Para generar y verificar tokens JWT
-import bcrypt from 'bcryptjs'; // Para encriptar y comparar contraseñas
+import bcrypt from 'bcryptjs'; // Para encriptar y comparar contrasenas
 import { Administradores, Cliente, InscripcionEvento } from '../models/index.js'; // Modelos de base de datos
 import { Experiencia, Taller } from '../models/index.js'; // Modelos adicionales (no utilizados en este fragmento)
 
 // Función para manejar el inicio de sesión de un administrador
 const loginAdmin = async (req, res) => {
   try {
-    // Desestructurar el cuerpo de la solicitud para obtener usuario y contraseña
-    const { usuario, contraseña } = req.body;
+    // Desestructurar el cuerpo de la solicitud para obtener usuario y contrasena
+    const { usuario, contrasena } = req.body;
 
     // Buscar el administrador por su nombre de usuario
     const admin = await Administradores.findByUsername(usuario);
 
-    // Verificar si el administrador existe y si la contraseña es correcta
-    if (!admin || !await bcrypt.compare(contraseña, admin.Contraseña)) {
+    // Verificar si el administrador existe y si la contrasena es correcta
+    if (!admin || !await bcrypt.compare(contrasena, admin.Contrasena)) {
       return res.status(401).json({ error: 'Credenciales inválidas' }); // Respuesta de error si las credenciales son inválidas
     }
 
@@ -58,14 +58,14 @@ const getUsuariosActivos = async (req, res) => {
 // Exportar las funciones para su uso en otras partes de la aplicación
 const createUser = async (req, res) => {
   try {
-    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contraseña, fecha_Nacimiento, Direccion } = req.body;
+    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contrasena, fecha_Nacimiento, Direccion } = req.body;
 
     const existingUser = await Cliente.findByEmail(Correo);
     if (existingUser) {
       return res.status(409).json({ error: 'El correo electrónico ya está registrado.' });
     }
 
-    const hashedPassword = await bcrypt.hash(Contraseña, 10);
+    const hashedPassword = await bcrypt.hash(Contrasena, 10);
 
     const newUser = await Cliente.create({
       Nombre,
@@ -75,7 +75,7 @@ const createUser = async (req, res) => {
       Sexo,
       Correo,
       Contacto,
-      Contraseña: hashedPassword,
+      Contrasena: hashedPassword,
       fecha_Nacimiento,
       Direccion,
       is_verified: true, // Admin created users are automatically verified
@@ -92,7 +92,7 @@ const createUser = async (req, res) => {
 const updateUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contraseña, fecha_Nacimiento, Direccion } = req.body;
+    const { Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, Contrasena, fecha_Nacimiento, Direccion } = req.body;
 
     const user = await Cliente.findById(id);
     if (!user) {
@@ -111,8 +111,8 @@ const updateUser = async (req, res) => {
       Direccion
     };
 
-    if (Contraseña) {
-      updateData.Contraseña = await bcrypt.hash(Contraseña, 10);
+    if (Contrasena) {
+      updateData.Contrasena = await bcrypt.hash(Contrasena, 10);
     }
 
     await Cliente.update(id, updateData);

@@ -14,7 +14,7 @@ function Login() {
   const searchParams = new URLSearchParams(window.location.search);
   const [formData, setFormData] = useState({ // Estado para almacenar los datos del formulario
     Usuario: '',
-    Contraseña: ''
+    Contrasena: ''
   });
 
   const [loading, setLoading] = useState(false); // Estado para manejar el estado de carga
@@ -89,10 +89,10 @@ function Login() {
               required // Campo obligatorio
             />
             <Input
-              label="Contraseña" // Etiqueta del campo
-              name="Contraseña" // Nombre del campo
+              label="Contrasena" // Etiqueta del campo
+name="Contrasena" // Nombre del campo
               type="password" // Tipo de campo
-              value={formData.Contraseña} // Valor del campo
+              value={formData.Contrasena} // Valor del campo
               onChange={handleChange} // Manejar cambios en el campo
               required // Campo obligatorio
             />
@@ -101,8 +101,8 @@ function Login() {
                 {loading ? 'Ingresando...' : 'Ingresar'} {/* Cambiar texto según el estado de c arga */}
               </Button>
               <div className="login-links"> {/* Enlaces de ayuda */}
-                <a href="/request-reset" className="forgot-password-link"> {/* Enlace para recuperar contraseña */}
-                  ¿Olvidaste tu contraseña?
+                <a href="/request-reset" className="forgot-password-link"> {/* Enlace para recuperar contrasena */}
+¿Olvidaste tu contrasena?
                 </a>
                 <a href="/admin/login" className="admin-login-link"> {/* Enlace para acceso de administrador */}
                   Acceso Administrador

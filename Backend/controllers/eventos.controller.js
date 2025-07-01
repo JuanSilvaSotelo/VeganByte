@@ -94,7 +94,7 @@ export const eventosController = {
         tipo 
       } = req.body;
 
-      console.log('Valor recibido en req.body:', valor); // Añadir este log
+      console.log('Valor recibido en req.body:', valor); // Anadir este log
 
       // Convertir fecha a formato YYYY-MM-DD si es necesario
       const formattedFecha = fecha ? new Date(fecha).toISOString().split('T')[0] : null;

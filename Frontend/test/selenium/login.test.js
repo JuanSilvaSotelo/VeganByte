@@ -102,16 +102,16 @@ describe('Pruebas de inicio de sesión', function() {
     });
 
     /**
-     * Prueba de navegación a la página de recuperación de contraseña
+     * Prueba de navegación a la página de recuperación de contrasena
      */
-    it('debería navegar a la página de recuperación de contraseña', async function() {
+    it('debería navegar a la página de recuperación de contrasena', async function() {
         // Navegar a la página de inicio de sesión
         await navigateTo(driver, '/login');
         
-        // Hacer clic en el enlace de recuperación de contraseña
-        await waitAndClick(driver, By.css('a.forgot-password-link'));
+        // Hacer clic en el enlace de recuperación de contrasena
+        await waitAndClick(driver, By.xpath('//a[contains(text(), "¿Olvidaste tu contrasena?")]'));
         
-        // Verificar que estamos en la página de recuperación de contraseña
+        // Verificar que estamos en la página de recuperación de contrasena
         await driver.wait(until.urlContains('/request-reset'), 5000);
         
         // Verificar que el formulario de recuperación está presente

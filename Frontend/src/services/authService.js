@@ -9,7 +9,7 @@ export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/ap
 
 /**
  * Realiza la autenticación del administrador
- * @param {Object} credentials - Credenciales del administrador (usuario y contraseña)
+ * @param {Object} credentials - Credenciales del administrador (usuario y contrasena)
  * @returns {Promise} - Promesa con los datos de la respuesta
  */
 export const loginAdmin = async (credentials) => {
@@ -42,7 +42,7 @@ export const registerUser = async (userData) => {
 };
 
 /**
- * Solicita un restablecimiento de contraseña enviando un correo electrónico.
+ * Solicita un restablecimiento de contrasena enviando un correo electrónico.
  * @param {string} email - El correo electrónico del usuario que solicita el restablecimiento.
  * @returns {Promise<Object>} Una promesa que resuelve con la respuesta de la API.
  */
@@ -56,9 +56,9 @@ export const requestPasswordReset = async (email) => {
 };
 
 /**
- * Restablece la contraseña del usuario
- * @param {String} token - Token de restablecimiento de contraseña
- * @param {String} newPassword - Nueva contraseña
+ * Restablece la contrasena del usuario
+* @param {String} token - Token de restablecimiento de contrasena
+* @param {String} newPassword - Nueva contrasena
  * @returns {Promise} - Promesa con los datos de la respuesta
  */
 export const resetPassword = async (token, newPassword) => {
@@ -118,7 +118,7 @@ export const getAuthHeaders = () => {
 
 /**
  * Realiza la autenticación del usuario
- * @param {Object} credentials - Credenciales del usuario (Usuario y Contraseña)
+ * @param {Object} credentials - Credenciales del usuario (Usuario y Contrasena)
  * @returns {Promise} - Promesa con los datos de la respuesta
  */
 export const loginUser = async (credentials) => {

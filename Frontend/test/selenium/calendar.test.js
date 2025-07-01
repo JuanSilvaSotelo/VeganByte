@@ -50,7 +50,7 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         // Primero iniciar sesión
         await navigateTo(driver, '/login');
         await waitAndSendKeys(driver, By.name('Usuario'), config.testUser.username);
-        await waitAndSendKeys(driver, By.name('Contraseña'), config.testUser.password);
+        await waitAndSendKeys(driver, By.name('Contrasena'), config.testUser.password);
         await waitAndClick(driver, By.css('.login-button[type="submit"], button[type="submit"]'));
         
         // Esperar redirección o mensaje de éxito
@@ -148,7 +148,7 @@ describe('Pruebas del calendario y reserva de eventos', function() {
         // Iniciar sesión como administrador
         await navigateTo(driver, '/admin/login');
         await waitAndSendKeys(driver, By.name('Usuario') || By.name('username'), config.testAdmin.username);
-        await waitAndSendKeys(driver, By.name('Contraseña') || By.name('password'), config.testAdmin.password);
+        await waitAndSendKeys(driver, By.name('Contrasena') || By.name('password'), config.testAdmin.password);
         await waitAndClick(driver, By.css('.login-button[type="submit"], button[type="submit"]'));
         
         // Esperar redirección al dashboard

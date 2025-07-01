@@ -1,5 +1,5 @@
 // Modelo para gestionar los clientes en la base de datos
-// Importa bcrypt para el manejo seguro de contraseñas
+// Importa bcrypt para el manejo seguro de contrasenas
 import bcrypt from 'bcryptjs';
 // Importa la conexión al pool de la base de datos
 import { pool } from '../config/database.js';
@@ -22,24 +22,24 @@ const Cliente = {
     return results[0];
   },
 
-  // Actualizar la contraseña de un cliente
+  // Actualizar la contrasena de un cliente
   updatePassword: async (id, hashedPassword) => {
     const [result] = await pool.query(
-      'UPDATE Cliente SET Contraseña = ? WHERE Id_Cliente = ?',
+      'UPDATE Cliente SET Contrasena = ? WHERE Id_Cliente = ?',
       [hashedPassword, id]
     );
     return result.affectedRows > 0;
   },
 
-  // Crear un nuevo cliente con contraseña encriptada
+  // Crear un nuevo cliente con contrasena encriptada
   create: async (clienteData) => {
-    // Encripta la contraseña antes de guardarla
-    const hashedPassword = await bcrypt.hash(clienteData.Contraseña, 10);
+    // Encripta la contrasena antes de guardarla
+    const hashedPassword = await bcrypt.hash(clienteData.Contrasena, 10);
     
     const query = `
       INSERT INTO Cliente 
       (Nombre, Apellido, tipo_Documento, Numero_documento, Sexo, Correo, Contacto, 
-      fecha_Nacimiento, Direccion, Contraseña, is_verified, verification_token)
+      fecha_Nacimiento, Direccion, Contrasena, is_verified, verification_token)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     

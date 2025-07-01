@@ -35,10 +35,8 @@ function RequestReset() {
       <Header />
       <main>
         <div className="login-container">
-          <h2>RESTABLECER CONTRASEÑA</h2>
-          <p className="reset-description">
-            Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
-          </p>
+          <h2>RESTABLECER CONTRASENA</h2>
+<p className="text-center">Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contrasena.</p>
 
           {error && <div className="error-message">{error}</div>}
           {success && <div className="success-message">{success}</div>}
